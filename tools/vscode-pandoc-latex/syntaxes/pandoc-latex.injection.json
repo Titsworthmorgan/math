@@ -1,0 +1,41 @@
+{
+  "scopeName": "markdown.pandoc-latex.injection",
+  "injectionSelector": "L:text.html.markdown",
+  "patterns": [
+    { "include": "#raw-latex-fence" },
+    { "include": "#header-includes" }
+  ],
+  "repository": {
+    "raw-latex-fence": {
+      "name": "markup.fenced_code.block.markdown",
+      "begin": "(^|\\G)(\\s*)(`{3,}|~{3,})\\s*(\\{=latex\\})\\s*$",
+      "beginCaptures": {
+        "3": { "name": "punctuation.definition.markdown" },
+        "4": { "name": "fenced_code.block.language.markdown" }
+      },
+      "end": "(^|\\G)(\\2|\\s{0,3})(\\3)\\s*$",
+      "endCaptures": {
+        "3": { "name": "punctuation.definition.markdown" }
+      },
+      "patterns": [
+        {
+          "begin": "(^|\\G)(\\s*)(.*)",
+          "while": "(^|\\G)(?!\\s*([`~]{3,})\\s*$)",
+          "contentName": "meta.embedded.block.latex",
+          "patterns": [{ "include": "text.tex.latex" }]
+        }
+      ]
+    },
+    "header-includes": {
+      "begin": "^(header-includes)(:)\\s*(\\|[-+]?)\\s*$",
+      "beginCaptures": {
+        "1": { "name": "entity.name.tag.yaml" },
+        "2": { "name": "punctuation.separator.key-value.mapping.yaml" },
+        "3": { "name": "keyword.control.flow.block-scalar.literal.yaml" }
+      },
+      "while": "^(?=\\s+\\S|\\s*$)",
+      "contentName": "meta.embedded.block.latex",
+      "patterns": [{ "include": "text.tex.latex" }]
+    }
+  }
+}
