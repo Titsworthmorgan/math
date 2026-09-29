@@ -61,7 +61,7 @@ header-includes: |
 % ---- math syntax highlighting (VS Code Dark Modern) ----
 \newif\ifsyntaxon \syntaxontrue
 \def\@synord#1#2{{\ifsyntaxon\color{#2}\fi#1}}
-\def\synmk#1#2{\synmkx#1{#2}\mathord}
+\def\synmk#1#2{\synmkx#1{#2}\relax}
 \def\synmkx#1#2#3{%
   \expandafter\mathchardef\csname syng\string#1\endcsname=\numexpr\mathcode`#1-4096*(\mathcode`#1/4096)\relax
   \expandafter\edef\csname synmc\string#1\endcsname{\the\mathcode`#1}%
@@ -117,6 +117,39 @@ $x(t) = \vname{Amplitude} \ \cos(\vname{AngularFrequency} \ * \  t + \vname{Phas
 \columnbreak
 
 \end{multicols}
+
+\section{Discrete-Time Signals}
+\begin{multicols}{2}
+$x(t) = A \cos(\omega t + \phi)$ \\*
+$x[n] = A \cos(\omega n + \phi)$ \\*
+$T_s = 1$ \\*
+$x(t) = A \cos(\omega n + \phi)$ \\*
+$t = n T_s$ \\*
+$x(nT_s) = A \cos(\omega n T_s + \phi)$
+
+\nopagebreak
+\noindent
+\begin{tikzpicture}[>=Latex, scale=1]
+\begin{axis}[axis lines=middle, axis line style={white!45},
+xmin=-0.7, xmax=11.4, ymin=-1.55, ymax=1.55,
+xtick={2,4,6,8,10}, ytick={-1,1},
+tick style={white!45},
+tick label style={text=white!70, font=\tiny, fill=black, inner sep=1.5pt},
+xticklabel style={anchor=north west, xshift=1.5pt},
+xlabel={$n$}, ylabel={$x[n]$},
+label style={text=white!70, font=\scriptsize},
+every axis x label/.style={at={(ticklabel* cs:1.0)}, anchor=west},
+every axis y label/.style={at={(ticklabel* cs:1.0)}, anchor=south},
+width=9.2cm, height=4.6cm, clip=false, axis on top]
+% the continuous sinusoid the samples are taken from
+\addplot[uHi, thick, smooth, samples=201, domain=-0.5:11.1] {sin(deg(x))};
+% one sample per integer n, stem drawn down to the axis
+\addplot[keyHi, ycomb, thick, mark=*, mark size=1.5pt, samples=11, domain=0:10] {sin(deg(x))};
+\end{axis}
+\end{tikzpicture}
+
+\end{multicols}
+
 \makeatother
 ```
 
