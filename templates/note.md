@@ -103,6 +103,9 @@ header-includes: |
 \let\synszL\left\def\left{\syn@delimoff\synszL}
 \let\synszR\right\def\right{\syn@delimoff\synszR}
 \tikzset{every picture/.append style={execute at begin picture={\syntaxonfalse}}}
+
+
+
 \makeatother
 ```
 
