@@ -42,12 +42,12 @@ You can also copy a `.md` file into `staging/` yourself. The menu shows it.
    ```
 
 2. Edit `staging/calc1.md`.
-3. Make a preview and promote it. The script finds the old folder. Push Enter to use that folder.
+3. Make a preview and promote it. The script highlights the old folder. Push Enter to use that folder.
 
 ## Make a preview
 
 1. Select `b) Build preview`. To build all drafts, select `a) Build all previews`.
-2. Type the draft number or the draft name.
+2. Use the arrow keys to highlight the draft. Push Enter. To cancel, push `q`.
 3. Wait. The first build can take one minute. MiKTeX can download packages during the build.
 4. If the build is satisfactory, the script writes `output/<name>.pdf`.
 5. If the build fails, the script shows the last lines of `output/logs/<name>.log`. Read the full log to find the error.
@@ -57,8 +57,8 @@ You can also copy a `.md` file into `staging/` yourself. The menu shows it.
 ## Promote a note
 
 1. Select `p) Promote`.
-2. Type the draft number or the draft name.
-3. Type the folder number. If the note already exists in a folder, push Enter to use that folder.
+2. Use the arrow keys to highlight the draft. Push Enter.
+3. Use the arrow keys to highlight the folder. Push Enter. If the note already exists in a folder, the script highlights that folder first.
 4. If the note already exists, the script asks for approval. Type `y` to replace it. Git keeps the old version.
 5. The script builds the draft again. It does not use the old preview.
 6. If the build is satisfactory, the script:
