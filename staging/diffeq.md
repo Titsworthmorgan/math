@@ -273,6 +273,7 @@ an equation $\to$ order & highest derivative \hfill (2) \\[1pt]
 an equation $\to$ linear or not & the checklist \hfill (3) \\[1pt]
 a function and a DE $\to$ is it a solution? & differentiate, substitute \hfill (4) \\[1pt]
 a DE $\to$ values of $r$ & try $e^{rx}$ or $x^r$ \hfill (5) \\[1pt]
+DEs and functions $\to$ match & count constants, then verify \hfill (5) \\[1pt]
 $y^{(n)}=f(x)\to$ general solution & integrate $n$ times \hfill (6) \\[1pt]
 general solution, conditions $\to c$ & substitute, solve \hfill (7) \\[1pt]
 a solution $\to$ interval of validity & remove bad $x$, keep $x_0$'s piece \hfill (8) \\[1pt]
@@ -411,7 +412,7 @@ a DE only $\to$ the function & \keyres{Solve}: integrate (section 6), or later m
 \stepbox{3. COMPARE}{$2x=2x^2$ only at $x=0$ and $x=1$. \; Not on an interval $\Rightarrow$ \warn{not a solution}}
 
 % ------------------------------------------------------------ 5
-\filbreak \subsection{5. finding $r$ so that a guess is a solution}
+\filbreak \subsection{5. finding $r$, and matching equations to solutions}
 Some problems give a form, like $y=e^{rx}$ or $y=x^r$, and ask for the values of $r$ that make it a solution.
 
 \term{Procedure}:
@@ -447,6 +448,59 @@ Some problems give a form, like $y=e^{rx}$ or $y=x^r$, and ask for the values of
 \stepbox{5. FACTOR OUT $x^r$}{$x^r\big(r(r-1)-4r+6\big)=0$ $\Rightarrow$ $r^2-r-4r+6=0$}
 \stepdown
 \stepbox{6. SIMPLIFY AND FACTOR}{$r^2-5r+6=(r-2)(r-3)=0$ $\Rightarrow$ $r=\keyres{2}$ or $r=\keyres{3}$}
+
+\filbreak \subsubsection{Matching equations to solutions}
+A matching problem gives a list of DEs and a list of functions. Sort first with fast clues. Then verify each pair with the procedure from section 4.
+\begin{enumerate}
+\item \term{Count the constants.} A general solution of an order $n$ DE has $n$ constants. One $c$ $\Rightarrow$ first order. $c_1$ and $c_2$ $\Rightarrow$ second order.
+\item \term{Read the form of the function.} Use the clue table below to guess the partner.
+\item \term{Verify the guess.} Differentiate and substitute. A guess is not an answer until it checks.
+\item \term{Cross off the pair.} Each remaining choice is easier.
+\end{enumerate}
+{\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}p{0.44\linewidth}p{0.52\linewidth}@{}}
+\term{The function has} & \term{Look for the DE} \\\hline
+$ce^{kx}$ only & $y'=ky$ \\
+$k+ce^{-ax}$ (a constant plus an exponential) & $y'=a(k-y)$ \; \why{equilibrium at $k$} \\
+$c_1e^{r_1x}+c_2e^{r_2x}$ & $y''+by'+cy=0$ with $r^2+br+c=0$ at $r_1$, $r_2$ \\
+$c_1\cos(kx)+c_2\sin(kx)$ & $y''+k^2y=0$ \\
+$c_1x^{r_1}+c_2x^{r_2}$ & $x^2y''+bxy'+cy=0$ \; \why{test with $x^r$} \\
+a polynomial plus $c$ & $y'=f(x)$: integrate to check \\
+\end{tabular}}
+\par\vspace{2pt}
+\warn{Same order is not enough.} Two second-order DEs can both have two-constant solutions. Always finish with the substitution check.
+
+\wk{24}{match (A) $y'=-3y$, \; (B) $y''+9y=0$, \; (C) $y''-y'-2y=0$, \; (D) $y'=2(4-y)$ \; to \; (1) $c_1\cos3x+c_2\sin3x$, \; (2) $ce^{-3x}$, \; (3) $4+ce^{-2x}$, \; (4) $c_1e^{2x}+c_2e^{-x}$}
+\stepbox{1. COUNT THE CONSTANTS}{(1) and (4) have two $\Rightarrow$ they go with (B) or (C). \\ (2) and (3) have one $\Rightarrow$ they go with (A) or (D).}
+\stepdown
+\stepbox{2. GUESS FROM THE FORM}{(1) is cosine and sine of $3x$ $\Rightarrow$ (B), since $k^2=9$. \; (2) is $ce^{kx}$ with $k=-3$ $\Rightarrow$ (A).}
+\stepdown
+\stepbox{3. VERIFY (1) IN (B): DERIVATIVES}{$y'=-3c_1\sin3x+3c_2\cos3x$. \; $y''=-9c_1\cos3x-9c_2\sin3x$}
+\stepdown
+\stepbox{4. VERIFY (1) IN (B): SUBSTITUTE}{$y''=-9\big(c_1\cos3x+c_2\sin3x\big)=-9y$. \; So $y''+9y=-9y+9y=0$ \checkmark}
+\stepdown
+\stepbox{5. VERIFY (2) IN (A)}{$y'=-3ce^{-3x}=-3\big(ce^{-3x}\big)=-3y$ \checkmark}
+\stepdown
+\stepbox{6. VERIFY (4) IN (C), THE LAST TWO-CONSTANT PAIR}{Test each exponent in $r^2-r-2$: \; $r=2$: $4-2-2=0$ \checkmark \; $r=-1$: $1+1-2=0$ \checkmark}
+\stepdown
+\stepbox{7. VERIFY (3) IN (D): LEFT SIDE}{$y'=-2ce^{-2x}$ \; \why{the $4$ is constant, its derivative is $0$}}
+\stepdown
+\stepbox{8. VERIFY (3) IN (D): RIGHT SIDE}{$2(4-y)=2\big(4-4-ce^{-2x}\big)=2\big(-ce^{-2x}\big)=-2ce^{-2x}$. \; Same \checkmark}
+\stepdown
+\stepbox{9. RESULT}{\keyres{A--2, \; B--1, \; C--4, \; D--3}}
+
+\wk{14}{(no constants) which of $y=e^{-x}$ or $y=xe^{-x}$ solves $y''+2y'+y=0$?}
+\stepbox{1. COUNTING DOES NOT HELP}{Neither has a constant. Verify both.}
+\stepdown
+\stepbox{2. $y=e^{-x}$}{$y'=-e^{-x}$, \; $y''=e^{-x}$. \; $e^{-x}-2e^{-x}+e^{-x}=0$ \checkmark}
+\stepdown
+\stepbox{3. $y=xe^{-x}$: DERIVATIVES}{$y'=e^{-x}-xe^{-x}$ \why{product rule}. \; $y''=-e^{-x}-e^{-x}+xe^{-x}=-2e^{-x}+xe^{-x}$}
+\stepdown
+\stepbox{4. $y=xe^{-x}$: SUBSTITUTE}{$\big(-2e^{-x}+xe^{-x}\big)+2\big(e^{-x}-xe^{-x}\big)+xe^{-x}$}
+\stepdown
+\stepbox{5. COLLECT}{$e^{-x}$: $-2+2=0$. \quad $xe^{-x}$: $1-2+1=0$. \; Sum $=0$ \checkmark}
+\stepdown
+\stepbox{6. RESULT}{\keyres{Both} are solutions. \why{a matching list can have more than one answer per equation; check every pair}}
 
 % ------------------------------------------------------------ 6
 \filbreak \subsection{6. general solutions by direct integration}
