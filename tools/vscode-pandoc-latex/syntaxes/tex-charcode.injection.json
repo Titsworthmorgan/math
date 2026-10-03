@@ -1,0 +1,11 @@
+{
+  "scopeName": "markdown.pandoc-latex.charcode.injection",
+  "injectionSelector": "L:meta.embedded.block.latex",
+  "patterns": [
+    {
+      "comment": "TeX character code such as `\\( or `\\[ : one character, not the start of math",
+      "match": "`\\\\.",
+      "name": "constant.character.escape.tex"
+    }
+  ]
+}

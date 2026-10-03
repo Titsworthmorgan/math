@@ -142,7 +142,48 @@ showDrafts() {
     done
 }
 
-# Asks for a draft by number or name; sets PICKED.
+# Arrow-key selector. Usage: selectOption <prompt> <default index> <label>...
+# Up/Down or k/j move, a digit jumps, Enter selects, q or Esc cancels.
+# Sets SELECTED to the 0-based index of the chosen label.
+selectOption() {
+    local prompt="$1" cur="$2"
+    shift 2
+    local labels=("$@") count=$# i key rest
+    SELECTED=""
+    [ "$count" -gt 0 ] || return 1
+
+    echo -e "${BOLD}${YELLOW}$prompt${NC} ${DIM}(↑/↓ to move, Enter to select, q to cancel)${NC}"
+    printf '\033[?25l'
+    trap 'printf "\033[?25h"' RETURN
+    while true; do
+        for i in "${!labels[@]}"; do
+            if [ "$i" -eq "$cur" ]; then
+                echo -e "\033[2K  ${CYAN}${BOLD}❯ $((i + 1))) ${labels[$i]}${NC}"
+            else
+                echo -e "\033[2K    ${DIM}$((i + 1)))${NC} ${labels[$i]}"
+            fi
+        done
+        IFS= read -rsn1 key
+        case "$key" in
+            $'\x1b')
+                IFS= read -rsn2 -t 0.05 rest || rest=""
+                case "$rest" in
+                    '[A') cur=$(((cur - 1 + count) % count)) ;;
+                    '[B') cur=$(((cur + 1) % count)) ;;
+                    '') echo ""; return 1 ;;
+                esac
+                ;;
+            k) cur=$(((cur - 1 + count) % count)) ;;
+            j) cur=$(((cur + 1) % count)) ;;
+            [1-9]) [ "$key" -le "$count" ] && cur=$((key - 1)) ;;
+            q) echo ""; return 1 ;;
+            '') SELECTED="$cur"; echo ""; return 0 ;;
+        esac
+        printf '\033[%dA' "$count"
+    done
+}
+
+# Asks for a draft with the selector; sets PICKED.
 pickDraft() {
     loadDrafts
     PICKED=""
@@ -150,39 +191,30 @@ pickDraft() {
         printError "There are no drafts in staging/."
         return 1
     fi
-    local choice
-    read -rp "$(echo -e "${BOLD}${YELLOW}Draft # or name:${NC} ")" choice
-    choice="${choice%.md}"
-    if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge 1 ] && [ "$choice" -le ${#DRAFTS[@]} ]; then
-        PICKED="${DRAFTS[$((choice - 1))]}"
-    elif [ -n "$choice" ] && [ -f "$STAGING/$choice.md" ]; then
-        PICKED="$choice"
-    else
-        printError "No draft matches '$choice'."
-        return 1
-    fi
+    local labels=() name
+    for name in "${DRAFTS[@]}"; do
+        labels+=("$(printf '%-28s' "$name") ${DIM}$(previewState "$name")${NC}")
+    done
+    selectOption "Draft:" 0 "${labels[@]}" || { printInfo "Cancelled."; return 1; }
+    PICKED="${DRAFTS[$SELECTED]}"
 }
 
-# Asks for a promotion folder; sets PICKED_TARGET. $1 is the draft name.
+# Asks for a promotion folder with the selector; sets PICKED_TARGET. $1 is the draft name.
 pickTarget() {
-    local default="" i choice
+    local default="" start=0 i labels=()
     default="$(existingTarget "$1")" || default=""
-    echo ""
     for i in "${!TARGETS[@]}"; do
-        echo -e "  ${BOLD}$((i + 1)))${NC} ${TARGETS[$i]}/"
+        if [ "${TARGETS[$i]}" = "$default" ]; then
+            start="$i"
+            labels+=("${TARGETS[$i]}/ ${DIM}(holds $1.md)${NC}")
+        else
+            labels+=("${TARGETS[$i]}/")
+        fi
     done
-    local hint=""
-    [ -n "$default" ] && hint=" ${DIM}[Enter = $default]${NC}"
-    read -rp "$(echo -e "${BOLD}${YELLOW}Promote to folder #:${NC}${hint} ")" choice
     PICKED_TARGET=""
-    if [ -z "$choice" ] && [ -n "$default" ]; then
-        PICKED_TARGET="$default"
-    elif [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge 1 ] && [ "$choice" -le ${#TARGETS[@]} ]; then
-        PICKED_TARGET="${TARGETS[$((choice - 1))]}"
-    else
-        printError "Invalid folder '$choice'."
-        return 1
-    fi
+    echo ""
+    selectOption "Promote to folder:" "$start" "${labels[@]}" || { printInfo "Cancelled."; return 1; }
+    PICKED_TARGET="${TARGETS[$SELECTED]}"
 }
 
 # ============================================================================

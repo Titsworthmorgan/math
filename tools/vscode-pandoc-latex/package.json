@@ -1,0 +1,38 @@
+{
+  "name": "pandoc-latex-bridge",
+  "displayName": "Pandoc LaTeX Bridge",
+  "description": "Highlights Pandoc raw LaTeX in Markdown: ```{=latex} fences and the header-includes block.",
+  "version": "0.1.0",
+  "publisher": "local",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "extensionDependencies": [
+    "james-yu.latex-workshop"
+  ],
+  "contributes": {
+    "grammars": [
+      {
+        "scopeName": "markdown.pandoc-latex.injection",
+        "path": "./syntaxes/pandoc-latex.injection.json",
+        "injectTo": [
+          "text.html.markdown"
+        ],
+        "embeddedLanguages": {
+          "meta.embedded.block.latex": "latex"
+        }
+      },
+      {
+        "scopeName": "markdown.pandoc-latex.charcode.injection",
+        "path": "./syntaxes/tex-charcode.injection.json",
+        "injectTo": [
+          "text.html.markdown"
+        ]
+      }
+    ]
+  }
+}
