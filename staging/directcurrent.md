@@ -272,12 +272,17 @@ energy in a resistor, constant $I$ & $W=I^2R\,t$ \\
 \begin{tabular}{@{}p{0.44\linewidth}p{0.52\linewidth}@{}}
 branches, nodes, loops & $b=l+n-1$ \\
 KCL & $\sum i_{\text{in}}=\sum i_{\text{out}}$ \\
+KCL equations & $n-1$ for $n$ nodes \\
+resistor current from node voltages & $i=\dfrac{v_a-v_b}{R}$ \rule[-7pt]{0pt}{19pt}\\
 KVL & $\sum v=0$ around a loop \\
+voltage from a to b & $v_{ab}=$ sum of drops along a path \\
 series & $R_{eq}=R_1+R_2+\cdots$ \\
 parallel & $\dfrac{1}{R_{eq}}=\dfrac{1}{R_1}+\dfrac{1}{R_2}+\cdots$ \rule[-7pt]{0pt}{19pt}\\
 two in parallel & $R_{eq}=\dfrac{R_1R_2}{R_1+R_2}$ \rule[-7pt]{0pt}{19pt}\\
 voltage divider (series) & $v_1=\dfrac{R_1}{R_1+R_2}\,v$ \rule[-7pt]{0pt}{19pt}\\
+$N$-resistor voltage divider & $v_k=\dfrac{R_k}{R_1+\cdots+R_N}\,v$ \rule[-7pt]{0pt}{19pt}\\
 current divider (parallel) & $i_1=\dfrac{R_2}{R_1+R_2}\,i$ \rule[-7pt]{0pt}{19pt}\\
+$N$-branch current divider & $i_k=\dfrac{G_k}{G_1+\cdots+G_N}\,i$ \rule[-7pt]{0pt}{19pt}\\
 $\Delta\to Y$ & $R_a=\dfrac{R_{ab}R_{ca}}{\Sigma}$, \; $\Sigma=R_{ab}+R_{bc}+R_{ca}$ \rule[-7pt]{0pt}{19pt}\\
 $Y\to\Delta$ & $R_{ab}=\dfrac{N}{R_c}$, \; $N=R_aR_b+R_bR_c+R_cR_a$ \rule[-7pt]{0pt}{19pt}\\
 \end{tabular}}
@@ -348,9 +353,13 @@ two of $v$, $i$, $R\to$ the third & Ohm's law, one resistor \hfill (10) \\[1pt]
 resistor $\to$ power absorbed & $i^2R$ or $v^2/R$ \hfill (10) \\[1pt]
 currents at a node $\to$ last one & KCL \hfill (12) \\[1pt]
 voltages in a loop $\to$ last one & KVL \hfill (13) \\[1pt]
+voltage between two points & path rule \hfill (13) \\[1pt]
 network $\to R_{eq}$ & series and parallel \hfill (14) \\[1pt]
+target $R_{eq}\to$ missing $R$ & formula, solve for $R$ \hfill (14) \\[1pt]
 series, total $v\to$ one part & voltage divider \hfill (15) \\[1pt]
+divider with a load & combine the load first \hfill (15) \\[1pt]
 parallel, total $i\to$ one branch & current divider \hfill (16) \\[1pt]
+$N$ parallel branches, total $i$ & divider with $G$ \hfill (16) \\[1pt]
 not series, not parallel & $\Delta\leftrightarrow Y$ \hfill (17) \\
 \end{tabular}}
 \par\vspace{2pt}
@@ -971,6 +980,81 @@ Sign rule for the second form: into the node is $+$, out of the node is $-$.
 \stepdown
 \stepbox{3. READ THE SIGN}{$i$ is negative, so the real current is \keyres{$2$ A into the node}, against the arrow.}
 
+\filbreak \subsubsection{KCL in a full circuit --- the procedure}
+\begin{enumerate}
+\item Label each unknown current with an arrow. Guess the direction. A negative answer means the real current flows the other way.
+\item Pick one node as \term{ground} ($0$ V). Name the voltage at each other node.
+\item Write each resistor current with Ohm's law: $i=\dfrac{v_{\text{from}}-v_{\text{to}}}{R}$. Current flows from the higher voltage to the lower voltage.
+\item Write KCL at each node except ground. A circuit with $n$ nodes gives $n-1$ independent KCL equations.
+\item Solve. Then check KCL at each node with the numbers.
+\end{enumerate}
+\keyres{Closed surface}: KCL holds for any closed boundary around several nodes. The current into the boundary equals the current out.
+
+\term{Current sources in parallel} add, with their directions. \warn{Two different current sources in series break KCL.}
+
+\nopagebreak
+\noindent\hfil
+\begin{tikzpicture}[font=\scriptsize]
+\node[src] (is) at (0,1) {};
+\draw[-{Latex[length=1.4mm]}, white, thick] (0,0.82) -- (0,1.2);
+\node[left=0.05cm of is] {$6$ A};
+\node[vres] (ra) at (1.6,1) {}; \node[right=0.1cm of ra] {$2\,\Omega$};
+\node[vres] (rb) at (3.0,1) {}; \node[right=0.1cm of rb] {$3\,\Omega$};
+\draw[wire] (is.north) -- (0,2) -- (3.0,2) -- (rb.north);
+\draw[wire] (1.6,2) -- (ra.north);
+\draw[wire] (is.south) -- (0,0) -- (3.0,0) -- (rb.south);
+\draw[wire] (ra.south) -- (1.6,0);
+\fill[keyHi] (1.6,2) circle (1.6pt) node[above, text=keyHi] {a: $v$};
+\node[below, white!70] at (1.6,0) {ground, $0$ V};
+\draw[iarrow] (1.32,1.75) -- (1.32,1.3) node[midway, left] {$i_1$};
+\draw[iarrow] (2.72,1.75) -- (2.72,1.3) node[midway, left] {$i_2$};
+\end{tikzpicture}
+
+\wk{22}{the circuit above. Find $v$, $i_1$, and $i_2$}
+\stepbox{1. NAME THE NODE VOLTAGE}{Bottom wire $=$ ground, $0$ V. \; Top node a $=v$.}
+\stepdown
+\stepbox{2. EACH RESISTOR CURRENT (OHM)}{$i_1=\dfrac{v-0}{2}=\dfrac{v}{2}$, \quad $i_2=\dfrac{v-0}{3}=\dfrac{v}{3}$}
+\stepdown
+\stepbox{3. KCL AT NODE a}{In: $6$ A. \; Out: $i_1+i_2$. \quad $6=\dfrac{v}{2}+\dfrac{v}{3}$}
+\stepdown
+\stepbox{4. COMMON DENOMINATOR}{$\dfrac{v}{2}+\dfrac{v}{3}=\dfrac{3v}{6}+\dfrac{2v}{6}=\dfrac{5v}{6}$}
+\stepdown
+\stepbox{5. SOLVE FOR $v$}{$\dfrac{5v}{6}=6$ $\Rightarrow$ $5v=36$ $\Rightarrow$ $v=\keyres{7.2}$ V}
+\stepdown
+\stepbox{6. EACH CURRENT}{$i_1=\dfrac{7.2}{2}=\keyres{3.6}$ A, \quad $i_2=\dfrac{7.2}{3}=\keyres{2.4}$ A}
+\stepdown
+\stepbox{7. CHECK}{KCL: $3.6+2.4=6$ \checkmark \quad Current divider: $\dfrac{3}{2+3}\cdot6=3.6$ \checkmark}
+
+\wk{16}{(dependent source) $10$ A into a node. Out: $i_x$ through $4\,\Omega$ to ground, and a CCCS of $1.5\,i_x$}
+\stepbox{1. KCL}{In $=$ out: \; $10=i_x+1.5\,i_x$}
+\stepdown
+\stepbox{2. COMBINE LIKE TERMS}{$10=2.5\,i_x$}
+\stepdown
+\stepbox{3. SOLVE}{$i_x=\dfrac{10}{2.5}=\keyres{4}$ A}
+\stepdown
+\stepbox{4. DEPENDENT SOURCE CURRENT}{$1.5\cdot4=\keyres{6}$ A}
+\stepdown
+\stepbox{5. NODE VOLTAGE (OHM ON THE $4\,\Omega$)}{$v=4\cdot4=\keyres{16}$ V}
+\stepdown
+\stepbox{6. CHECK}{$4+6=10$ \checkmark}
+
+\wk{10}{(closed surface) a boundary around two nodes}
+Currents that cross the boundary: $5$ A in, $2$ A out, $1$ A in, and $i$ out.
+\par\vspace{2pt}
+\stepbox{1. IN EQUALS OUT}{$5+1=2+i$}
+\stepdown
+\stepbox{2. SOLVE}{$6=2+i$ $\Rightarrow$ $i=\keyres{4}$ A \; \why{the currents inside the boundary do not matter}}
+
+\filbreak \subsubsection{Which law? --- KCL, KVL, or Ohm}
+{\small
+\begin{tabular}{@{}p{0.44\linewidth}p{0.52\linewidth}@{}}
+\term{Unknown} & \term{Use} \\\hline
+one current at a node, the others known & \keyres{KCL} at that node \\[2pt]
+one voltage in a loop, the others known & \keyres{KVL} around that loop \\[2pt]
+$v$ or $i$ of one resistor, the other known & \keyres{Ohm's law} \\[2pt]
+both $v$ and $i$ unknown & write KCL or KVL with Ohm's law put in, then solve \\
+\end{tabular}}
+
 % ------------------------------------------------------------ 13
 \filbreak \subsection{13. Kirchhoff's voltage law (KVL)}
 Energy is conserved, so the voltages around a closed loop add to zero.
@@ -1002,6 +1086,68 @@ Sign rule: walk around the loop in one direction. If you enter an element at its
 \stepbox{9. POWER OF THE SOURCE}{The arrow enters the $-$ mark. \; $p=-v\,i=-(12)(2)=-24$ W \; (delivers $24$ W)}
 \stepdown
 \stepbox{10. CHECK}{KVL: $4+8=12$ \checkmark \quad Power: $-24+8+16=0$ \checkmark}
+
+\filbreak \subsubsection{Voltage between two points --- the path rule}
+$v_{ab}$ is the voltage of point a measured from point b. Walk any path from a to b and add the element voltages:
+\begin{itemize}
+\item You meet the $+$ mark first: write $+v$ (a drop).
+\item You meet the $-$ mark first: write $-v$ (a rise).
+\end{itemize}
+\keyres{Every path from a to b gives the same answer.} That is KVL. \; $v_{ba}=-v_{ab}$.
+
+\term{Voltage sources in series} add, with their polarities: $9$ V and $3$ V that oppose give $6$ V. \warn{Two different voltage sources in parallel break KVL.}
+
+\nopagebreak
+\noindent\hfil
+\begin{tikzpicture}[font=\scriptsize]
+\fill[keyHi] (0,0) circle (1.6pt) node[above, text=keyHi] {a};
+\node[res] (e1) at (1,0) {}; \node[res] (e2) at (2.5,0) {}; \node[res] (e3) at (4,0) {};
+\draw[wire] (0,0) -- (e1.west); \draw[wire] (e1.east) -- (e2.west); \draw[wire] (e2.east) -- (e3.west); \draw[wire] (e3.east) -- (5,0);
+\fill[keyHi] (5,0) circle (1.6pt) node[above, text=keyHi] {b};
+\node at (0.5,0.22) {$+$}; \node at (1.5,0.22) {$-$}; \node at (1,-0.3) {$5$ V};
+\node at (2.0,0.22) {$-$}; \node at (3.0,0.22) {$+$}; \node at (2.5,-0.3) {$3$ V};
+\node at (3.5,0.22) {$+$}; \node at (4.5,0.22) {$-$}; \node at (4,-0.3) {$2$ V};
+\end{tikzpicture}
+
+\wk{14}{find $v_{ab}$ in the figure above}
+\stepbox{1. FIRST ELEMENT}{You meet $+$ first: \; $+5$}
+\stepdown
+\stepbox{2. SECOND ELEMENT}{You meet $-$ first: \; $-3$}
+\stepdown
+\stepbox{3. THIRD ELEMENT}{You meet $+$ first: \; $+2$}
+\stepdown
+\stepbox{4. ADD}{$v_{ab}=5-3+2=\keyres{4}$ V. \quad $v_{ba}=-4$ V}
+
+\nopagebreak
+\noindent\hfil\threeckt{$12$ V}{$R_1$}{$R_2$}{$R_3$}
+
+\wk{14}{(two loops) $v_s=12$ V and $v_1=5$ V on $R_1$. Find $v_2$ and $v_3$}
+All resistor $+$ marks are on the top (or left) end.
+\par\vspace{2pt}
+\stepbox{1. LOOP 1: $v_s$, $R_1$, $R_2$}{$-12+5+v_2=0$}
+\stepdown
+\stepbox{2. SOLVE}{$v_2=12-5=\keyres{7}$ V}
+\stepdown
+\stepbox{3. LOOP 2: $R_2$ UP, THEN $R_3$ DOWN}{Up $R_2$: meet $-$ first, $-v_2$. \; Down $R_3$: meet $+$ first, $+v_3$. \quad $-v_2+v_3=0$}
+\stepdown
+\stepbox{4. SOLVE}{$v_3=v_2=\keyres{7}$ V \; \why{KVL shows that parallel elements share one voltage}}
+
+\wk{24}{(dependent source) one loop: $36$ V source, $2\,\Omega$, $4\,\Omega$, and a CCVS of $3i$}
+The current $i$ flows clockwise. It leaves the $+$ mark of the $36$ V source and enters the $+$ mark of each other element.
+\par\vspace{2pt}
+\stepbox{1. KVL CLOCKWISE}{$-36+2i+4i+3i=0$ \; \why{the CCVS voltage is $3i$, entered at its $+$ mark}}
+\stepdown
+\stepbox{2. COMBINE LIKE TERMS}{$-36+9i=0$}
+\stepdown
+\stepbox{3. SOLVE}{$i=\dfrac{36}{9}=\keyres{4}$ A}
+\stepdown
+\stepbox{4. EACH VOLTAGE}{$2\cdot4=8$ V, \quad $4\cdot4=16$ V, \quad CCVS: $3\cdot4=12$ V}
+\stepdown
+\stepbox{5. KVL CHECK}{$8+16+12=36$ \checkmark}
+\stepdown
+\stepbox{6. POWER}{Source delivers $36\cdot4=144$ W. \; Resistors absorb $4^2\cdot2+4^2\cdot4=32+64=96$ W. \; CCVS absorbs $12\cdot4=48$ W.}
+\stepdown
+\stepbox{7. POWER CHECK}{$96+48=144$ \checkmark}
 
 % ------------------------------------------------------------ 14
 \filbreak \subsection{14. series and parallel resistors}
@@ -1040,6 +1186,71 @@ Start at the part farthest from the terminals. Work toward the terminals.
 \stepdown
 \stepbox{4. SERIES $2+4$}{$R_{eq}=2+4=\keyres{6}\,\Omega$}
 
+\filbreak \subsubsection{How to spot series and parallel}
+\begin{enumerate}
+\item Label the nodes. All points joined by plain wire get one label.
+\item \term{Series test}: two elements share a node, and no third element connects at that node.
+\item \term{Parallel test}: the two ends of both elements connect to the same two nodes.
+\item Combine one pair. Redraw. Repeat from the end farthest from the terminals.
+\end{enumerate}
+\warn{A wire across a resistor shorts it.} The resistor has $0$ V and carries no current. Remove it: $R\parallel0=0$.
+
+\warn{A resistor with one end connected to nothing carries no current.} Remove it.
+
+\warn{$R_{eq}$ depends on the two terminals.} The same network seen from a--b and from c--d gives different values.
+
+\nopagebreak
+\noindent\hfil
+\begin{tikzpicture}[font=\scriptsize]
+\node[res] (r1) at (1,2) {}; \node[above=0.05cm of r1] {$R_1=4\,\Omega$};
+\node[vres] (r2) at (2,1) {}; \node[right=0.1cm of r2] {$R_2=24\,\Omega$};
+\node[res] (r3) at (3.3,2) {}; \node[above=0.05cm of r3] {$R_3=2\,\Omega$};
+\node[vres] (r4) at (4.6,1) {}; \node[right=0.1cm of r4] {$R_4=6\,\Omega$};
+\draw[wire] (0,2) -- (r1.west); \draw[wire] (r1.east) -- (2,2) -- (r3.west); \draw[wire] (2,2) -- (r2.north);
+\draw[wire] (r2.south) -- (2,0); \draw[wire] (r3.east) -- (4.6,2) -- (r4.north); \draw[wire] (r4.south) -- (4.6,0) -- (0,0);
+\draw[white, fill=black] (0,2) circle (2pt) node[left, text=keyHi] {a};
+\draw[white, fill=black] (0,0) circle (2pt) node[left, text=keyHi] {b};
+\end{tikzpicture}
+
+\wk{14}{$R_{ab}$ of the ladder above}
+\stepbox{1. FAR END: $R_3$ AND $R_4$ IN SERIES}{They share a node with nothing else on it. \; $2+6=8\,\Omega$}
+\stepdown
+\stepbox{2. PARALLEL WITH $R_2$}{Both connect between the top node and the bottom wire. \; $\dfrac{24\cdot8}{24+8}=\dfrac{192}{32}=6\,\Omega$}
+\stepdown
+\stepbox{3. SERIES WITH $R_1$}{$R_{ab}=4+6=\keyres{10}\,\Omega$}
+
+\wk{10}{(short) $10\,\Omega$, then $6\,\Omega$ with a wire across it, then $4\,\Omega$, all in series}
+\stepbox{1. THE SHORTED RESISTOR}{$6\parallel0=\dfrac{6\cdot0}{6+0}=0\,\Omega$}
+\stepdown
+\stepbox{2. SERIES}{$R_{eq}=10+0+4=\keyres{14}\,\Omega$}
+
+\wk{10}{(open end) $8\,\Omega$ from a to c, $5\,\Omega$ from c to b, and $7\,\Omega$ from c to nothing}
+\stepbox{1. THE OPEN-ENDED RESISTOR}{No closed path through the $7\,\Omega$ $\Rightarrow$ no current. Remove it.}
+\stepdown
+\stepbox{2. SERIES}{$R_{ab}=8+5=\keyres{13}\,\Omega$}
+
+\filbreak \subsubsection{Which way? --- combine or design}
+{\small
+\begin{tabular}{@{}p{0.40\linewidth}p{0.56\linewidth}@{}}
+\term{Given} $\to$ \term{find} & \term{Do this} \\\hline
+the resistors $\to R_{eq}$ & combine from the far end toward the terminals \\[2pt]
+a target $R_{eq}\to$ the missing $R$ & write the formula with $R$ unknown, then solve \\
+\end{tabular}}
+
+\wk{14}{(reverse) find $R$ so that $R\parallel12\,\Omega=4\,\Omega$}
+\stepbox{1. RECIPROCAL FORMULA}{$\dfrac{1}{4}=\dfrac{1}{R}+\dfrac{1}{12}$}
+\stepdown
+\stepbox{2. ISOLATE $\frac1R$}{$\dfrac{1}{R}=\dfrac{1}{4}-\dfrac{1}{12}=\dfrac{3}{12}-\dfrac{1}{12}=\dfrac{2}{12}=\dfrac16$}
+\stepdown
+\stepbox{3. FLIP}{$R=\keyres{6}\,\Omega$}
+\stepdown
+\stepbox{4. CHECK}{$\dfrac{6\cdot12}{6+12}=\dfrac{72}{18}=4\,\Omega$ \checkmark}
+
+\wk{8}{(reverse, series) what $R$ in series with $330\,\Omega$ gives $1$ k$\Omega$?}
+\stepbox{1. SERIES FORMULA}{$1000=330+R$}
+\stepdown
+\stepbox{2. SOLVE}{$R=1000-330=\keyres{670}\,\Omega$}
+
 % ------------------------------------------------------------ 15
 \filbreak \subsection{15. voltage division}
 Series resistors share the source voltage in proportion to their resistance:
@@ -1073,6 +1284,57 @@ $$v_1=\frac{R_1}{R_1+R_2}\,v \qquad v_2=\frac{R_2}{R_1+R_2}\,v$$
 \stepdown
 \stepbox{5. CHECK}{$\dfrac{3}{9+3}\cdot12=\dfrac{3}{12}\cdot12=3$ V \checkmark}
 
+\filbreak \subsubsection{More than two resistors, and voltages to ground}
+\term{$N$ resistors in series}: each gets its share of the total.
+$$v_k=\frac{R_k}{R_1+R_2+\cdots+R_N}\,v$$
+\term{Voltage at a node} (measured to the bottom, ground): add the voltages of everything between that node and ground.
+
+\wk{16}{$24$ V across $R_1=1$, $R_2=2$, $R_3=3$ k$\Omega$ in series (top to bottom)}
+\stepbox{1. TOTAL RESISTANCE}{$1+2+3=6$ k$\Omega$}
+\stepdown
+\stepbox{2. EACH VOLTAGE}{$v_1=\dfrac16\cdot24=\keyres{4}$ V, \quad $v_2=\dfrac26\cdot24=\keyres{8}$ V, \quad $v_3=\dfrac36\cdot24=\keyres{12}$ V}
+\stepdown
+\stepbox{3. CHECK}{$4+8+12=24$ \checkmark}
+\stepdown
+\stepbox{4. NODE BETWEEN $R_2$ AND $R_3$}{Only $R_3$ is below it: \; $\keyres{12}$ V}
+\stepdown
+\stepbox{5. NODE BETWEEN $R_1$ AND $R_2$}{$R_2$ and $R_3$ are below it: \; $8+12=\keyres{20}$ V}
+
+\filbreak \subsubsection{The loaded divider}
+A \term{load} $R_L$ connected across $R_2$ is in parallel with $R_2$. It draws current, so $R_1$ and $R_2$ no longer carry the same current.
+
+\warn{Do not use the divider on $R_1$ and $R_2$ alone when a load is connected.} Combine $R_2\parallel R_L$ first. Then divide.
+
+\nopagebreak
+\noindent\hfil
+\begin{tikzpicture}[font=\scriptsize]
+\node[src] (vs) at (0,1) {};
+\node[font=\tiny] at (0,1.13) {$+$};
+\node[font=\tiny] at (0,0.85) {$-$};
+\node[left=0.05cm of vs] {$12$ V};
+\node[res] (r1) at (1.5,2) {};
+\node[above=0.05cm of r1] {$R_1=10$ k$\Omega$};
+\node[vres] (r2) at (3,1) {};
+\node[left=0.1cm of r2] {$R_2=10$ k$\Omega$};
+\node[vres] (rl) at (4.3,1) {};
+\node[right=0.1cm of rl] {$R_L=10$ k$\Omega$};
+\draw[wire] (vs.north) -- (0,2) -- (r1.west);
+\draw[wire] (r1.east) -- (4.3,2) -- (rl.north);
+\draw[wire] (3,2) -- (r2.north);
+\draw[wire] (rl.south) -- (4.3,0) -- (0,0) -- (vs.south);
+\draw[wire] (r2.south) -- (3,0);
+\fill[keyHi] (3,2) circle (1.6pt) node[above, text=keyHi] {$v_{out}$};
+\end{tikzpicture}
+
+\wk{16}{$v_{out}$ in the figure, without and with the load}
+\stepbox{1. NO LOAD: DIVIDER}{$v_{out}=\dfrac{10}{10+10}\cdot12=\keyres{6}$ V}
+\stepdown
+\stepbox{2. WITH THE LOAD: COMBINE $R_2\parallel R_L$}{$\dfrac{10\cdot10}{10+10}=\dfrac{100}{20}=5$ k$\Omega$}
+\stepdown
+\stepbox{3. WITH THE LOAD: DIVIDER}{$v_{out}=\dfrac{5}{10+5}\cdot12=\dfrac{5}{15}\cdot12=\keyres{4}$ V}
+\stepdown
+\stepbox{4. READ THE RESULT}{The load pulls $v_{out}$ down from $6$ V to $4$ V.}
+
 % ------------------------------------------------------------ 16
 \filbreak \subsection{16. current division}
 Parallel resistors share the total current $i$:
@@ -1089,6 +1351,42 @@ $$i_1=\frac{R_2}{R_1+R_2}\,i \qquad i_2=\frac{R_1}{R_1+R_2}\,i$$
 \stepbox{3. CURRENT IN THE $6\,\Omega$}{$i_2=\dfrac{3}{9}\cdot6=\keyres{2}$ A}
 \stepdown
 \stepbox{4. CHECK}{KCL: $4+2=6$ \checkmark \quad Same voltage: $4\cdot3=2\cdot6=12$ V \checkmark}
+
+\filbreak \subsubsection{More than two branches: use conductances}
+For $N$ resistors in parallel, the product-over-sum form does not work. Use conductances $G=\frac1R$:
+$$i_k=\frac{G_k}{G_1+G_2+\cdots+G_N}\,i$$
+\keyres{Own $G$ on top.} The largest $G$ (the smallest $R$) gets the largest current.
+
+\wk{16}{$12$ A into $2$, $3$, and $6\,\Omega$ in parallel}
+\stepbox{1. EACH CONDUCTANCE}{$G_1=\dfrac12=0.5$, \quad $G_2=\dfrac13=0.333$, \quad $G_3=\dfrac16=0.167$ S}
+\stepdown
+\stepbox{2. TOTAL}{$0.5+0.333+0.167=1$ S}
+\stepdown
+\stepbox{3. EACH CURRENT}{$i_1=\dfrac{0.5}{1}\cdot12=\keyres{6}$ A, \quad $i_2=\dfrac{0.333}{1}\cdot12=\keyres{4}$ A, \quad $i_3=\dfrac{0.167}{1}\cdot12=\keyres{2}$ A}
+\stepdown
+\stepbox{4. CHECK}{KCL: $6+4+2=12$ \checkmark \quad Same voltage: $6\cdot2=4\cdot3=2\cdot6=12$ V \checkmark}
+
+\wk{16}{(reverse) $10$ A into $R_1=4\,\Omega\parallel R_2$. Find $R_2$ so that $i_2=2$ A}
+\stepbox{1. DIVIDER WITH $R_2$ UNKNOWN}{$i_2=\dfrac{R_1}{R_1+R_2}\,i$ $\Rightarrow$ $2=\dfrac{4}{4+R_2}\cdot10$}
+\stepdown
+\stepbox{2. CLEAR THE FRACTION}{$2(4+R_2)=40$}
+\stepdown
+\stepbox{3. DISTRIBUTE}{$8+2R_2=40$}
+\stepdown
+\stepbox{4. SOLVE}{$2R_2=32$ $\Rightarrow$ $R_2=\keyres{16}\,\Omega$}
+\stepdown
+\stepbox{5. CHECK}{$\dfrac{4}{4+16}\cdot10=\dfrac{4}{20}\cdot10=2$ A \checkmark}
+
+\filbreak \subsubsection{Which divider? --- the decision table}
+{\small
+\begin{tabular}{@{}p{0.44\linewidth}p{0.52\linewidth}@{}}
+\term{You have} & \term{Use} \\\hline
+series resistors and their total $v$ & \keyres{voltage divider}: own $R$ on top \\[2pt]
+two parallel resistors and their total $i$ & \keyres{current divider}: other $R$ on top \\[2pt]
+$N$ parallel resistors and their total $i$ & \keyres{current divider} with $G$: own $G$ on top \\[2pt]
+a load across one series resistor & combine the load first, then the voltage divider \\[2pt]
+the current through a resistor & no divider: Ohm's law, $v=iR$ \\
+\end{tabular}}
 
 % ------------------------------------------------------------ 17
 \filbreak \subsection{17. wye--delta conversion}

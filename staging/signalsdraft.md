@@ -277,6 +277,22 @@ CT impulse $\to$ step & $u(t)=\int_{-\infty}^{t}\delta(\tau)\,d\tau$ \\
 sifting & $\int_{-\infty}^{\infty}x(t)\,\delta(t-t_0)\,dt=x(t_0)$ \\
 DT sifting & $\sum_{n}x[n]\,\delta[n-n_0]=x[n_0]$ \\
 pulse from steps & $u(t-t_1)-u(t-t_2)$ \\
+any DT signal as impulses & $x[n]=\sum_k x[k]\,\delta[n-k]$ \\
+ramp & $r(t)=t\,u(t)$, \; $r[n]=n\,u[n]$ \\
+ramp and step, CT & $\dfrac{dr}{dt}=u(t)$ \st\\
+ramp and step, DT & $r[n]-r[n-1]=u[n-1]$ \\
+graph from ramps & corner: $+(\Delta\text{slope})\,r(t-t_0)$ \\
+\end{tabular}}
+\par\vspace{3pt}
+\needspace{3\baselineskip}\term{11--12. DT systems}\par
+{\small\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}p{0.44\linewidth}p{0.52\linewidth}@{}}
+unit delay $D$ & $x[n]\to x[n-1]$ \\
+first difference & $y[n]=x[n]-x[n-1]$ \\
+3-point moving average & $y[n]=\frac13\big(x[n]+x[n-1]+x[n-2]\big)$ \\
+accumulator & $y[n]=y[n-1]+x[n]$ \\
+bounded input & $\lvert x[n]\rvert\leq B<\infty$ \\
+stable if & $\lvert y[n]\rvert\leq$ a finite number \\
 \end{tabular}}
 
 \filbreak \subsection{system property tests}
@@ -303,13 +319,18 @@ periodic or constant & power $P_\infty$ \hfill (4) \\[1pt]
 a graph $\to$ energy & square each piece, add \hfill (5) \\[1pt]
 $x(t)\to x(at+b)$ & map each breakpoint \hfill (6) \\[1pt]
 $y=x(at+b)\to x$ & $x(t)=y((t-b)/a)$ \hfill (6) \\[1pt]
+two graphs $\to y=A\,x(at+b)$ & match two points, solve \hfill (6) \\[1pt]
 signal $\to$ period & $2\pi/\omega$, or reduce $\hat\omega/2\pi$ \hfill (7) \\[1pt]
 signal $\to$ even, odd, neither & compare $x(-t)$ with $x(t)$ \hfill (8) \\[1pt]
 $Ce^{at}\to$ real signal & Euler, then the real part \hfill (9) \\[1pt]
 integral with $\delta(t-t_0)$ & sift: evaluate at $t_0$ \hfill (10) \\[1pt]
 a pulse graph $\to$ formula & a step up, a step down \hfill (10) \\[1pt]
+DT stems $\to$ impulses & one $x[k]\delta[n-k]$ per stem \hfill (10) \\[1pt]
+graph with corners $\to$ formula & a ramp per corner \hfill (10) \\[1pt]
 blocks $\to$ one equation & substitute block by block \hfill (11) \\[1pt]
-system $\to$ properties & test each one \hfill (12) \\
+equation $\leftrightarrow$ block diagram & one $D$ per shift \hfill (11) \\[1pt]
+system $\to$ properties & test each one \hfill (12) \\[1pt]
+system $\to$ stable? & bound with $B$ \hfill (12) \\
 \end{tabular}}
 \par\vspace{2pt}
 The number in parentheses is the concept section.
@@ -761,6 +782,49 @@ $y(t)=x(at+b)\to x(t)$ & $x(t)=y\big(\frac{t-b}{a}\big)$ \\
 \stepdown
 \stepbox{4. CHECK}{$y\big(\frac{t-1}{2}\big)=x\big(2\cdot\frac{t-1}{2}+1\big)=x(t-1+1)=x(t)$ \checkmark}
 
+\filbreak \subsubsection{Which way? --- find the transformation from $x$ to $y$}
+Some problems give two graphs and ask for $y$ in terms of $x$: \; $y(t)=A\,x(at+b)$.
+\begin{enumerate}
+\item \term{Amplitude}: compare the heights. $A=\frac{\text{height of }y}{\text{height of }x}$. A flipped shape (upside down) gives a negative $A$.
+\item \term{Orientation}: is the shape the same way round, or mirrored? Mirrored means $a<0$.
+\item \term{Two matching points}: pick two breakpoints of $x$ ($t_1$, $t_2$) and the points of $y$ they move to ($\tau_1$, $\tau_2$).
+\item \term{Solve} $a\tau_1+b=t_1$ and $a\tau_2+b=t_2$ for $a$ and $b$. \why{$y$ at $\tau$ is $x$ at $a\tau+b$}
+\item \term{Check} a third point.
+\end{enumerate}
+
+\wk{18}{$x(t)$ is a ramp from $0$ to $1$ on $[0,4]$. $y(t)$ is the same ramp, height $3$, on $[-1,1]$}
+\stepbox{1. AMPLITUDE}{$A=\dfrac{3}{1}=3$}
+\stepdown
+\stepbox{2. ORIENTATION}{Both rise from left to right $\Rightarrow$ not mirrored, $a>0$}
+\stepdown
+\stepbox{3. MATCHING POINTS}{The start $t_1=0$ moves to $\tau_1=-1$. \; The end $t_2=4$ moves to $\tau_2=1$.}
+\stepdown
+\stepbox{4. TWO EQUATIONS}{$a(-1)+b=0$ \quad and \quad $a(1)+b=4$}
+\stepdown
+\stepbox{5. SUBTRACT THE FIRST FROM THE SECOND}{$a-(-a)=4-0$ $\Rightarrow$ $2a=4$ $\Rightarrow$ $a=2$}
+\stepdown
+\stepbox{6. BACK-SUBSTITUTE}{$-2+b=0$ $\Rightarrow$ $b=2$}
+\stepdown
+\stepbox{7. RESULT AND CHECK}{$y(t)=\keyres{3\,x(2t+2)}$. \; Middle: $t=0$ gives $x(2)=\frac12$, so $y=1.5$, half of $3$ \checkmark}
+
+\wk{14}{(mirrored) the same $x$, but $y$ falls from $3$ to $0$ on $[-1,1]$}
+\stepbox{1. MATCHING POINTS}{The start of the ramp ($t_1=0$, value $0$) is now on the right: $\tau_1=1$. \; The end ($t_2=4$) is on the left: $\tau_2=-1$.}
+\stepdown
+\stepbox{2. TWO EQUATIONS}{$a(1)+b=0$ \quad and \quad $a(-1)+b=4$}
+\stepdown
+\stepbox{3. SOLVE}{Subtract: $2a=-4$ $\Rightarrow$ $a=-2$. \; Then $b=2$.}
+\stepdown
+\stepbox{4. RESULT}{$y(t)=\keyres{3\,x(-2t+2)}$ \; \why{$a<0$ because the shape is mirrored}}
+
+\wk{14}{(DT) $x[0]=1$, $x[1]=2$, $x[2]=3$. \; $y[-1]=3$, $y[0]=2$, $y[1]=1$. Find $y$ in terms of $x$}
+\stepbox{1. ORIENTATION}{$x$ rises to the right. $y$ falls to the right $\Rightarrow$ mirrored: $y[n]=x[-n+b]$}
+\stepdown
+\stepbox{2. ONE MATCHING POINT}{$y[-1]=3=x[2]$. \; So $-(-1)+b=2$ $\Rightarrow$ $1+b=2$ $\Rightarrow$ $b=1$}
+\stepdown
+\stepbox{3. RESULT}{$y[n]=\keyres{x[-n+1]}$}
+\stepdown
+\stepbox{4. CHECK THE OTHERS}{$n=0$: $x[1]=2$ \checkmark \quad $n=1$: $x[0]=1$ \checkmark}
+
 % ------------------------------------------------------------ 7
 \filbreak \subsection{7. periodic signals}
 A signal is \term{periodic} if a shift by the period does not change it:
@@ -985,6 +1049,138 @@ $\delta\to u$ (DT) & running sum: $u[n]=\sum_{k=-\infty}^{n}\delta[k]$ \\
 \stepdown
 \stepbox{2. FIRST DIFFERENCE}{$u[n]-u[n-1]=\delta[n]$ and $u[n-3]-u[n-4]=\delta[n-3]$ \\ $x[n]-x[n-1]=\keyres{\delta[n]-\delta[n-3]}$}
 
+\filbreak \subsubsection{Any DT signal as a sum of shifted, weighted impulses}
+Each stem of a DT signal is one impulse: a $\delta$ moved to the stem's position and multiplied by the stem's height.
+$$x[n]=\sum_{k=-\infty}^{\infty}x[k]\,\delta[n-k]$$
+\begin{itemize}
+\item $\delta[n-k]$ is $1$ only at $n=k$. So it puts a stem at position $k$.
+\item $x[k]$ is the \term{weight}: the height of that stem.
+\item At each $n$, every term is $0$ except $k=n$. That term is $x[n]$. This is DT sifting, used the other way.
+\end{itemize}
+\warn{The sign inside $\delta$ is opposite to the position.} A stem at $n=-1$ is $\delta[n+1]$. A stem at $n=3$ is $\delta[n-3]$.
+
+\wk{14}{write $x[-1]=2$, $x[0]=-1$, $x[1]=3$, $x[3]=1$ (others $0$) with impulses}
+\stepbox{1. STEM AT $n=-1$, HEIGHT $2$}{$2\,\delta[n-(-1)]=2\,\delta[n+1]$}
+\stepdown
+\stepbox{2. STEM AT $n=0$, HEIGHT $-1$}{$-1\cdot\delta[n]=-\delta[n]$}
+\stepdown
+\stepbox{3. STEM AT $n=1$, HEIGHT $3$}{$3\,\delta[n-1]$}
+\stepdown
+\stepbox{4. STEM AT $n=3$, HEIGHT $1$}{$\delta[n-3]$ \; \why{$x[2]=0$, so no term for $n=2$}}
+\stepdown
+\stepbox{5. ADD}{$x[n]=\keyres{2\delta[n+1]-\delta[n]+3\delta[n-1]+\delta[n-3]}$}
+
+\wk{12}{(reverse) read the stems of $x[n]=4\delta[n-2]-2\delta[n+3]$}
+\stepbox{1. FIRST TERM}{$\delta[n-2]$ is $1$ at $n=2$. \; Stem: $x[2]=\keyres{4}$}
+\stepdown
+\stepbox{2. SECOND TERM}{$\delta[n+3]$ is $1$ at $n=-3$. \; Stem: $x[-3]=\keyres{-2}$}
+\stepdown
+\stepbox{3. CHECK AT $n=2$}{$4\delta[0]-2\delta[5]=4(1)-2(0)=4$ \checkmark}
+
+\wk{10}{a pulse as impulses: $u[n]-u[n-3]$}
+\stepbox{1. STEMS}{$1$ at $n=0,1,2$ (section 10 table above)}
+\stepdown
+\stepbox{2. ONE IMPULSE PER STEM}{$\keyres{\delta[n]+\delta[n-1]+\delta[n-2]}$}
+
+\filbreak \subsubsection{The ramp signal}
+The \term{unit ramp} is $0$ before time $0$, then rises with slope $1$:
+$$r(t)=t\,u(t)=\begin{cases}t & t\geq0\\0 & t<0\end{cases} \qquad r[n]=n\,u[n]=\begin{cases}n & n\geq0\\0 & n<0\end{cases}$$
+
+\nopagebreak
+\noindent
+\begin{tikzpicture}
+\begin{axis}[sigax, name=r1,
+xmin=-2.6, xmax=4.4, ymin=-0.4, ymax=4.4,
+xtick={-2,-1,1,2,3,4}, ytick={1,2,3,4},
+xlabel={$t$}, ylabel={$r(t)$},
+width=4.9cm, height=3.4cm]
+\addplot[uHi, thick] coordinates {(-2.4,0)(0,0)(4,4)};
+\end{axis}
+\begin{axis}[sigax, at={(r1.east)}, anchor=west, xshift=0.5cm,
+xmin=-2.6, xmax=4.4, ymin=-0.4, ymax=4.4,
+xtick={-2,-1,1,2,3,4}, ytick={1,2,3,4},
+xlabel={$n$}, ylabel={$r[n]$},
+width=4.9cm, height=3.4cm]
+\addplot[keyHi, ycomb, thick, mark=*, mark size=1.2pt] coordinates {(-2,0)(-1,0)(0,0)(1,1)(2,2)(3,3)(4,4)};
+\end{axis}
+\end{tikzpicture}
+
+\term{Other ways to write the ramp}:
+{\small\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}p{0.40\linewidth}p{0.56\linewidth}@{}}
+\term{Form} & \term{Formula} \\\hline
+CT: integral of the step & $r(t)=\int_{-\infty}^{t}u(\tau)\,d\tau$ \\
+CT: derivative of the ramp & $\dfrac{dr}{dt}=u(t)$ \st\\
+DT: running sum of the step & $r[n]=\sum_{k=-\infty}^{n-1}u[k]$ \\
+DT: first difference & $r[n]-r[n-1]=u[n-1]$ \\
+DT: sum of shifted steps & $r[n]=\sum_{k=1}^{\infty}u[n-k]$ \\
+DT: sum of impulses & $r[n]=\sum_{k=0}^{\infty}k\,\delta[n-k]$ \\
+\end{tabular}}
+\par\vspace{2pt}
+\keyres{The chain}: impulse $\xrightarrow{\text{accumulate}}$ step $\xrightarrow{\text{accumulate}}$ ramp. Going back, differentiate (CT) or take the first difference (DT).
+
+\term{Shifted and scaled}: $A\,r(t-t_0)$ is $0$ before $t_0$, then rises with slope $A$.
+
+\term{Graphs from ramps and steps}: go left to right. At each \keyres{corner}, add a ramp whose weight is the \emph{change in slope}. At each \keyres{jump}, add a step whose weight is the \emph{size of the jump}.
+
+\warn{The DT sum stops at $n-1$, not $n$.} $r[1]=1$: only $u[0]$ is added. With $n$ as the top, you get $r[n+1]$.
+
+\wk{14}{check $r[n]=\sum_{k=-\infty}^{n-1}u[k]$ at $n=0$, $1$, $3$}
+\stepbox{1. $n=0$}{Sum of $u[k]$ for $k\leq-1$: \; all $0$ $\Rightarrow$ $0=r[0]$ \checkmark}
+\stepdown
+\stepbox{2. $n=1$}{$k\leq0$: only $u[0]=1$ $\Rightarrow$ $1=r[1]$ \checkmark}
+\stepdown
+\stepbox{3. $n=3$}{$k\leq2$: $u[0]+u[1]+u[2]=3=r[3]$ \checkmark}
+
+\wk{14}{first difference of the ramp}
+\stepbox{1. $n=0$}{$r[0]-r[-1]=0-0=0$}
+\stepdown
+\stepbox{2. $n=1$}{$r[1]-r[0]=1-0=1$}
+\stepdown
+\stepbox{3. $n=2$}{$r[2]-r[1]=2-1=1$}
+\stepdown
+\stepbox{4. PATTERN}{$0$ up to $n=0$, then $1$ from $n=1$ on $\Rightarrow$ $\keyres{u[n-1]}$}
+
+\wk{16}{write a rise from $0$ to $2$ on $[0,2]$, then flat at $2$, with ramps}
+\stepbox{1. CORNER AT $t=0$}{Slope changes $0\to1$: change $+1$ $\Rightarrow$ $+r(t)$}
+\stepdown
+\stepbox{2. CORNER AT $t=2$}{Slope changes $1\to0$: change $-1$ $\Rightarrow$ $-r(t-2)$}
+\stepdown
+\stepbox{3. ADD}{$x(t)=\keyres{r(t)-r(t-2)}$}
+\stepdown
+\stepbox{4. CHECK $t=1$}{$r(1)-r(-1)=1-0=1$ \checkmark}
+\stepdown
+\stepbox{5. CHECK $t=5$}{$r(5)-r(3)=5-3=2$ \checkmark \; \why{flat at $2$}}
+
+\wk{16}{a triangle: $0$ at $t=0$, peak $1$ at $t=1$, back to $0$ at $t=2$}
+\stepbox{1. CORNER AT $t=0$}{Slope $0\to1$: change $+1$ $\Rightarrow$ $+r(t)$}
+\stepdown
+\stepbox{2. CORNER AT $t=1$}{Slope $1\to-1$: change $-2$ $\Rightarrow$ $-2r(t-1)$}
+\stepdown
+\stepbox{3. CORNER AT $t=2$}{Slope $-1\to0$: change $+1$ $\Rightarrow$ $+r(t-2)$}
+\stepdown
+\stepbox{4. ADD}{$x(t)=\keyres{r(t)-2r(t-1)+r(t-2)}$}
+\stepdown
+\stepbox{5. CHECK $t=3$}{$3-2(2)+1=0$ \checkmark \; \why{the slopes add to $1-2+1=0$}}
+
+\wk{14}{(reverse) sketch $x(t)=2r(t-1)-2r(t-3)$}
+\stepbox{1. BEFORE $t=1$}{Both ramps are $0$ $\Rightarrow$ $x=0$}
+\stepdown
+\stepbox{2. FROM $t=1$ TO $t=3$}{Only the first ramp: slope $2$. \; At $t=3$: $2(3-1)=4$}
+\stepdown
+\stepbox{3. AFTER $t=3$}{Slope $2-2=0$: flat at $\keyres{4}$}
+\stepdown
+\stepbox{4. CHECK $t=5$}{$2(4)-2(2)=8-4=4$ \checkmark}
+
+\wk{12}{a step plus a ramp: a jump of $3$ at $t=0$, then slope $-1$ until it reaches $0$}
+\stepbox{1. JUMP AT $t=0$}{$+3u(t)$}
+\stepdown
+\stepbox{2. CORNER AT $t=0$}{Slope $0\to-1$ $\Rightarrow$ $-r(t)$}
+\stepdown
+\stepbox{3. CORNER WHERE IT REACHES $0$}{$3-t=0$ at $t=3$. \; Slope $-1\to0$ $\Rightarrow$ $+r(t-3)$}
+\stepdown
+\stepbox{4. ADD}{$x(t)=\keyres{3u(t)-r(t)+r(t-3)}$}
+
 % ------------------------------------------------------------ 11
 \filbreak \subsection{11. systems and interconnections}
 A \term{system} changes an input signal into an output signal: $x(t)\to y(t)$ or $x[n]\to y[n]$.
@@ -1045,6 +1241,139 @@ A \term{system} changes an input signal into an output signal: $x(t)\to y(t)$ or
 \stepbox{4. $n=3$}{$y[3]=0+0.5(0.25)=0.125$}
 \stepdown
 \stepbox{5. PATTERN}{$y[n]=\keyres{(0.5)^n\,u[n]}$ \; \why{each step multiplies by $0.5$}}
+
+\filbreak \subsubsection{DT systems as difference equations}
+A DT system is often a \term{difference equation}: $y[n]$ is written with present and past inputs, and sometimes past outputs.
+{\small\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}p{0.30\linewidth}p{0.36\linewidth}p{0.28\linewidth}@{}}
+\term{System} & \term{Difference equation} & \term{What it does} \\\hline
+unit delay & $y[n]=x[n-1]$ & shifts right $1$ \\
+gain & $y[n]=a\,x[n]$ & scales \\
+first difference & $y[n]=x[n]-x[n-1]$ & change since the last sample \\
+3-point moving average & $y[n]=\dfrac{x[n]+x[n-1]+x[n-2]}{3}$ & smooths \st\\
+accumulator & $y[n]=\sum_{k=-\infty}^{n}x[k]$ & running total \\
+accumulator, recursive & $y[n]=y[n-1]+x[n]$ & same running total \\
+bank balance & $y[n]=1.01\,y[n-1]+x[n]$ & $1\%$ interest plus deposit \\
+\end{tabular}}
+\par\vspace{2pt}
+\term{Nonrecursive} (FIR): $y[n]$ uses inputs only. \term{Recursive} (IIR): $y[n]$ also uses past outputs $y[n-1]$, \ldots, and needs a start value such as $y[-1]=0$.
+
+\term{Block diagram parts}:
+{\small
+\begin{tabular}{@{}p{0.30\linewidth}p{0.66\linewidth}@{}}
+\term{Part} & \term{What it does} \\\hline
+adder (circle, $+$) & output $=$ sum of its inputs \\[1pt]
+gain (box with $a$) & output $=a\cdot$input \\[1pt]
+unit delay (box $D$) & input $x[n]$, output $x[n-1]$ \\[1pt]
+branch point (dot) & copies a signal to two places \\
+\end{tabular}}
+
+\nopagebreak
+\noindent\hfil
+\begin{tikzpicture}[font=\scriptsize]
+\node (xin) at (0,0) {$x[n]$};
+\node[blk] (d1) at (2.1,0) {$D$};
+\node[blk] (d2) at (4.0,0) {$D$};
+\fill[white!80] (1.1,0) circle (1.3pt); \fill[white!80] (3.05,0) circle (1.3pt);
+\draw[sig] (xin) -- (d1); \draw[sig] (d1) -- (d2);
+\draw[white!80] (d2.east) -- (5.0,0);
+\node[sumnode] (s) at (3.05,-1.1) {$+$};
+\draw[sig] (1.1,0) |- (s.west);
+\draw[sig] (3.05,0) -- (s.north);
+\draw[sig] (5.0,0) |- (s.east);
+\node[above, text=white!70] at (3.05,0.25) {$x[n-1]$};
+\node[above, text=white!70] at (5.0,0.05) {$x[n-2]$};
+\node[blk] (g) at (3.05,-2.1) {$\frac13$};
+\draw[sig] (s) -- (g);
+\draw[sig] (g) -- (4.6,-2.1) node[right] {$y[n]$};
+\node[text=termHi] at (0.6,-2.1) {moving average};
+\end{tikzpicture}
+
+\nopagebreak
+\noindent\hfil
+\begin{tikzpicture}[font=\scriptsize]
+\node (x) at (0,0) {$x[n]$};
+\node[sumnode] (s) at (1.3,0) {$+$};
+\fill[white!80] (2.8,0) circle (1.3pt);
+\node (y) at (4,0) {$y[n]$};
+\node[blk] (d) at (2.05,-0.95) {$D$};
+\draw[sig] (x) -- (s); \draw[sig] (s) -- (y);
+\draw[sig] (2.8,0) |- (d.east);
+\draw[sig] (d.west) -| (s.south);
+\node[below, text=white!70] at (1.3,-1.25) {$y[n-1]$};
+\node[text=termHi] at (5.6,0) {accumulator};
+\end{tikzpicture}
+
+\filbreak \subsubsection{Which way? --- equation or block diagram}
+{\small
+\begin{tabular}{@{}p{0.34\linewidth}p{0.62\linewidth}@{}}
+\term{Given} $\to$ \term{find} & \term{Do this} \\\hline
+diagram $\to$ equation & name the signal on each wire; write the adder's output as the sum of its inputs \\[2pt]
+equation $\to$ diagram & one $D$ per shift ($n-1$, $n-2$, \ldots); one gain per coefficient; one adder for the sum \\[2pt]
+equation $\to$ output values & put in $n=0,1,2,\ldots$ in order, one step at a time \\
+\end{tabular}}
+\par\vspace{2pt}
+\warn{A delay on the output side means feedback.} If a $D$ takes $y[n]$ and feeds back into the adder, the equation has $y[n-1]$: it is recursive.
+
+\wk{16}{(diagram to equation) read the moving-average diagram}
+\stepbox{1. NAME THE WIRES}{After the first $D$: $x[n-1]$. \; After the second $D$: $x[n-2]$.}
+\stepdown
+\stepbox{2. ADDER OUTPUT}{$x[n]+x[n-1]+x[n-2]$}
+\stepdown
+\stepbox{3. GAIN}{$y[n]=\keyres{\frac13\big(x[n]+x[n-1]+x[n-2]\big)}$}
+
+\wk{16}{(equation to diagram) $y[n]=2x[n]-0.5\,y[n-1]$}
+\stepbox{1. COUNT THE SHIFTS}{One $y[n-1]$ $\Rightarrow$ one $D$, on the output side (feedback)}
+\stepdown
+\stepbox{2. COUNT THE COEFFICIENTS}{Gain $2$ on the input. \; Gain $-0.5$ after the $D$.}
+\stepdown
+\stepbox{3. ONE ADDER}{Its inputs: $2x[n]$ and $-0.5\,y[n-1]$. Its output: $y[n]$.}
+\stepdown
+\stepbox{4. DRAW}{$x\to[2]\to(+)\to y$. \; From $y$: a dot $\to[D]\to[-0.5]\to$ back into $(+)$.}
+
+\nopagebreak
+\noindent\hfil
+\begin{tikzpicture}[font=\scriptsize]
+\node (x) at (0,0) {$x[n]$};
+\node[blk] (g1) at (1.2,0) {$2$};
+\node[sumnode] (s) at (2.4,0) {$+$};
+\fill[white!80] (3.9,0) circle (1.3pt);
+\node (y) at (5.0,0) {$y[n]$};
+\node[blk] (d) at (3.9,-1.0) {$D$};
+\node[blk] (g2) at (2.4,-1.0) {$-0.5$};
+\draw[sig] (x) -- (g1); \draw[sig] (g1) -- (s); \draw[sig] (s) -- (y);
+\draw[sig] (3.9,0) -- (d.north);
+\draw[sig] (d.west) -- (g2.east);
+\draw[sig] (g2.north) -- (s.south);
+\node[below, text=white!70] at (3.9,-1.3) {$y[n-1]$};
+\end{tikzpicture}
+
+\wk{20}{run the moving average with $x[0]=3$, $x[1]=6$, $x[2]=9$, others $0$}
+\stepbox{1. $n=0$}{$y[0]=\frac13(x[0]+x[-1]+x[-2])=\frac13(3+0+0)=\keyres{1}$}
+\stepdown
+\stepbox{2. $n=1$}{$y[1]=\frac13(6+3+0)=\frac93=\keyres{3}$}
+\stepdown
+\stepbox{3. $n=2$}{$y[2]=\frac13(9+6+3)=\frac{18}{3}=\keyres{6}$}
+\stepdown
+\stepbox{4. $n=3$}{$y[3]=\frac13(0+9+6)=\frac{15}{3}=\keyres{5}$}
+\stepdown
+\stepbox{5. $n=4$}{$y[4]=\frac13(0+0+9)=\keyres{3}$}
+\stepdown
+\stepbox{6. $n=5$ AND LATER}{All three inputs are $0$ $\Rightarrow$ $y=0$}
+
+\wk{16}{run the accumulator $y[n]=y[n-1]+x[n]$ with $x[n]=u[n]$, $y[-1]=0$}
+\stepbox{1. $n=0$}{$y[0]=y[-1]+u[0]=0+1=1$}
+\stepdown
+\stepbox{2. $n=1$}{$y[1]=y[0]+u[1]=1+1=2$}
+\stepdown
+\stepbox{3. $n=2$}{$y[2]=2+1=3$}
+\stepdown
+\stepbox{4. PATTERN}{$y[n]=(n+1)\,u[n]=\keyres{r[n+1]}$ \; \why{accumulating a step gives a ramp}}
+
+\wk{12}{(both forms agree) accumulator as a sum, $x[n]=u[n]$, at $n=2$}
+\stepbox{1. SUM FORM}{$y[2]=\sum_{k=-\infty}^{2}u[k]=u[0]+u[1]+u[2]$}
+\stepdown
+\stepbox{2. ADD}{$1+1+1=3$, the same as the recursive form \checkmark}
 
 % ------------------------------------------------------------ 12
 \filbreak \subsection{12. system properties}
@@ -1115,6 +1444,85 @@ A \term{system} changes an input signal into an output signal: $x(t)\to y(t)$ or
 \stepbox{2. COMBINATION OF THE OUTPUTS}{$ay_1+by_2=a\,n\,x_1[n]+b\,n\,x_2[n]$}
 \stepdown
 \stepbox{3. COMPARE}{The same $\Rightarrow$ \keyres{linear} \; \why{linear, but time varying: the properties are separate}}
+
+\filbreak \subsubsection{Stability with a bound $B$ --- the procedure}
+\term{BIBO stable}: each \keyres{bounded} input gives a \keyres{bounded} output. Bounded means there is a finite number $B$ with
+$$\lvert x[n]\rvert\leq B<\infty \quad\text{for every } n$$
+\term{To show stable}:
+\begin{enumerate}
+\item Assume $\lvert x[n]\rvert\leq B$ for every $n$. Then each shifted input is also $\leq B$: $\lvert x[n-1]\rvert\leq B$.
+\item Take the absolute value of the equation.
+\item Use $\lvert a+b\rvert\leq\lvert a\rvert+\lvert b\rvert$ and $\lvert c\,x\rvert=\lvert c\rvert\,\lvert x\rvert$.
+\item Replace each $\lvert x[\cdot]\rvert$ with $B$.
+\item If the result is a \keyres{finite number} (no $n$ left, no infinite sum), the system is stable.
+\end{enumerate}
+\term{To show unstable}: find \keyres{one} bounded input (for example $x[n]=1$ or $u[n]$) whose output grows without limit.
+
+\warn{An $n$ that multiplies $x$ means the bound fails.} $\lvert n\,x[n]\rvert\leq\lvert n\rvert B$ grows with $n$.
+
+\warn{A sum with no end can fail.} The accumulator adds $B$ again at each step.
+
+\wk{14}{is $y[n]=2x[n]+x[n-1]$ stable?}
+\stepbox{1. ASSUME A BOUND}{$\lvert x[n]\rvert\leq B$ for every $n$, so $\lvert x[n-1]\rvert\leq B$ too}
+\stepdown
+\stepbox{2. ABSOLUTE VALUE}{$\lvert y[n]\rvert=\lvert 2x[n]+x[n-1]\rvert$}
+\stepdown
+\stepbox{3. SPLIT THE SUM}{$\leq2\lvert x[n]\rvert+\lvert x[n-1]\rvert$}
+\stepdown
+\stepbox{4. PUT IN $B$}{$\leq2B+B=3B$}
+\stepdown
+\stepbox{5. CONCLUDE}{$3B$ is finite $\Rightarrow$ \keyres{stable}}
+
+\wk{12}{is the 3-point moving average stable?}
+\stepbox{1. ABSOLUTE VALUE AND SPLIT}{$\lvert y[n]\rvert\leq\frac13\big(\lvert x[n]\rvert+\lvert x[n-1]\rvert+\lvert x[n-2]\rvert\big)$}
+\stepdown
+\stepbox{2. PUT IN $B$}{$\leq\frac13(B+B+B)=B$ $\Rightarrow$ \keyres{stable}}
+
+\wk{12}{is $y[n]=n\,x[n]$ stable?}
+\stepbox{1. TRY A BOUNDED INPUT}{$x[n]=1$ for all $n$. \; $B=1$}
+\stepdown
+\stepbox{2. OUTPUT}{$y[n]=n\cdot1=n$}
+\stepdown
+\stepbox{3. CONCLUDE}{$n$ grows without limit $\Rightarrow$ \warn{not stable} \; \why{one counterexample is enough}}
+
+\wk{12}{is $y[n]=e^{x[n]}$ stable?}
+\stepbox{1. ASSUME A BOUND}{$-B\leq x[n]\leq B$}
+\stepdown
+\stepbox{2. $e^{(\cdot)}$ INCREASES}{$e^{-B}\leq e^{x[n]}\leq e^{B}$}
+\stepdown
+\stepbox{3. CONCLUDE}{$\lvert y\rvert\leq e^{B}$, finite $\Rightarrow$ \keyres{stable}}
+
+\wk{18}{(recursive) is $y[n]=0.5\,y[n-1]+x[n]$ stable, with $y[-1]=0$?}
+\stepbox{1. UNROLL THE RECURSION}{$y[0]=x[0]$. \; $y[1]=x[1]+0.5x[0]$. \; $y[2]=x[2]+0.5x[1]+0.25x[0]$.}
+\stepdown
+\stepbox{2. PATTERN}{$y[n]=\sum_{k=0}^{n}(0.5)^k\,x[n-k]$}
+\stepdown
+\stepbox{3. ABSOLUTE VALUE AND $B$}{$\lvert y[n]\rvert\leq\sum_{k=0}^{n}(0.5)^kB\leq B\sum_{k=0}^{\infty}(0.5)^k$}
+\stepdown
+\stepbox{4. GEOMETRIC SUM}{$\sum_{k=0}^{\infty}(0.5)^k=\dfrac{1}{1-0.5}=2$}
+\stepdown
+\stepbox{5. CONCLUDE}{$\lvert y\rvert\leq2B$ $\Rightarrow$ \keyres{stable} \why{with $1.01$ in place of $0.5$, the sum has no limit: unstable}}
+
+\filbreak \subsubsection{Properties of common DT systems}
+{\small\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}l|c|c|c|c|c@{}}
+\term{System} & \term{Mless} & \term{Causal} & \term{Linear} & \term{TI} & \term{Stable} \\\hline
+$x[n-1]$ & \warn{no} & \keyres{yes} & \keyres{yes} & \keyres{yes} & \keyres{yes} \\
+$x[n]-x[n-1]$ & \warn{no} & \keyres{yes} & \keyres{yes} & \keyres{yes} & \keyres{yes} \\
+moving average & \warn{no} & \keyres{yes} & \keyres{yes} & \keyres{yes} & \keyres{yes} \\
+accumulator & \warn{no} & \keyres{yes} & \keyres{yes} & \keyres{yes} & \warn{no} \\
+$n\,x[n]$ & \keyres{yes} & \keyres{yes} & \keyres{yes} & \warn{no} & \warn{no} \\
+$x[n]^2$ & \keyres{yes} & \keyres{yes} & \warn{no} & \keyres{yes} & \keyres{yes} \\
+$2x[n]+3$ & \keyres{yes} & \keyres{yes} & \warn{no} & \keyres{yes} & \keyres{yes} \\
+$x[n+1]$ & \warn{no} & \warn{no} & \keyres{yes} & \keyres{yes} & \keyres{yes} \\
+$x[2n]$ & \warn{no} & \warn{no} & \keyres{yes} & \warn{no} & \keyres{yes} \\
+$x[-n]$ & \warn{no} & \warn{no} & \keyres{yes} & \warn{no} & \keyres{yes} \\
+$0.5\,y[n-1]+x[n]$ & \warn{no} & \keyres{yes} & \keyres{yes} & \keyres{yes} & \keyres{yes} \\
+\end{tabular}}
+\par\vspace{2pt}
+Mless $=$ memoryless. \; TI $=$ time invariant. \; The recursive system starts at rest ($y[-1]=0$).
+
+\warn{The properties are separate.} A system can be linear but not time invariant ($n\,x[n]$), or stable but not causal ($x[n+1]$).
 
 \end{multicols}
 
