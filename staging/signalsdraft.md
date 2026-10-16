@@ -35,6 +35,8 @@ header-includes: |
   \newcommand{\ubox}[1]{\fcolorbox{uHi}{black}{\textcolor{uHi}{$#1$}}}
   \newcommand{\dubox}[1]{\fcolorbox{duHi}{black}{\textcolor{duHi}{$#1$}}}
   \newcommand{\stepbox}[2]{{\setlength{\fboxsep}{2.5pt}\noindent\fcolorbox{termHi}{black}{\begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{\scriptsize\textcolor{termHi}{\textbf{#1}}}\\[1pt]\small #2\end{minipage}}\par}}
+  \newcommand{\idea}[1]{{\setlength{\fboxsep}{3pt}\noindent\fcolorbox{titleHi}{black}{\begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{\scriptsize\textcolor{titleHi}{\textbf{THE IDEA}}}\\[1pt]\small #1\end{minipage}}\par\vspace{2pt}}}
+  \newcommand{\trap}[1]{\par\noindent\warn{\textbf{Trap:}} #1\par}
   \newcommand{\stepdown}{\par\vspace{-1pt}{\centering\textcolor{termHi}{$\downarrow$}\par}\nopagebreak\vspace{-1pt}\nopagebreak}
   \renewcommand{\filbreak}{\needspace{4\baselineskip}}
   \newcommand{\keyres}[1]{\textcolor{keyHi}{#1}}
@@ -128,6 +130,39 @@ sig/.style={-{Latex[length=1.6mm]}, white!80}}
 \begin{multicols}{2}
 \raggedcolumns
 
+\filbreak \subsection{the big picture}
+Everything in this course is one of two things:
+\begin{itemize}
+\item a \term{signal}: a quantity that changes over time, like a voltage or a sound;
+\item a \term{system}: a machine that takes a signal in and puts a signal out.
+\end{itemize}
+The topics build on each other in this order:
+\begin{enumerate}
+\item \term{How big is a signal?} Energy and power (4--5).
+\item \term{Building blocks.} The button $\delta$, the switch $u$, and the ramp $r$ (10).
+\item \term{Machines.} Systems, block diagrams, difference equations (11).
+\item \term{Describing machines.} Memory, causality, stability, linearity, time invariance (12).
+\end{enumerate}
+\keyres{The link from 1 to 4}: BIBO stability asks if a \emph{bounded} input gives a \emph{bounded} output. That is a question about signal size.
+
+\filbreak \subsection{plain-English glossary}
+{\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}p{0.22\linewidth}p{0.74\linewidth}@{}}
+\term{Symbol} & \term{Say it as} \\\hline
+$\delta[n]$, $\delta(t)$ & \term{the button}: pressed once at time $0$, then released \\
+$u[n]$, $u(t)$ & \term{the switch}: flipped on at time $0$ and left on \\
+$r[n]$, $r(t)$ & \term{the ramp}: the running total of the switch, $0,1,2,3,\ldots$ \\
+$t$ & the time variable; it sweeps through every time, and is gone after you integrate \\
+$T$ & the half-width of a window $[-T,T]$; it is the thing that goes to $\infty$ \\
+$t_0$, $n_0$ & ``t-naught'': one fixed time, such as $3$ \\
+$N$ & DT window half-width ($2N+1$ samples), or a DT period \\
+$\varepsilon$ & ``epsilon'': a tiny number that we shrink toward $0$ \\
+$\int\ldots dt$ & add up area as $t$ sweeps (CT) \\
+$\sum$ & add up separate terms (DT); the DT twin of $\int$ \\
+$dt$ & an infinitely thin slice of time. \warn{Not $\Delta t$.} \\
+$B$ & a ceiling: the input never goes above $B$ in size \\
+\end{tabular}}
+
 \filbreak \subsection{notation: CT and DT side by side}
 {\small
 \begin{tabular}{@{}l|l|l@{}}
@@ -138,8 +173,8 @@ period & $T$ (seconds) & $N$ (samples, an integer) \\
 frequency & $\omega$ (rad/s), $f$ (Hz) & $\hat\omega$ (rad/sample) \\
 energy, power & integral $\int$ & sum $\sum$ \\
 rate of change & derivative $\frac{d}{dt}$ & first difference $x[n]-x[n-1]$ \\
-accumulate & integral $\int_{-\infty}^{t}$ & running sum $\sum_{k=-\infty}^{n}$ \\
-impulse & $\delta(t)$, area $1$ & $\delta[n]$, height $1$ \\
+running total & integral $\int_{-\infty}^{t}$ & running sum $\sum_{k=-\infty}^{n}$ \\
+button & $\delta(t)$, \keyres{area} $1$ & $\delta[n]$, \keyres{height} $1$ \\
 \end{tabular}}
 
 \filbreak \subsection{sinusoid quantities}
@@ -163,6 +198,8 @@ $\theta$ & $0$ & $\dfrac{\pi}{6}$ & $\dfrac{\pi}{4}$ & $\dfrac{\pi}{3}$ & $\dfra
 $\cos\theta$ & $1$ & $\dfrac{\sqrt3}{2}$ & $\dfrac{\sqrt2}{2}$ & $\dfrac12$ & $0$ & $-1$ \\
 $\sin\theta$ & $0$ & $\dfrac12$ & $\dfrac{\sqrt2}{2}$ & $\dfrac{\sqrt3}{2}$ & $1$ & $0$ \\
 \end{tabular}}
+\par\vspace{1pt}
+\warn{$\sin 0=0$ and $\cos 0=1$.} Do not swap them.
 \par\vspace{3pt}
 {\small\renewcommand{\arraystretch}{1.25}
 \begin{tabular}{@{}p{0.44\linewidth}p{0.52\linewidth}@{}}
@@ -179,7 +216,7 @@ size of $e^{j\theta}$ & $1$ \\
 whole turns & $e^{j2\pi k}=1$ for each integer $k$ \\
 \end{tabular}}
 
-\filbreak \subsection{sums and integrals}
+\filbreak \subsection{sums, integrals, limits}
 {\small\renewcommand{\arraystretch}{1.25}
 \begin{tabular}{@{}p{0.44\linewidth}p{0.52\linewidth}@{}}
 \term{Item} & \term{Result} \\\hline
@@ -190,6 +227,9 @@ $\int t^n\,dt$ & $\dfrac{t^{n+1}}{n+1}$ \st\\
 $\int e^{at}\,dt$ & $\dfrac{e^{at}}{a}$ \st\\
 $\int_0^\infty e^{-at}\,dt$, \; $a>0$ & $\dfrac{1}{a}$ \st\\
 definite integral & $F(\text{top})-F(\text{bottom})$ \\
+fixed number over a growing $T$ & $\lim\limits_{T\to\infty}\dfrac{c}{T}=0$ \st\\
+a growing $T$ alone & $\lim\limits_{T\to\infty}cT=\infty$ \; ($c>0$) \st\\
+$T$ cancels & $\dfrac{cT}{2T}=\dfrac{c}{2}$, a constant \st\\
 \end{tabular}}
 
 \filbreak \needspace{10\baselineskip}\subsection{formula sheet}
@@ -217,10 +257,10 @@ aliases & $\hat\omega+2\pi k$, \; $f+k f_s$ \\
 \needspace{3\baselineskip}\term{4--5. Energy and power}\par
 {\small\renewcommand{\arraystretch}{1.25}
 \begin{tabular}{@{}p{0.44\linewidth}p{0.52\linewidth}@{}}
-CT energy & $E_\infty=\int_{-\infty}^{\infty}\lvert x(t)\rvert^2\,dt$ \\
-DT energy & $E_\infty=\sum_{n=-\infty}^{\infty}\lvert x[n]\rvert^2$ \\
-CT power & $P_\infty=\lim\limits_{T\to\infty}\dfrac{1}{2T}\int_{-T}^{T}\lvert x(t)\rvert^2\,dt$ \st\\
-DT power & $P_\infty=\lim\limits_{N\to\infty}\dfrac{1}{2N+1}\sum_{n=-N}^{N}\lvert x[n]\rvert^2$ \st\\
+CT energy (total) & $E_\infty=\int_{-\infty}^{\infty}\lvert x(t)\rvert^2\,dt$ \\
+DT energy (total) & $E_\infty=\sum_{n=-\infty}^{\infty}\lvert x[n]\rvert^2$ \\
+CT power (average) & $P_\infty=\lim\limits_{T\to\infty}\dfrac{1}{2T}\int_{-T}^{T}\lvert x(t)\rvert^2\,dt$ \st\\
+DT power (average) & $P_\infty=\lim\limits_{N\to\infty}\dfrac{1}{2N+1}\sum_{n=-N}^{N}\lvert x[n]\rvert^2$ \st\\
 periodic CT power & $P=\dfrac{1}{T}\int_{\text{one period}}\lvert x(t)\rvert^2\,dt$ \st\\
 periodic DT power & $P=\dfrac{1}{N}\sum_{\text{one period}}\lvert x[n]\rvert^2$ \st\\
 sinusoid power & $P=\dfrac{A^2}{2}$ \st\\
@@ -234,7 +274,7 @@ DT stem of height $h$ & $h^2$ \\
 \needspace{3\baselineskip}\term{6. Transformations}\par
 {\small\renewcommand{\arraystretch}{1.25}
 \begin{tabular}{@{}p{0.44\linewidth}p{0.52\linewidth}@{}}
-shift & $x(t-t_0)$: right if $t_0>0$ \\
+shift & $x(t-t_0)$: right (delay) if $t_0>0$ \\
 reversal & $x(-t)$: mirror about $t=0$ \\
 scaling & $x(at)$: compress if $\lvert a\rvert>1$ \\
 point map for $x(at+b)$ & $t_{\text{new}}=\dfrac{t_{\text{old}}-b}{a}$ \st\\
@@ -267,20 +307,22 @@ real part & $\lvert C\rvert e^{\sigma t}\cos(\omega t+\phi)$, \; $\phi=\angle C$
 DT form & $x[n]=C\alpha^n$ \\
 \end{tabular}}
 \par\vspace{3pt}
-\needspace{3\baselineskip}\term{10. Impulse and step}\par
+\needspace{3\baselineskip}\term{10. Button, switch, ramp}\par
 {\small\renewcommand{\arraystretch}{1.25}
 \begin{tabular}{@{}p{0.44\linewidth}p{0.52\linewidth}@{}}
-DT step $\to$ impulse & $\delta[n]=u[n]-u[n-1]$ \\
-DT impulse $\to$ step & $u[n]=\sum_{k=-\infty}^{n}\delta[k]$ \\
-CT step $\to$ impulse & $\delta(t)=\dfrac{du(t)}{dt}$ \st\\
-CT impulse $\to$ step & $u(t)=\int_{-\infty}^{t}\delta(\tau)\,d\tau$ \\
-sifting & $\int_{-\infty}^{\infty}x(t)\,\delta(t-t_0)\,dt=x(t_0)$ \\
+DT switch $\to$ button & $\delta[n]=u[n]-u[n-1]$ \\
+DT button $\to$ switch & $u[n]=\sum_{k=-\infty}^{n}\delta[k]$ \\
+CT switch $\to$ button & $\delta(t)=\dfrac{du(t)}{dt}$ \st\\
+CT button $\to$ switch & $u(t)=\int_{-\infty}^{t}\delta(\tau)\,d\tau$ \\
+area of the CT button & $\int_{-\infty}^{\infty}\delta(t)\,dt=1$ \\
+sifting (the flash) & $\int_{-\infty}^{\infty}x(t)\,\delta(t-t_0)\,dt=x(t_0)$ \\
 DT sifting & $\sum_{n}x[n]\,\delta[n-n_0]=x[n_0]$ \\
-pulse from steps & $u(t-t_1)-u(t-t_2)$ \\
-any DT signal as impulses & $x[n]=\sum_k x[k]\,\delta[n-k]$ \\
+CT pulse from switches & $u(t-t_1)-u(t-t_2)$: on for $t_1\leq t<t_2$ \\
+DT pulse from switches & $u[n-a]-u[n-b]$: on for $a\leq n\leq b-1$ \\
+any DT signal as buttons & $x[n]=\sum_k x[k]\,\delta[n-k]$ \\
 ramp & $r(t)=t\,u(t)$, \; $r[n]=n\,u[n]$ \\
-ramp and step, CT & $\dfrac{dr}{dt}=u(t)$ \st\\
-ramp and step, DT & $r[n]-r[n-1]=u[n-1]$ \\
+ramp and switch, CT & $\dfrac{dr}{dt}=u(t)$ \st\\
+ramp and switch, DT & $r[n]-r[n-1]=u[n-1]$ \\
 graph from ramps & corner: $+(\Delta\text{slope})\,r(t-t_0)$ \\
 \end{tabular}}
 \par\vspace{3pt}
@@ -297,14 +339,14 @@ stable if & $\lvert y[n]\rvert\leq$ a finite number \\
 
 \filbreak \subsection{system property tests}
 {\small\renewcommand{\arraystretch}{1.15}
-\begin{tabular}{@{}p{0.20\linewidth}p{0.38\linewidth}p{0.36\linewidth}@{}}
-\term{Property} & \term{Test} & \term{Yes / no example} \\\hline
-memoryless & $y$ at $n$ uses only $x$ at $n$ & \keyres{yes} {$x^2$} \; \warn{no} {$x[n-1]$} \\[2pt]
-causal & $y$ at $n$ uses no $x$ at a later time & \keyres{yes} {$x[n-1]$} \; \warn{no} {$x[n+1]$} \\[2pt]
-stable & bounded $x$ gives bounded $y$ & \keyres{yes} {$x^2$} \; \warn{no} {$\sum_{k\le n}x[k]$} \\[2pt]
-invertible & you can solve for $x$ from $y$ & \keyres{yes} {$2x$} \; \warn{no} {$x^2$} \\[2pt]
-time invariant & delay in, then system $=$ system, then delay out & \keyres{yes} {$x[n-1]$} \; \warn{no} {$n\,x[n]$} \\[2pt]
-linear & $ax_1+bx_2\to ay_1+by_2$ & \keyres{yes} {$n\,x[n]$} \; \warn{no} {$2x+3$} \\
+\begin{tabular}{@{}p{0.19\linewidth}p{0.40\linewidth}p{0.35\linewidth}@{}}
+\term{Property} & \term{Ask yourself} & \term{Yes / no example} \\\hline
+memoryless & Does $y$ now use only $x$ now? & \keyres{yes} {$x^2$} \; \warn{no} {$x[n-1]$} \\[2pt]
+causal & Does $y$ avoid peeking at the future? & \keyres{yes} {$x[n-1]$} \; \warn{no} {$x[n+1]$} \\[2pt]
+stable & Does a capped input give a capped output? & \keyres{yes} {$x^2$} \; \warn{no} {$\sum_{k\le n}x[k]$} \\[2pt]
+invertible & Can I undo it and get $x$ back? & \keyres{yes} {$2x$} \; \warn{no} {$x^2$} \\[2pt]
+time invariant & Does it ignore the clock? Delay in $=$ delay out & \keyres{yes} {$x[n-1]$} \; \warn{no} {$n\,x[n]$} \\[2pt]
+linear & Scale in $\to$ scale out; add in $\to$ add out? & \keyres{yes} {$n\,x[n]$} \; \warn{no} {$2x+3$} \\
 \end{tabular}}
 
 \filbreak \subsection{which tool? --- given $\to$ find}
@@ -323,14 +365,14 @@ two graphs $\to y=A\,x(at+b)$ & match two points, solve \hfill (6) \\[1pt]
 signal $\to$ period & $2\pi/\omega$, or reduce $\hat\omega/2\pi$ \hfill (7) \\[1pt]
 signal $\to$ even, odd, neither & compare $x(-t)$ with $x(t)$ \hfill (8) \\[1pt]
 $Ce^{at}\to$ real signal & Euler, then the real part \hfill (9) \\[1pt]
-integral with $\delta(t-t_0)$ & sift: evaluate at $t_0$ \hfill (10) \\[1pt]
-a pulse graph $\to$ formula & a step up, a step down \hfill (10) \\[1pt]
-DT stems $\to$ impulses & one $x[k]\delta[n-k]$ per stem \hfill (10) \\[1pt]
+integral with $\delta(t-t_0)$ & the flash: three questions \hfill (10) \\[1pt]
+a pulse graph $\to$ formula & a switch on, a switch off \hfill (10) \\[1pt]
+DT stems $\to$ buttons & one $x[k]\delta[n-k]$ per stem \hfill (10) \\[1pt]
 graph with corners $\to$ formula & a ramp per corner \hfill (10) \\[1pt]
 blocks $\to$ one equation & substitute block by block \hfill (11) \\[1pt]
 equation $\leftrightarrow$ block diagram & one $D$ per shift \hfill (11) \\[1pt]
-system $\to$ properties & test each one \hfill (12) \\[1pt]
-system $\to$ stable? & bound with $B$ \hfill (12) \\
+system $\to$ properties & ask each question \hfill (12) \\[1pt]
+system $\to$ stable? & cap the input with $B$ \hfill (12) \\
 \end{tabular}}
 \par\vspace{2pt}
 The number in parentheses is the concept section.
@@ -345,16 +387,17 @@ The number in parentheses is the concept section.
 
 % ------------------------------------------------------------ 1
 \filbreak \subsection{1. signals and sampling}
-A \term{signal} is a function that carries information. The independent variable is usually time.
-\begin{itemize}
-\item \term{Continuous time} (CT): $x(t)$. $t$ can be any real number.
-\item \term{Discrete time} (DT): $x[n]$. $n$ is an \keyres{integer only}.
-\end{itemize}
-\warn{$x[2.5]$ does not exist.} Between two samples, a DT signal is not zero. It is undefined.
+\idea{A \term{signal} is anything that changes over time and carries information: a voltage, a sound, a temperature. \term{Sampling} is taking snapshots: one photo every $T_s$ seconds, like a strobe light.}
 
-\term{Sampling} makes a DT signal from a CT signal. Take one value each $T_s$ seconds:
-$$t=nT_s \quad\Rightarrow\quad x[n]=x(nT_s)$$
-$T_s$ is the \term{sampling period}. $f_s=\frac{1}{T_s}$ is the \term{sampling rate} (samples per second).
+\begin{itemize}
+\item \term{Continuous time} (CT): $x(t)$, round brackets. $t$ can be any real number. The movie.
+\item \term{Discrete time} (DT): $x[n]$, square brackets. $n$ is an \keyres{integer only}. The stack of photos.
+\end{itemize}
+\trap{$x[2.5]$ does not exist. Between two samples, a DT signal is not zero. It is simply not defined.}
+
+\term{From movie to photos}: photo number $n$ is taken at time $t=nT_s$, so
+$$x[n]=x(nT_s)$$
+$T_s$ is the \term{sampling period} (seconds between photos). $f_s=\frac{1}{T_s}$ is the \term{sampling rate} (photos per second).
 
 \nopagebreak
 \noindent
@@ -370,7 +413,7 @@ width=9.2cm, height=4.6cm]
 \end{axis}
 \end{tikzpicture}
 
-The curve is the CT signal. The stems are the samples.
+The curve is the movie (CT). The stems are the photos (DT).
 
 \wk{14}{sample $x(t)=t^2$ with $T_s=0.5$ s}
 \stepbox{1. PUT $t=nT_s$}{$x[n]=x(0.5n)=(0.5n)^2$}
@@ -390,19 +433,21 @@ The curve is the CT signal. The stems are the samples.
 
 % ------------------------------------------------------------ 2
 \filbreak \subsection{2. sinusoids}
+\idea{Picture a wheel spinning at a steady speed, with a dot on its rim. The dot's height over time is a sinusoid. How big the wheel is: \term{amplitude}. How fast it spins: \term{frequency}. Where the dot starts: \term{phase}.}
+
 $$x(t)=A\cos(\omega t+\phi)$$
 \begin{itemize}
-\item $A$: \term{amplitude}. The peak value. The signal swings between $-A$ and $A$.
-\item $\omega$: \term{angular frequency} in rad/s. $\omega=2\pi f$.
-\item $f$: \term{frequency} in Hz (cycles per second).
-\item $T=\frac{1}{f}=\frac{2\pi}{\omega}$: the \term{period} in seconds.
-\item $\phi$: \term{phase} in radians. It slides the wave along the time axis.
+\item $A$: \term{amplitude}. The peak. The signal swings between $-A$ and $A$.
+\item $\omega$: \term{angular frequency}, in rad/s. How many radians the wheel turns each second. $\omega=2\pi f$.
+\item $f$: \term{frequency}, in Hz. Full turns per second.
+\item $T=\frac{1}{f}=\frac{2\pi}{\omega}$: the \term{period}. Seconds for one full turn.
+\item $\phi$: \term{phase}, in radians. A head start (or late start) for the dot.
 \end{itemize}
-\term{Phase as a time shift}:
+\term{Phase as a time shift}: a late start is the same as sliding the whole wave right.
 $$A\cos(\omega t+\phi)=A\cos\big(\omega(t-t_0)\big), \qquad t_0=-\frac{\phi}{\omega}$$
 A negative $\phi$ gives $t_0>0$: the wave is \term{delayed} (it moves right).
 
-\warn{Put the signal in the form $A\cos(\omega t+\phi)$ before you read the parts.} Change a sine with $\sin\theta=\cos(\theta-\frac{\pi}{2})$. Change a negative $A$ with $-A\cos\theta=A\cos(\theta+\pi)$.
+\trap{Put the signal in the form $A\cos(\omega t+\phi)$ before you read off the parts. Change a sine with $\sin\theta=\cos(\theta-\frac{\pi}{2})$. Change a negative $A$ with $-A\cos\theta=A\cos(\theta+\pi)$.}
 
 \filbreak \subsubsection{Which way? --- between the sinusoid numbers}
 {\small\renewcommand{\arraystretch}{1.2}
@@ -449,9 +494,12 @@ $t_0\to\phi$ & $\phi=-\omega t_0$ \\
 
 % ------------------------------------------------------------ 3
 \filbreak \subsection{3. DT sinusoids and DT frequency}
+\idea{Photograph the spinning wheel with a strobe. In the photos, all you can see is \emph{how far the wheel turned between photos}. That angle per photo is the \term{DT frequency} $\hat\omega$, in radians per sample.}
+
 Sample $A\cos(\omega t+\phi)$ at $t=nT_s$:
-$$x[n]=A\cos(\omega nT_s+\phi)=A\cos(\hat\omega n+\phi)$$
-$\hat\omega=\omega T_s=\dfrac{2\pi f}{f_s}$ is the \term{DT frequency}, in radians per sample.
+$$x[n]=A\cos(\omega nT_s+\phi)=A\cos(\hat\omega n+\phi), \qquad \hat\omega=\omega T_s=\dfrac{2\pi f}{f_s}$$
+
+\term{Aliasing} is the wagon-wheel effect in old films. A wheel that turns $\frac{\pi}{4}$ between photos looks identical to one that turns $\frac{\pi}{4}+2\pi$: the extra full turn is invisible. So $\hat\omega$ and $\hat\omega+2\pi$ give the \keyres{same photos}, and $f$ and $f+f_s$ give the same samples.
 
 \filbreak \subsubsection{Which way? --- CT frequency or DT frequency}
 {\small\renewcommand{\arraystretch}{1.2}
@@ -462,7 +510,7 @@ $\omega$, $T_s\to\hat\omega$ & $\hat\omega=\omega T_s$ \\
 $\hat\omega$, $f_s\to f$ & $f=\dfrac{\hat\omega f_s}{2\pi}$ \; (the lowest answer) \st\\
 \end{tabular}}
 \par\vspace{2pt}
-\warn{DT to CT has more than one answer.} $\hat\omega$ and $\hat\omega+2\pi$ give the same samples. So $f$ and $f+f_s$ give the same samples. This is \term{aliasing}.
+\trap{DT to CT has more than one answer. Any alias $f+kf_s$ fits the same photos.}
 
 \wk{14}{sample $x(t)=\cos(200\pi t)$ at $f_s=800$ Hz}
 \stepbox{1. READ $\omega$ AND $f$}{$\omega=200\pi$ rad/s. \quad $f=\dfrac{200\pi}{2\pi}=100$ Hz}
@@ -487,38 +535,81 @@ $\hat\omega$, $f_s\to f$ & $f=\dfrac{\hat\omega f_s}{2\pi}$ \; (the lowest answe
 
 % ------------------------------------------------------------ 4
 \filbreak \subsection{4. energy and power}
-Treat $x$ as a voltage across a $1\,\Omega$ resistor. Then $\lvert x\rvert^2$ is the power at each instant.
+\idea{Think of $\lvert x\rvert^2$ as \term{money spent per day}, forever.
+\begin{itemize}
+\item \term{Energy} is your \keyres{total} spending, over all time.
+\item \term{Power} is your \keyres{average} spending per day, over all time.
+\end{itemize}
+Spend \$100 once, then stop: the total is finite, and the average over infinitely many days is $0$. Spend \$5 every day forever: the total is infinite, and the average is \$5.}
 
-\term{Total energy}:
+\subsubsection{Why square?}
+Picture $x$ as a voltage across a $1\,\Omega$ resistor. Electrical power is $P=V\cdot I$, and Ohm's law gives $I=V/R$, so $P=V^2/R=x^2$. The signal shows up \emph{twice}: once as the voltage, once as the current it drives.
+
+Squaring also makes sense of the sign. A toaster heats up whichever way the current flows. A negative voltage delivers energy just like a positive one. Squaring turns every value non-negative, so negatives stop cancelling positives:
+\begin{itemize}
+\item positive stays positive: $(0.5)^2=0.25$
+\item negative turns positive: $(-0.5)^2=0.25$
+\item zero stays zero
+\end{itemize}
+Without squaring, $\cos(t)$ would average to $0$, as if a wall outlet held nothing.
+
+\subsubsection{The two formulas, in English}
+\term{Total energy}: add up $\lvert x\rvert^2$ over all time. \keyres{No dividing.}
 $$E_\infty=\int_{-\infty}^{\infty}\lvert x(t)\rvert^2\,dt \qquad E_\infty=\sum_{n=-\infty}^{\infty}\lvert x[n]\rvert^2$$
-\term{Average power}:
-$$P_\infty=\lim_{T\to\infty}\frac{1}{2T}\int_{-T}^{T}\lvert x(t)\rvert^2\,dt \qquad P_\infty=\lim_{N\to\infty}\frac{1}{2N+1}\sum_{n=-N}^{N}\lvert x[n]\rvert^2$$
-\term{Periodic shortcut}: average over one period: $P=\frac{1}{T}\int_{\text{one period}}\lvert x(t)\rvert^2\,dt$.
+\term{Average power}: look through a \term{window} from $-T$ to $T$. Add up $\lvert x\rvert^2$ inside it, divide by the window's length $2T$, then let the window grow forever.
+$$P_\infty=\lim_{T\to\infty}\frac{1}{2T}\int_{-T}^{T}\lvert x(t)\rvert^2\,dt$$
+In DT, the window $n=-N\ldots N$ holds $2N+1$ samples (count $-2,-1,0,1,2$: that is $5=2(2)+1$):
+$$P_\infty=\lim_{N\to\infty}\frac{1}{2N+1}\sum_{n=-N}^{N}\lvert x[n]\rvert^2$$
+\term{Periodic shortcut}: one period tells the whole story. $P=\frac{1}{T}\int_{\text{one period}}\lvert x(t)\rvert^2\,dt$.
 
-\filbreak \subsubsection{Which one to compute?}
+\filbreak \subsubsection{Energy vs power, side by side}
+{\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}p{0.18\linewidth}p{0.36\linewidth}p{0.40\linewidth}@{}}
+ & \term{Energy} & \term{Power} \\\hline
+means & the total & the average \\
+divide by $2T$? & \warn{no} & \keyres{yes} \\
+money & lifetime spending & spending per day \\
+constant $x=4$ & $\lim 32T=\infty$ & $\lim\frac{32T}{2T}=16$ \\
+\end{tabular}}
+\par\vspace{2pt}
+\keyres{Rule: a final $E_\infty$ or $P_\infty$ never contains $T$ or $N$.} If a $T$ is still there, you have not taken the limit yet.
+
+\filbreak \subsubsection{Which one to compute? Classify by shape first}
 {\small
-\begin{tabular}{@{}p{0.40\linewidth}p{0.56\linewidth}@{}}
+\begin{tabular}{@{}p{0.36\linewidth}p{0.60\linewidth}@{}}
 \term{The signal} & \term{Result} \\\hline
 dies out, or has finite length & \term{energy signal}: $E_\infty$ finite, $P_\infty=0$ \\[2pt]
 periodic, or constant & \term{power signal}: $P_\infty$ finite, $E_\infty=\infty$ \\[2pt]
 grows without limit ($x=t$) & \term{neither}: $E_\infty=\infty$, $P_\infty=\infty$ \\
 \end{tabular}}
 \par\vspace{2pt}
-\warn{Square first.} The energy is the area under $\lvert x\rvert^2$, not under $x$.
+\term{Why an energy signal has $P_\infty=0$}: its total is a fixed number $E$. Divide it by a window growing to $\infty$: $\lim\frac{E}{2T}=0$. \$50 spread over a million days is almost nothing per day.
+
+\term{Why a constant has $E_\infty=\infty$ but finite power}: the energy in the window grows \emph{at the same rate} as the window, so $T$ cancels in the ratio. ``$c^2$ per second, forever'' is a \emph{rate}, which is the power. The total is $\infty$.
+
+\term{Why you can shrink the limits}: where $x=0$, it adds nothing. Once the window covers every non-zero part, widening it only adds zeros. In DT, that happens once $N$ reaches the stem \keyres{farthest from $n=0$}, on either side.
+
+\filbreak \subsubsection{Traps from practice}
+\trap{\textbf{Square first.} Adding raw stem values lets negatives cancel. Check: $E_\infty=0$ is only possible if the signal is $0$ everywhere.}
+\trap{\textbf{Energy is not power.} ``$16$ forever'' is the power. The energy is the total, $\infty$.}
+\trap{\textbf{$T$ is not $t$.} $t$ disappears when you integrate. $T$ is what goes to $\infty$: write $\lim_{T\to\infty}$.}
+\trap{\textbf{$\frac{c}{T}$ is not $cT$.} Dividing by $T$ puts $T$ in the denominator, and then $\frac{c}{T}\to0$, not $c$.}
+\trap{\textbf{$dt$, not $\Delta t$.} $dt$ also tells you which letter is the variable.}
+\trap{\textbf{Write the label.} Energy signal, power signal, or neither, not ``constant'' or ``growth.''}
 
 \wk{14}{pulse: $x(t)=2$ for $0\leq t\leq3$, $0$ elsewhere}
 \stepbox{1. SQUARE}{$\lvert x(t)\rvert^2=2^2=4$ on $[0,3]$. $0$ elsewhere.}
 \stepdown
-\stepbox{2. LIMITS SHRINK TO WHERE $x\neq0$}{$E_\infty=\int_0^3 4\,dt$}
+\stepbox{2. LIMITS SHRINK TO WHERE $x\neq0$}{$E_\infty=\int_0^3 4\,dt$ \; \why{outside $[0,3]$, $x=0$ adds nothing}}
 \stepdown
 \stepbox{3. ANTIDERIVATIVE}{$F(t)=4t$}
 \stepdown
-\stepbox{4. TOP MINUS BOTTOM}{$4(3)-4(0)=\keyres{12}$}
+\stepbox{4. TOP MINUS BOTTOM}{$4(3)-4(0)=\keyres{12}$ \; \why{check: $A^2D=4\cdot3$}}
 \stepdown
 \stepbox{5. POWER}{$P_\infty=\lim\limits_{T\to\infty}\dfrac{12}{2T}=0$ $\Rightarrow$ energy signal}
 
 \wk{18}{decaying exponential: $x(t)=3e^{-2t}u(t)$}
-\stepbox{1. WHERE IS IT NOT ZERO?}{$u(t)=0$ for $t<0$. So integrate from $0$ to $\infty$.}
+\stepbox{1. WHERE IS IT NOT ZERO?}{The switch $u(t)$ is off for $t<0$. So integrate from $0$ to $\infty$.}
 \stepdown
 \stepbox{2. SQUARE}{$\big(3e^{-2t}\big)^2=3^2\cdot\big(e^{-2t}\big)^2=9e^{-4t}$ \; \why{double the exponent}}
 \stepdown
@@ -533,7 +624,7 @@ grows without limit ($x=t$) & \term{neither}: $E_\infty=\infty$, $P_\infty=\inft
 \stepbox{7. TOP MINUS BOTTOM}{$E_\infty=0-(-2.25)=\keyres{2.25}$ \; $\Rightarrow$ energy signal}
 
 \wk{16}{DT geometric: $x[n]=\big(\frac12\big)^nu[n]$}
-\stepbox{1. WHERE IS IT NOT ZERO?}{$u[n]=0$ for $n<0$. So sum from $n=0$.}
+\stepbox{1. WHERE IS IT NOT ZERO?}{The switch $u[n]$ is off for $n<0$. So sum from $n=0$.}
 \stepdown
 \stepbox{2. SQUARE}{$\Big(\big(\tfrac12\big)^n\Big)^2=\big(\tfrac12\big)^{2n}=\big(\tfrac14\big)^n$}
 \stepdown
@@ -544,7 +635,7 @@ grows without limit ($x=t$) & \term{neither}: $E_\infty=\infty$, $P_\infty=\inft
 \stepbox{5. CHECK WITH THE FIRST TERMS}{$1+0.25+0.0625+0.0156=1.328$, close to $1.333$ \checkmark}
 
 \wk{18}{sinusoid: $x(t)=4\cos(3t)$}
-\stepbox{1. SQUARE}{$\lvert x\rvert^2=16\cos^2(3t)$}
+\stepbox{1. SQUARE}{$\lvert x\rvert^2=16\cos^2(3t)$ \; \why{never negative now}}
 \stepdown
 \stepbox{2. USE $\cos^2\theta=\frac{1+\cos2\theta}{2}$}{$16\cdot\dfrac{1+\cos(6t)}{2}=8+8\cos(6t)$}
 \stepdown
@@ -557,11 +648,13 @@ grows without limit ($x=t$) & \term{neither}: $E_\infty=\infty$, $P_\infty=\inft
 \wk{14}{constant: $x(t)=3$ for all $t$}
 \stepbox{1. SQUARE}{$\lvert x\rvert^2=9$}
 \stepdown
-\stepbox{2. INTEGRAL OVER $[-T,T]$}{$\int_{-T}^{T}9\,dt=9T-9(-T)=18T$}
+\stepbox{2. ENERGY IN THE WINDOW $[-T,T]$}{$\int_{-T}^{T}9\,dt=9T-9(-T)=18T$ \; \why{watch the minus-a-negative}}
 \stepdown
-\stepbox{3. DIVIDE BY $2T$}{$\dfrac{18T}{2T}=9$}
+\stepbox{3. ENERGY: LET $T\to\infty$, NO DIVIDING}{$E_\infty=\lim\limits_{T\to\infty}18T=\infty$}
 \stepdown
-\stepbox{4. LET $T\to\infty$}{$P_\infty=\keyres{9}$ \; \why{no $T$ is left}. \; $E_\infty=\lim 18T=\infty$}
+\stepbox{4. POWER: DIVIDE BY $2T$, THEN THE LIMIT}{$\dfrac{18T}{2T}=9$, so $P_\infty=\lim\limits_{T\to\infty}9=\keyres{9}$ \; \why{$T$ cancelled}}
+\stepdown
+\stepbox{5. LABEL}{power signal \; \why{matches $P=c^2$}}
 
 \wk{12}{DT power: $x[n]=(-1)^n$}
 \stepbox{1. SQUARE}{$\big((-1)^n\big)^2=1$ for each $n$}
@@ -572,30 +665,30 @@ grows without limit ($x=t$) & \term{neither}: $E_\infty=\infty$, $P_\infty=\inft
 
 % ------------------------------------------------------------ 5
 \filbreak \subsection{5. energy from a graph}
-Most graph problems use flat pieces and straight lines. Do not set up one big integral. Work piece by piece.
+\idea{Do not set up one big integral. Chop the graph into pieces, square each piece, find each piece's energy, and add. In DT there are no widths: each stem is one sample and counts once, so its energy is just its height squared.}
 \begin{enumerate}
 \item \term{Read the graph into pieces.} Write $x(t)$ on each time range: a constant, or a straight line.
 \item \term{Square each piece.}
 \item \term{CT}: integrate each squared piece over its range. \term{DT}: square each stem height.
 \item \term{Add the pieces.}
 \end{enumerate}
-\term{Equation of a straight line} through $(t_1,x_1)$ with slope $m=\frac{\Delta x}{\Delta t}$: \; $x(t)=x_1+m(t-t_1)$.
+\term{Straight line} through $(t_1,x_1)$ with slope $m=\frac{\Delta x}{\Delta t}$: \; $x(t)=x_1+m(t-t_1)$.
 
 \term{Shortcuts for one piece} of length $D$:
 {\small\renewcommand{\arraystretch}{1.2}
 \begin{tabular}{@{}p{0.50\linewidth}p{0.46\linewidth}@{}}
 \term{Piece of the graph} & \term{Energy of that piece} \\\hline
-flat at level $A$ & $A^2D$ \\
+flat at level $A$ & $A^2D$ \; (a rectangle of height $A^2$) \\
 ramp from $0$ to $A$ (or $A$ to $0$) & $\dfrac{A^2D}{3}$ \st\\
 line from $A$ to $B$ & $\dfrac{D}{3}\big(A^2+AB+B^2\big)$ \st\\
 DT stem of height $h$ & $h^2$ \\
 \end{tabular}}
 \par\vspace{2pt}
-\warn{Negative parts count positive.} $(-2)^2=4$. They do not cancel positive parts.
+Use a shortcut to \keyres{check} an integral, and an integral to check a shortcut.
 
-\warn{A squared ramp is a curve, not a triangle.} Use $\frac{A^2D}{3}$, not $\frac{A^2D}{2}$.
-
-\warn{If the graph repeats forever, $E_\infty=\infty$.} Find the power over one period.
+\trap{Negative parts count positive. $(-2)^2=4$. They do not cancel positive parts.}
+\trap{A squared ramp is a curve, not a triangle. Use $\frac{A^2D}{3}$, not $\frac{A^2D}{2}$.}
+\trap{If the graph repeats forever, $E_\infty=\infty$. Find the power over one period.}
 
 \nopagebreak
 \noindent
@@ -683,9 +776,11 @@ width=4.9cm, height=3.6cm]
 \wk{10}{a DT stem plot (left graph)}
 \stepbox{1. READ THE STEMS}{$x[-1]=1$, \; $x[0]=2$, \; $x[1]=-2$, \; $x[2]=1$. \; All others $0$.}
 \stepdown
-\stepbox{2. SQUARE EACH STEM}{$1^2=1$, \quad $2^2=4$, \quad $(-2)^2=4$, \quad $1^2=1$}
+\stepbox{2. SQUARE EACH STEM}{$1^2=1$, \quad $2^2=4$, \quad $(-2)^2=4$, \quad $1^2=1$ \; \why{write every square separately}}
 \stepdown
 \stepbox{3. ADD}{$E_\infty=1+4+4+1=\keyres{10}$ \; \why{no integral: DT energy is a sum}}
+\stepdown
+\stepbox{4. POWER}{$P_\infty=\lim\limits_{N\to\infty}\dfrac{10}{2N+1}=0$ $\Rightarrow$ energy signal}
 
 \wk{14}{a periodic graph (right graph): power, not energy}
 \stepbox{1. ONE PERIOD}{The pattern repeats every $T=2$ s: $x=2$ on $[0,1]$, $x=0$ on $[1,2]$.}
@@ -698,20 +793,21 @@ width=4.9cm, height=3.6cm]
 
 % ------------------------------------------------------------ 6
 \filbreak \subsection{6. transformations of the time variable}
+\idea{You are not changing the shape, only \emph{when} things happen. Ask one question of every corner of the graph: \term{where did this point move to?} It keeps its height and just lands at a new time.}
 \begin{itemize}
-\item \term{Time shift}: $x(t-t_0)$. If $t_0>0$, the signal moves \keyres{right} (delay). If $t_0<0$, it moves left (advance).
-\item \term{Time reversal}: $x(-t)$. Mirror the signal about $t=0$.
-\item \term{Time scaling}: $x(at)$. If $\lvert a\rvert>1$, the signal is \keyres{compressed}. If $\lvert a\rvert<1$, it is stretched.
+\item \term{Shift}: $x(t-t_0)$. If $t_0>0$, the signal moves \keyres{right}: a \term{delay}, it happens later. If $t_0<0$, it moves left: an \term{advance}, it happens earlier.
+\item \term{Reversal}: $x(-t)$. Play the tape backwards: mirror about $t=0$.
+\item \term{Scaling}: $x(at)$. Fast-forward if $\lvert a\rvert>1$ (compressed). Slow motion if $\lvert a\rvert<1$ (stretched).
 \end{itemize}
-\term{Point-map method} for $x(at+b)$: each breakpoint of $x$ moves to a new time, and keeps its value.
+\term{Point-map method} for $x(at+b)$: the old time $t_{\text{old}}$ shows up where $at_{\text{new}}+b=t_{\text{old}}$. Solve for the new time:
 $$t_{\text{new}}=\frac{t_{\text{old}}-b}{a}$$
-This comes from solving $at_{\text{new}}+b=t_{\text{old}}$. It gives the answer in one step, with no order of operations to remember.
+One step, no order of operations to remember.
 
 \term{Two-step method}: first shift by $b$ to make $x(t+b)$. Then replace $t$ with $at$.
 
-\warn{Scale first, then shift by $b$, is wrong.} $x(2t)$ shifted left by $1$ is $x(2(t+1))=x(2t+2)$, not $x(2t+1)$.
-
-\warn{DT scaling loses samples}: $x[2n]$ keeps only the even-index samples.
+\trap{Scale first, then shift by $b$, is wrong. $x(2t)$ shifted left by $1$ is $x(2(t+1))=x(2t+2)$, not $x(2t+1)$.}
+\trap{The sign inside is opposite to the direction. $x(t-3)$ moves \emph{right}.}
+\trap{DT scaling loses photos: $x[2n]$ keeps only the even-index samples.}
 
 \nopagebreak
 \noindent
@@ -771,7 +867,7 @@ $x(t)\to x(at+b)$ & map each breakpoint: $t_{\text{new}}=\frac{t_{\text{old}}-b}
 $y(t)=x(at+b)\to x(t)$ & $x(t)=y\big(\frac{t-b}{a}\big)$ \\
 \end{tabular}}
 \par\vspace{2pt}
-\warn{$x[2n]$ cannot be undone.} The odd-index samples are lost.
+\trap{$x[2n]$ cannot be undone. The odd-index photos were thrown away.}
 
 \wk{14}{(reverse) $y(t)=x(2t+1)$ is given. Find $x(t)$}
 \stepbox{1. NAME THE INSIDE}{Let $\tau=2t+1$. Then $y(t)=x(\tau)$.}
@@ -785,9 +881,9 @@ $y(t)=x(at+b)\to x(t)$ & $x(t)=y\big(\frac{t-b}{a}\big)$ \\
 \filbreak \subsubsection{Which way? --- find the transformation from $x$ to $y$}
 Some problems give two graphs and ask for $y$ in terms of $x$: \; $y(t)=A\,x(at+b)$.
 \begin{enumerate}
-\item \term{Amplitude}: compare the heights. $A=\frac{\text{height of }y}{\text{height of }x}$. A flipped shape (upside down) gives a negative $A$.
-\item \term{Orientation}: is the shape the same way round, or mirrored? Mirrored means $a<0$.
-\item \term{Two matching points}: pick two breakpoints of $x$ ($t_1$, $t_2$) and the points of $y$ they move to ($\tau_1$, $\tau_2$).
+\item \term{Amplitude}: compare the heights. $A=\frac{\text{height of }y}{\text{height of }x}$. Upside down means a negative $A$.
+\item \term{Orientation}: same way round, or mirrored? Mirrored means $a<0$.
+\item \term{Two matching points}: pick two breakpoints of $x$ ($t_1$, $t_2$) and the points of $y$ they moved to ($\tau_1$, $\tau_2$).
 \item \term{Solve} $a\tau_1+b=t_1$ and $a\tau_2+b=t_2$ for $a$ and $b$. \why{$y$ at $\tau$ is $x$ at $a\tau+b$}
 \item \term{Check} a third point.
 \end{enumerate}
@@ -827,15 +923,15 @@ Some problems give two graphs and ask for $y$ in terms of $x$: \; $y(t)=A\,x(at+
 
 % ------------------------------------------------------------ 7
 \filbreak \subsection{7. periodic signals}
-A signal is \term{periodic} if a shift by the period does not change it:
+\idea{A periodic signal is a song on repeat. Slide it forward by one period and you cannot tell anything happened. The \term{fundamental period} is the length of the shortest loop.}
 $$x(t)=x(t+T) \qquad x[n]=x[n+N]$$
-The smallest positive $T$ (or $N$) is the \term{fundamental period}. $N$ must be an \keyres{integer}.
+$N$ must be an \keyres{integer}: you cannot slide by half a photo.
 \begin{itemize}
 \item \term{CT sinusoid} $\cos(\omega t)$: always periodic. $T=\frac{2\pi}{\omega}$.
-\item \term{DT sinusoid} $\cos(\hat\omega n)$: periodic only if $\frac{\hat\omega}{2\pi}$ is a fraction $\frac{m}{N}$ (rational). Reduce it to lowest terms. The denominator is $N$.
-\item \term{Sum of two periodic signals}: the period is the least common multiple ($\mathrm{lcm}$) of the two periods.
+\item \term{DT sinusoid} $\cos(\hat\omega n)$: periodic only if, after some whole number of photos, the wheel has made a whole number of turns. That means $\frac{\hat\omega}{2\pi}$ is a fraction $\frac{m}{N}$. Reduce it to lowest terms. The denominator is $N$.
+\item \term{Two periodic signals added}: both loops line up again after the least common multiple ($\mathrm{lcm}$) of the two periods.
 \end{itemize}
-\warn{$\cos(n)$ is not periodic.} $\frac{1}{2\pi}$ is not a fraction of integers. The CT signal $\cos(t)$ is periodic. Sampling can destroy periodicity.
+\trap{$\cos(n)$ is not periodic. $\frac{1}{2\pi}$ is not a fraction of integers, so the photos never exactly repeat. The CT signal $\cos(t)$ is periodic. Sampling can destroy periodicity.}
 
 \wk{12}{period of $\cos\big(\frac{2\pi}{3}t\big)+\sin\big(\frac{\pi}{2}t\big)$}
 \stepbox{1. FIRST PERIOD}{$T_1=\dfrac{2\pi}{2\pi/3}=2\pi\cdot\dfrac{3}{2\pi}=3$ s}
@@ -865,17 +961,18 @@ The smallest positive $T$ (or $N$) is the \term{fundamental period}. $N$ must be
 
 % ------------------------------------------------------------ 8
 \filbreak \subsection{8. even and odd signals}
+\idea{\term{Even}: put a mirror on the vertical axis. The left half is the reflection of the right half. \term{Odd}: spin the graph half a turn about the origin, and it lands on itself. Left half is the right half, flipped \emph{and} upside down.}
 \begin{itemize}
-\item \term{Even}: $x(-t)=x(t)$. Mirror image about $t=0$. Example: $\cos$, $t^2$.
-\item \term{Odd}: $x(-t)=-x(t)$. Point symmetry about the origin. Example: $\sin$, $t^3$.
+\item \term{Even}: $x(-t)=x(t)$. Examples: $\cos$, $t^2$.
+\item \term{Odd}: $x(-t)=-x(t)$. Examples: $\sin$, $t^3$.
 \end{itemize}
 \term{Test}: replace $t$ with $-t$, simplify, and compare with $x(t)$.
 
-\warn{An odd signal is always $0$ at the origin}: $x(0)=-x(0)$ forces $x(0)=0$.
+\trap{An odd signal is always $0$ at the origin: $x(0)=-x(0)$ forces $x(0)=0$.}
 
-Every signal is an even part plus an odd part:
+Every signal splits into an even part plus an odd part:
 $$\mathcal{E}v\{x\}=\frac{x(t)+x(-t)}{2} \qquad \mathcal{O}d\{x\}=\frac{x(t)-x(-t)}{2}$$
-Products: even $\cdot$ even $=$ even, \; odd $\cdot$ odd $=$ even, \; even $\cdot$ odd $=$ odd.
+Products work like signs: even $\cdot$ even $=$ even, \; odd $\cdot$ odd $=$ even, \; even $\cdot$ odd $=$ odd.
 
 \wk{10}{is $x(t)=t^3-2t$ even, odd, or neither?}
 \stepbox{1. REPLACE $t$ WITH $-t$}{$x(-t)=(-t)^3-2(-t)$}
@@ -911,24 +1008,26 @@ $\frac{x[n]-x[-n]}{2}$ & $-1.5$ & $-1$ & $0$ & $1$ & $1.5$ \\
 
 % ------------------------------------------------------------ 9
 \filbreak \subsection{9. complex exponentials}
+\idea{$e^{j\theta}$ is an arrow of length $1$, pointing at angle $\theta$. Let $\theta=\omega t$ and the arrow spins. Its shadow on the horizontal axis is a cosine. Multiply by $e^{\sigma t}$ and the arrow also grows ($\sigma>0$) or shrinks ($\sigma<0$) as it spins: a spiral.}
+
 \term{Euler's formula}: $e^{j\theta}=\cos\theta+j\sin\theta$. \; Engineers write $j=\sqrt{-1}$.
 
-\term{Back to cosine and sine}: $\cos\theta=\dfrac{e^{j\theta}+e^{-j\theta}}{2}$, \quad $\sin\theta=\dfrac{e^{j\theta}-e^{-j\theta}}{2j}$.
+\term{Back to cosine and sine}: $\cos\theta=\dfrac{e^{j\theta}+e^{-j\theta}}{2}$, \quad $\sin\theta=\dfrac{e^{j\theta}-e^{-j\theta}}{2j}$. Two arrows spinning opposite ways: their imaginary parts cancel.
 
-\term{CT form}: $x(t)=Ce^{at}$, with $C=\lvert C\rvert e^{j\phi}$ and $a=\sigma+j\omega$.
+\term{CT form}: $x(t)=Ce^{at}$, with $C=\lvert C\rvert e^{j\phi}$ (starting length and angle) and $a=\sigma+j\omega$ (growth rate and spin rate).
 {\small
 \begin{tabular}{@{}p{0.34\linewidth}p{0.62\linewidth}@{}}
 \term{Case} & \term{Real part looks like} \\\hline
-$a$ real ($\omega=0$) & \term{real exponential}: grows if $\sigma>0$, decays if $\sigma<0$ \\[2pt]
-$a=j\omega$ ($\sigma=0$) & \term{sinusoid} $\lvert C\rvert\cos(\omega t+\phi)$, \; $T=\frac{2\pi}{\lvert\omega\rvert}$ \\[2pt]
-general $a$ & \term{damped sinusoid} $\lvert C\rvert e^{\sigma t}\cos(\omega t+\phi)$ \\
+$a$ real ($\omega=0$) & no spin: a \term{real exponential}. Grows if $\sigma>0$, decays if $\sigma<0$ \\[2pt]
+$a=j\omega$ ($\sigma=0$) & pure spin: a \term{sinusoid} $\lvert C\rvert\cos(\omega t+\phi)$, \; $T=\frac{2\pi}{\lvert\omega\rvert}$ \\[2pt]
+general $a$ & spiral: a \term{damped sinusoid} $\lvert C\rvert e^{\sigma t}\cos(\omega t+\phi)$ \\
 \end{tabular}}
 \par\vspace{2pt}
-The $\lvert C\rvert e^{\sigma t}$ part is the \term{envelope}.
+The $\lvert C\rvert e^{\sigma t}$ part is the \term{envelope}: the curve the peaks follow.
 
-\term{DT form}: $x[n]=C\alpha^n$. \; $\lvert\alpha\rvert<1$: decays. \; $\lvert\alpha\rvert>1$: grows. \; $\alpha<0$: the sign alternates.
+\term{DT form}: $x[n]=C\alpha^n$. Each step multiplies by $\alpha$. \; $\lvert\alpha\rvert<1$: decays. \; $\lvert\alpha\rvert>1$: grows. \; $\alpha<0$: the sign flips every step.
 
-\keyres{DT frequencies repeat every $2\pi$}: $e^{j(\hat\omega+2\pi)n}=e^{j\hat\omega n}e^{j2\pi n}=e^{j\hat\omega n}$, because $n$ is an integer.
+\keyres{DT frequencies repeat every $2\pi$}: $e^{j(\hat\omega+2\pi)n}=e^{j\hat\omega n}e^{j2\pi n}=e^{j\hat\omega n}$, because $n$ is an integer and $e^{j2\pi n}$ is a whole number of turns.
 
 {\small
 \begin{tabular}{@{}p{0.49\linewidth}|p{0.47\linewidth}@{}}
@@ -939,7 +1038,7 @@ larger $\omega$ $\Rightarrow$ faster & fastest at $\hat\omega=\pi$ ($+1,-1,+1,\l
 \end{tabular}}
 
 \wk{14}{real part of $x(t)=2e^{j\pi/3}e^{(-1+j4)t}$}
-\stepbox{1. SPLIT THE EXPONENT}{$e^{(-1+j4)t}=e^{-t}\cdot e^{j4t}$}
+\stepbox{1. SPLIT THE EXPONENT}{$e^{(-1+j4)t}=e^{-t}\cdot e^{j4t}$ \; \why{shrinking part times spinning part}}
 \stepdown
 \stepbox{2. COMBINE THE $j$ PARTS}{$e^{j\pi/3}\cdot e^{j4t}=e^{j(4t+\pi/3)}$ \; \why{add the exponents}}
 \stepdown
@@ -969,8 +1068,16 @@ larger $\omega$ $\Rightarrow$ faster & fastest at $\hat\omega=\pi$ ($+1,-1,+1,\l
 \stepbox{3. PERIOD}{$\dfrac{\pi/4}{2\pi}=\dfrac18$ $\Rightarrow$ $N=\keyres{8}$}
 
 % ------------------------------------------------------------ 10
-\filbreak \subsection{10. unit impulse and unit step}
-\term{DT unit impulse} and \term{DT unit step}:
+\filbreak \subsection{10. the button, the switch, and the ramp}
+\idea{
+\begin{itemize}
+\item $\delta$ is a \term{button}: press it once at time $0$, then release. On for one instant, then off.
+\item $u$ is a \term{switch}: flip it on at time $0$ and leave it on forever.
+\item $r$ is a \term{ramp}: the running total of the switch. It climbs $0,1,2,3,\ldots$
+\end{itemize}
+Each one is the \keyres{running total} of the one before. Everything else in the course is built from these three.}
+
+\term{DT button and DT switch}:
 $$\delta[n]=\begin{cases}1 & n=0\\0 & n\neq0\end{cases} \qquad u[n]=\begin{cases}1 & n\geq0\\0 & n<0\end{cases}$$
 
 \nopagebreak
@@ -992,17 +1099,101 @@ width=4.9cm, height=3cm]
 \end{axis}
 \end{tikzpicture}
 
-\term{CT unit step} $u(t)$: $0$ for $t<0$, $1$ for $t>0$. \; \term{CT unit impulse} $\delta(t)$: zero width, \keyres{area $1$}, at $t=0$.
+\trap{The switch does not keep climbing. $u[n]$ is $0,0,1,1,1,\ldots$, not $1,2,3$. ``Step'' means \emph{one} stair up, then flat. The thing that climbs is the ramp.}
 
-\term{Sifting}: $\int_{-\infty}^{\infty}x(t)\,\delta(t-t_0)\,dt=x(t_0)$. The impulse picks out one value.
+\term{Energy and power of the building blocks}: the button is one stem of height $1$, so $E_\infty=1^2=1$: an \keyres{energy signal}. The switch stays on forever: $E_\infty=\infty$, finite power, a \keyres{power signal}.
 
-\term{Sampling}: $x(t)\,\delta(t-t_0)=x(t_0)\,\delta(t-t_0)$. DT: $x[n]\,\delta[n-n_0]=x[n_0]\,\delta[n-n_0]$.
+\filbreak \subsubsection{The switch is the running total of button presses}
+Count every press from $-\infty$ up to now:
+$$u[n]=\sum_{k=-\infty}^{n}\delta[k]$$
+\begin{itemize}
+\item before $n=0$: no presses yet, so total $=0$
+\item at $n=0$: one press, so total $=1$
+\item after: no new presses, so the total stays $1$
+\end{itemize}
+Going back the other way: a switch on at $0$ \emph{minus} a switch on at $1$ is on only at $0$. That is the button: $\delta[n]=u[n]-u[n-1]$.
 
-\term{Pulse from steps}: $u(t-t_1)-u(t-t_2)$ is $1$ on $[t_1,t_2)$ and $0$ elsewhere.
+\filbreak \subsubsection{Shifting: where is the button?}
+$\delta[n-k]$ puts the stem at $n=k$. To find it, ask: \keyres{what $n$ makes the inside equal $0$?} For $\delta[n-2]$: $n-2=0$, so $n=2$. The switch shifts the same way: $u[n-k]$ turns on at $n=k$.
 
-\warn{If $t_0$ is outside the integration limits, the integral is $0$.}
+{\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}p{0.16\linewidth}p{0.18\linewidth}p{0.16\linewidth}p{0.42\linewidth}@{}}
+\term{Inside} & \term{Stem at} & \term{Moves} & \term{Name} \\\hline
+$n-3$ & $n=3$ & right & \term{delay}: it happens later \\
+$n+2$ & $n=-2$ & left & \term{advance}: it happens earlier \\
+\end{tabular}}
+\par\vspace{2pt}
+\trap{The sign inside is opposite to the position. And $+2$ is an \emph{advance}, not a delay.}
 
-\filbreak \subsubsection{Which way? --- step or impulse}
+\filbreak \subsubsection{Building signals: switches on and off, one button per stem}
+\term{Switch on, then switch off} gives a \term{pulse}. In $u[n-a]-u[n-b]$, the first switch turns on at $a$; the second, subtracted, turns on at $b$ and cancels the first.
+\begin{itemize}
+\item DT: on for $a\leq n\leq \keyres{b-1}$. That is $b-a$ samples.
+\item CT: $u(t-t_1)-u(t-t_2)$ is on for $t_1\leq t<t_2$.
+\end{itemize}
+\trap{The off-switch's own position is already off. $u[n]-u[n-4]$ is $0$ at $n=4$: check $u[4]-u[0]=1-1=0$.}
+When the two switches are one step apart ($b-a=1$), the pulse shrinks to a single stem: a button.
+
+\term{One button per stem}: a stem of height $h$ at position $k$ is $h\,\delta[n-k]$. Add one term per stem, joined with $+$ signs:
+$$x[n]=\sum_{k=-\infty}^{\infty}x[k]\,\delta[n-k]$$
+At any $n$, every button is off except the one at $k=n$, and its weight is $x[n]$.
+
+\wk{14}{write $x[-1]=2$, $x[0]=-1$, $x[1]=3$, $x[3]=1$ (others $0$) with buttons}
+\stepbox{1. STEM AT $n=-1$, HEIGHT $2$}{$2\,\delta[n-(-1)]=2\,\delta[n+1]$}
+\stepdown
+\stepbox{2. STEM AT $n=0$, HEIGHT $-1$}{$-1\cdot\delta[n]=-\delta[n]$}
+\stepdown
+\stepbox{3. STEM AT $n=1$, HEIGHT $3$}{$3\,\delta[n-1]$}
+\stepdown
+\stepbox{4. STEM AT $n=3$, HEIGHT $1$}{$\delta[n-3]$ \; \why{$x[2]=0$, so no term for $n=2$}}
+\stepdown
+\stepbox{5. ADD INTO ONE SIGNAL}{$x[n]=\keyres{2\delta[n+1]-\delta[n]+3\delta[n-1]+\delta[n-3]}$}
+
+\wk{12}{(reverse) read the stems of $x[n]=4\delta[n-2]-2\delta[n+3]$}
+\stepbox{1. FIRST TERM}{$\delta[n-2]$ is $1$ at $n=2$. \; Stem: $x[2]=\keyres{4}$}
+\stepdown
+\stepbox{2. SECOND TERM}{$\delta[n+3]$ is $1$ at $n=-3$. \; Stem: $x[-3]=\keyres{-2}$}
+\stepdown
+\stepbox{3. CHECK AT $n=2$}{$4\delta[0]-2\delta[5]=4(1)-2(0)=4$ \checkmark}
+
+\wk{12}{DT: $x[n]=u[n]-u[n-3]$}
+\stepbox{1. TABLE}{$n=-1$: $0-0=0$. \; $n=0,1,2$: $1-0=1$. \; $n=3$: $1-1=0$. \; \why{on from $0$ through $3-1=2$}}
+\stepdown
+\stepbox{2. AS BUTTONS}{One per stem: $\keyres{\delta[n]+\delta[n-1]+\delta[n-2]}$}
+\stepdown
+\stepbox{3. FIRST DIFFERENCE}{$u[n]-u[n-1]=\delta[n]$ and $u[n-3]-u[n-4]=\delta[n-3]$ \\ $x[n]-x[n-1]=\keyres{\delta[n]-\delta[n-3]}$ \; \why{a button at each switch}}
+
+\filbreak \subsubsection{The CT button}
+In continuous time, a button pressed for ``one sample'' does not exist. Instead, picture a rectangle of width $\varepsilon$ and height $\frac{1}{\varepsilon}$:
+\begin{itemize}
+\item its area is $\varepsilon\cdot\frac{1}{\varepsilon}=1$, always
+\item shrink $\varepsilon\to0$: infinitely narrow, infinitely tall, \keyres{area still $1$}
+\end{itemize}
+Think of a hammer tap: instant, but it delivers a definite amount of hit. That is why the CT button has \keyres{area} $1$, while the DT button has \keyres{height} $1$:
+$$\int_{-\infty}^{\infty}\delta(t)\,dt=1$$
+\term{CT switch} $u(t)$: $0$ for $t<0$, $1$ for $t>0$. The CT running total is an integral: $u(t)=\int_{-\infty}^{t}\delta(\tau)\,d\tau$. Going back is a derivative: $\delta(t)=\frac{du}{dt}$. A jump in a signal becomes a button in its derivative.
+
+\trap{$\delta$ is a \emph{function} of $t$, like $\sin(t)$, not a variable. $\int\delta(t)\,dt$ is \emph{not} $\delta^2$. You never antidifferentiate $\delta$ with a formula. You use its one fact: the area is $1$.}
+
+\filbreak \subsubsection{Sifting: the camera flash}
+$$\int_{-\infty}^{\infty}x(t)\,\delta(t-t_0)\,dt=x(t_0)$$
+\term{Read it in English}: fire a flash at $t_0$, and see what value of $x$ it captures.
+\begin{enumerate}
+\item $\delta(t-t_0)$ is zero everywhere except $t=t_0$, so only $x(t_0)$ matters.
+\item At that one instant, $x(t_0)$ is a constant, so it comes out of the integral.
+\item What is left is $\int\delta\,dt=1$, the area.
+\end{enumerate}
+\term{Three questions, every time}:
+\begin{enumerate}
+\item \term{Where does the flash sit?} Set the inside of $\delta$ to $0$ and solve for $t_0$.
+\item \term{Is it in the window?} Check that $t_0$ is inside the limits. If not, the answer is $0$: the flash went off where you were not looking.
+\item \term{What does it capture?} Plug $t_0$ into everything except the $\delta$.
+\end{enumerate}
+The final answer is a plain number, with no $\delta$ left in it.
+
+\term{Sampling form}: $x(t)\,\delta(t-t_0)=x(t_0)\,\delta(t-t_0)$. DT: $x[n]\,\delta[n-n_0]=x[n_0]\,\delta[n-n_0]$.
+
+\filbreak \subsubsection{Which way? --- switch or button}
 {\small\renewcommand{\arraystretch}{1.2}
 \begin{tabular}{@{}p{0.30\linewidth}p{0.66\linewidth}@{}}
 \term{Given} $\to$ \term{find} & \term{Do this} \\\hline
@@ -1012,79 +1203,56 @@ $u\to\delta$ (DT) & first difference: $\delta[n]=u[n]-u[n-1]$ \\
 $\delta\to u$ (DT) & running sum: $u[n]=\sum_{k=-\infty}^{n}\delta[k]$ \\
 \end{tabular}}
 \par\vspace{2pt}
-\warn{CT uses derivatives and integrals. DT uses differences and sums.}
+\trap{CT uses derivatives and integrals. DT uses differences and sums.}
+
+\wk{16}{$\int_{-2}^{6}(3t+1)\,\delta(t-4)\,dt$}
+\stepbox{1. WHERE DOES THE FLASH SIT?}{$t-4=0$ $\Rightarrow$ $t_0=4$}
+\stepdown
+\stepbox{2. IS IT IN THE WINDOW?}{Is $4$ between $-2$ and $6$? Yes \checkmark}
+\stepdown
+\stepbox{3. WHAT DOES IT CAPTURE?}{$3(4)+1=\keyres{13}$}
+\stepdown
+\stepbox{4. WHY THAT IS LEGAL}{At $t=4$, $3t+1$ is the constant $13$: \; $13\int_{-2}^{6}\delta(t-4)\,dt=13\cdot1=13$}
+
+\wk{10}{$\int_{1}^{3}5\,\delta(t)\,dt$}
+\stepbox{1. WHERE DOES THE FLASH SIT?}{The inside is $t$: \; $t_0=0$}
+\stepdown
+\stepbox{2. IS IT IN THE WINDOW?}{$0$ is not in $[1,3]$ $\Rightarrow$ the integral is $\keyres{0}$ \; \why{with limits $-\infty$ to $\infty$, it would be $5\cdot1$}}
 
 \wk{12}{$\int_{-\infty}^{\infty}(t^2+1)\,\delta(t-2)\,dt$}
-\stepbox{1. FIND THE IMPULSE}{$\delta(t-2)$ is non-zero only where $t-2=0$: \; $t_0=2$}
+\stepbox{1. WHERE DOES THE FLASH SIT?}{$t-2=0$ $\Rightarrow$ $t_0=2$}
 \stepdown
-\stepbox{2. INSIDE THE LIMITS?}{$2$ is inside $(-\infty,\infty)$ \checkmark}
+\stepbox{2. IS IT IN THE WINDOW?}{$2$ is inside $(-\infty,\infty)$ \checkmark}
 \stepdown
-\stepbox{3. EVALUATE THE REST AT $t_0$}{$2^2+1=4+1=\keyres{5}$}
+\stepbox{3. WHAT DOES IT CAPTURE?}{$2^2+1=4+1=\keyres{5}$}
 
 \wk{10}{$\int_0^5 e^{t}\,\delta(t+1)\,dt$}
-\stepbox{1. FIND THE IMPULSE}{$t+1=0$ $\Rightarrow$ $t_0=-1$}
+\stepbox{1. WHERE DOES THE FLASH SIT?}{$t+1=0$ $\Rightarrow$ $t_0=-1$}
 \stepdown
-\stepbox{2. INSIDE THE LIMITS?}{$-1$ is not in $[0,5]$ $\Rightarrow$ the integral is $\keyres{0}$}
+\stepbox{2. IS IT IN THE WINDOW?}{$-1$ is not in $[0,5]$ $\Rightarrow$ the integral is $\keyres{0}$}
 
 \wk{10}{DT: $\sum_{n=-\infty}^{\infty}n^2\,\delta[n-3]$}
-\stepbox{1. FIND THE IMPULSE}{$n-3=0$ $\Rightarrow$ $n_0=3$}
+\stepbox{1. WHERE IS THE BUTTON?}{$n-3=0$ $\Rightarrow$ $n_0=3$}
 \stepdown
-\stepbox{2. EVALUATE AT $n_0$}{$3^2=\keyres{9}$}
+\stepbox{2. WHAT DOES IT CAPTURE?}{$3^2=\keyres{9}$}
 
-\wk{18}{write a pulse of height $2$ on $[1,4)$ with steps, then go down and back}
-\stepbox{1. TURN ON AT $t=1$}{A jump up of $2$: \; $+2u(t-1)$}
+\wk{18}{write a pulse of height $2$ on $[1,4)$ with switches, then go down and back}
+\stepbox{1. SWITCH ON AT $t=1$}{A jump up of $2$: \; $+2u(t-1)$}
 \stepdown
-\stepbox{2. TURN OFF AT $t=4$}{A jump down of $2$: \; $-2u(t-4)$}
+\stepbox{2. SWITCH OFF AT $t=4$}{A jump down of $2$: \; $-2u(t-4)$}
 \stepdown
 \stepbox{3. ADD}{$x(t)=\keyres{2u(t-1)-2u(t-4)}$}
 \stepdown
 \stepbox{4. CHECK TWO TIMES}{$t=2$: $2(1)-2(0)=2$ \checkmark \quad $t=5$: $2(1)-2(1)=0$ \checkmark}
 \stepdown
-\stepbox{5. DIFFERENTIATE (DOWN)}{Each $u$ becomes a $\delta$: \; $\dfrac{dx}{dt}=\keyres{2\delta(t-1)-2\delta(t-4)}$}
+\stepbox{5. DIFFERENTIATE (DOWN)}{Each switch becomes a button: \; $\dfrac{dx}{dt}=\keyres{2\delta(t-1)-2\delta(t-4)}$}
 \stepdown
-\stepbox{6. INTEGRATE (BACK)}{Each $\delta$ becomes a $u$: \; $2u(t-1)-2u(t-4)$ \checkmark}
+\stepbox{6. INTEGRATE (BACK)}{Each button becomes a switch: \; $2u(t-1)-2u(t-4)$ \checkmark}
 
-\wk{12}{DT: $x[n]=u[n]-u[n-3]$}
-\stepbox{1. TABLE}{$n=-1$: $0-0=0$. \; $n=0,1,2$: $1-0=1$. \; $n=3$: $1-1=0$.}
-\stepdown
-\stepbox{2. FIRST DIFFERENCE}{$u[n]-u[n-1]=\delta[n]$ and $u[n-3]-u[n-4]=\delta[n-3]$ \\ $x[n]-x[n-1]=\keyres{\delta[n]-\delta[n-3]}$}
-
-\filbreak \subsubsection{Any DT signal as a sum of shifted, weighted impulses}
-Each stem of a DT signal is one impulse: a $\delta$ moved to the stem's position and multiplied by the stem's height.
-$$x[n]=\sum_{k=-\infty}^{\infty}x[k]\,\delta[n-k]$$
-\begin{itemize}
-\item $\delta[n-k]$ is $1$ only at $n=k$. So it puts a stem at position $k$.
-\item $x[k]$ is the \term{weight}: the height of that stem.
-\item At each $n$, every term is $0$ except $k=n$. That term is $x[n]$. This is DT sifting, used the other way.
-\end{itemize}
-\warn{The sign inside $\delta$ is opposite to the position.} A stem at $n=-1$ is $\delta[n+1]$. A stem at $n=3$ is $\delta[n-3]$.
-
-\wk{14}{write $x[-1]=2$, $x[0]=-1$, $x[1]=3$, $x[3]=1$ (others $0$) with impulses}
-\stepbox{1. STEM AT $n=-1$, HEIGHT $2$}{$2\,\delta[n-(-1)]=2\,\delta[n+1]$}
-\stepdown
-\stepbox{2. STEM AT $n=0$, HEIGHT $-1$}{$-1\cdot\delta[n]=-\delta[n]$}
-\stepdown
-\stepbox{3. STEM AT $n=1$, HEIGHT $3$}{$3\,\delta[n-1]$}
-\stepdown
-\stepbox{4. STEM AT $n=3$, HEIGHT $1$}{$\delta[n-3]$ \; \why{$x[2]=0$, so no term for $n=2$}}
-\stepdown
-\stepbox{5. ADD}{$x[n]=\keyres{2\delta[n+1]-\delta[n]+3\delta[n-1]+\delta[n-3]}$}
-
-\wk{12}{(reverse) read the stems of $x[n]=4\delta[n-2]-2\delta[n+3]$}
-\stepbox{1. FIRST TERM}{$\delta[n-2]$ is $1$ at $n=2$. \; Stem: $x[2]=\keyres{4}$}
-\stepdown
-\stepbox{2. SECOND TERM}{$\delta[n+3]$ is $1$ at $n=-3$. \; Stem: $x[-3]=\keyres{-2}$}
-\stepdown
-\stepbox{3. CHECK AT $n=2$}{$4\delta[0]-2\delta[5]=4(1)-2(0)=4$ \checkmark}
-
-\wk{10}{a pulse as impulses: $u[n]-u[n-3]$}
-\stepbox{1. STEMS}{$1$ at $n=0,1,2$ (section 10 table above)}
-\stepdown
-\stepbox{2. ONE IMPULSE PER STEM}{$\keyres{\delta[n]+\delta[n-1]+\delta[n-2]}$}
-
-\filbreak \subsubsection{The ramp signal}
-The \term{unit ramp} is $0$ before time $0$, then rises with slope $1$:
+\filbreak \subsubsection{The ramp: the running total of the switch}
+The \term{unit ramp} is $0$ before time $0$, then climbs with slope $1$:
 $$r(t)=t\,u(t)=\begin{cases}t & t\geq0\\0 & t<0\end{cases} \qquad r[n]=n\,u[n]=\begin{cases}n & n\geq0\\0 & n<0\end{cases}$$
+It grows without limit, so it is \keyres{neither} an energy nor a power signal.
 
 \nopagebreak
 \noindent
@@ -1105,25 +1273,27 @@ width=4.9cm, height=3.4cm]
 \end{axis}
 \end{tikzpicture}
 
+\keyres{The chain}:
+$$\text{button }\delta \xrightarrow{\text{running total}} \text{switch }u \xrightarrow{\text{running total}} \text{ramp }r$$
+Going back: differentiate (CT) or take the first difference (DT).
+
 \term{Other ways to write the ramp}:
 {\small\renewcommand{\arraystretch}{1.25}
 \begin{tabular}{@{}p{0.40\linewidth}p{0.56\linewidth}@{}}
 \term{Form} & \term{Formula} \\\hline
-CT: integral of the step & $r(t)=\int_{-\infty}^{t}u(\tau)\,d\tau$ \\
+CT: integral of the switch & $r(t)=\int_{-\infty}^{t}u(\tau)\,d\tau$ \\
 CT: derivative of the ramp & $\dfrac{dr}{dt}=u(t)$ \st\\
-DT: running sum of the step & $r[n]=\sum_{k=-\infty}^{n-1}u[k]$ \\
+DT: running sum of the switch & $r[n]=\sum_{k=-\infty}^{n-1}u[k]$ \\
 DT: first difference & $r[n]-r[n-1]=u[n-1]$ \\
-DT: sum of shifted steps & $r[n]=\sum_{k=1}^{\infty}u[n-k]$ \\
-DT: sum of impulses & $r[n]=\sum_{k=0}^{\infty}k\,\delta[n-k]$ \\
+DT: sum of shifted switches & $r[n]=\sum_{k=1}^{\infty}u[n-k]$ \\
+DT: sum of buttons & $r[n]=\sum_{k=0}^{\infty}k\,\delta[n-k]$ \\
 \end{tabular}}
 \par\vspace{2pt}
-\keyres{The chain}: impulse $\xrightarrow{\text{accumulate}}$ step $\xrightarrow{\text{accumulate}}$ ramp. Going back, differentiate (CT) or take the first difference (DT).
+\trap{The DT sum stops at $n-1$, not $n$. $r[1]=1$: only $u[0]$ is added. With $n$ as the top, you get $r[n+1]$.}
 
-\term{Shifted and scaled}: $A\,r(t-t_0)$ is $0$ before $t_0$, then rises with slope $A$.
+\term{Shifted and scaled}: $A\,r(t-t_0)$ is $0$ before $t_0$, then climbs with slope $A$.
 
-\term{Graphs from ramps and steps}: go left to right. At each \keyres{corner}, add a ramp whose weight is the \emph{change in slope}. At each \keyres{jump}, add a step whose weight is the \emph{size of the jump}.
-
-\warn{The DT sum stops at $n-1$, not $n$.} $r[1]=1$: only $u[0]$ is added. With $n$ as the top, you get $r[n+1]$.
+\term{Graphs from ramps and switches}: walk left to right. At each \keyres{corner}, add a ramp weighted by the \emph{change in slope}. At each \keyres{jump}, add a switch weighted by the \emph{size of the jump}.
 
 \wk{14}{check $r[n]=\sum_{k=-\infty}^{n-1}u[k]$ at $n=0$, $1$, $3$}
 \stepbox{1. $n=0$}{Sum of $u[k]$ for $k\leq-1$: \; all $0$ $\Rightarrow$ $0=r[0]$ \checkmark}
@@ -1172,7 +1342,7 @@ DT: sum of impulses & $r[n]=\sum_{k=0}^{\infty}k\,\delta[n-k]$ \\
 \stepdown
 \stepbox{4. CHECK $t=5$}{$2(4)-2(2)=8-4=4$ \checkmark}
 
-\wk{12}{a step plus a ramp: a jump of $3$ at $t=0$, then slope $-1$ until it reaches $0$}
+\wk{12}{a switch plus a ramp: a jump of $3$ at $t=0$, then slope $-1$ until it reaches $0$}
 \stepbox{1. JUMP AT $t=0$}{$+3u(t)$}
 \stepdown
 \stepbox{2. CORNER AT $t=0$}{Slope $0\to-1$ $\Rightarrow$ $-r(t)$}
@@ -1183,11 +1353,13 @@ DT: sum of impulses & $r[n]=\sum_{k=0}^{\infty}k\,\delta[n-k]$ \\
 
 % ------------------------------------------------------------ 11
 \filbreak \subsection{11. systems and interconnections}
-A \term{system} changes an input signal into an output signal: $x(t)\to y(t)$ or $x[n]\to y[n]$.
+\idea{A \term{system} is a machine: a signal goes in, a different signal comes out, $x\to y$. A speaker, a filter, a bank account. A \term{difference equation} is the machine's recipe: how to cook up $y[n]$ from inputs, and sometimes from its own past outputs.}
+
+Machines can be hooked together three ways:
 \begin{itemize}
-\item \term{Series} (cascade): the output of $S_1$ is the input of $S_2$.
-\item \term{Parallel}: $x$ goes into both systems. The outputs add.
-\item \term{Feedback}: the output goes through $S_2$ and adds back to the input of $S_1$.
+\item \term{Series} (cascade): an assembly line. The output of $S_1$ is the input of $S_2$.
+\item \term{Parallel}: $x$ goes into both machines at once. Their outputs add.
+\item \term{Feedback}: the output loops back through $S_2$ and adds into the input. The machine hears its own past.
 \end{itemize}
 
 \nopagebreak
@@ -1222,7 +1394,7 @@ A \term{system} changes an input signal into an output signal: $x(t)\to y(t)$ or
 \wk{12}{series: $S_1$: $w[n]=2x[n]$, then $S_2$: $y[n]=w[n]-w[n-1]$}
 \stepbox{1. OUTPUT OF $S_1$}{$w[n]=2x[n]$}
 \stepdown
-\stepbox{2. SHIFT IT FOR $S_2$}{$w[n-1]=2x[n-1]$ \; \why{replace $n$ with $n-1$}}
+\stepbox{2. SHIFT IT FOR $S_2$}{$w[n-1]=2x[n-1]$ \; \why{replace every $n$ with $n-1$}}
 \stepdown
 \stepbox{3. SUBSTITUTE INTO $S_2$}{$y[n]=\keyres{2x[n]-2x[n-1]}$}
 
@@ -1231,24 +1403,23 @@ A \term{system} changes an input signal into an output signal: $x(t)\to y(t)$ or
 \stepdown
 \stepbox{2. ADD}{$y[n]=\keyres{2x[n]+x[n-1]}$}
 
-\wk{16}{feedback: $y[n]=x[n]+0.5\,y[n-1]$, input $x[n]=\delta[n]$, $y[-1]=0$}
-\stepbox{1. $n=0$}{$y[0]=\delta[0]+0.5\,y[-1]=1+0.5(0)=1$}
+\wk{16}{feedback: $y[n]=x[n]+0.5\,y[n-1]$, input: press the button, $x[n]=\delta[n]$, $y[-1]=0$}
+\stepbox{1. $n=0$}{$y[0]=\delta[0]+0.5\,y[-1]=1+0.5(0)=1$ \; \why{the press}}
 \stepdown
-\stepbox{2. $n=1$}{$y[1]=\delta[1]+0.5\,y[0]=0+0.5(1)=0.5$}
+\stepbox{2. $n=1$}{$y[1]=\delta[1]+0.5\,y[0]=0+0.5(1)=0.5$ \; \why{button released; only the echo}}
 \stepdown
 \stepbox{3. $n=2$}{$y[2]=0+0.5(0.5)=0.25$}
 \stepdown
 \stepbox{4. $n=3$}{$y[3]=0+0.5(0.25)=0.125$}
 \stepdown
-\stepbox{5. PATTERN}{$y[n]=\keyres{(0.5)^n\,u[n]}$ \; \why{each step multiplies by $0.5$}}
+\stepbox{5. PATTERN}{$y[n]=\keyres{(0.5)^n\,u[n]}$ \; \why{each echo is half the last}}
 
 \filbreak \subsubsection{DT systems as difference equations}
-A DT system is often a \term{difference equation}: $y[n]$ is written with present and past inputs, and sometimes past outputs.
 {\small\renewcommand{\arraystretch}{1.25}
 \begin{tabular}{@{}p{0.30\linewidth}p{0.36\linewidth}p{0.28\linewidth}@{}}
 \term{System} & \term{Difference equation} & \term{What it does} \\\hline
-unit delay & $y[n]=x[n-1]$ & shifts right $1$ \\
-gain & $y[n]=a\,x[n]$ & scales \\
+unit delay & $y[n]=x[n-1]$ & repeats the input one step late \\
+gain & $y[n]=a\,x[n]$ & volume knob \\
 first difference & $y[n]=x[n]-x[n-1]$ & change since the last sample \\
 3-point moving average & $y[n]=\dfrac{x[n]+x[n-1]+x[n-2]}{3}$ & smooths \st\\
 accumulator & $y[n]=\sum_{k=-\infty}^{n}x[k]$ & running total \\
@@ -1256,7 +1427,9 @@ accumulator, recursive & $y[n]=y[n-1]+x[n]$ & same running total \\
 bank balance & $y[n]=1.01\,y[n-1]+x[n]$ & $1\%$ interest plus deposit \\
 \end{tabular}}
 \par\vspace{2pt}
-\term{Nonrecursive} (FIR): $y[n]$ uses inputs only. \term{Recursive} (IIR): $y[n]$ also uses past outputs $y[n-1]$, \ldots, and needs a start value such as $y[-1]=0$.
+The accumulator is the ``running total'' machine. Feed it the button and out comes the switch. Feed it the switch and out comes a ramp.
+
+\term{Nonrecursive} (FIR): $y[n]$ uses inputs only. \term{Recursive} (IIR): $y[n]$ also uses its own past outputs $y[n-1]$, \ldots, and needs a starting value such as $y[-1]=0$.
 
 \term{Block diagram parts}:
 {\small
@@ -1264,7 +1437,7 @@ bank balance & $y[n]=1.01\,y[n-1]+x[n]$ & $1\%$ interest plus deposit \\
 \term{Part} & \term{What it does} \\\hline
 adder (circle, $+$) & output $=$ sum of its inputs \\[1pt]
 gain (box with $a$) & output $=a\cdot$input \\[1pt]
-unit delay (box $D$) & input $x[n]$, output $x[n-1]$ \\[1pt]
+unit delay (box $D$) & a one-step memory: in $x[n]$, out $x[n-1]$ \\[1pt]
 branch point (dot) & copies a signal to two places \\
 \end{tabular}}
 
@@ -1313,7 +1486,7 @@ equation $\to$ diagram & one $D$ per shift ($n-1$, $n-2$, \ldots); one gain per 
 equation $\to$ output values & put in $n=0,1,2,\ldots$ in order, one step at a time \\
 \end{tabular}}
 \par\vspace{2pt}
-\warn{A delay on the output side means feedback.} If a $D$ takes $y[n]$ and feeds back into the adder, the equation has $y[n-1]$: it is recursive.
+\trap{A delay on the output side means feedback. If a $D$ takes $y[n]$ back into the adder, the equation has $y[n-1]$: it is recursive.}
 
 \wk{16}{(diagram to equation) read the moving-average diagram}
 \stepbox{1. NAME THE WIRES}{After the first $D$: $x[n-1]$. \; After the second $D$: $x[n-2]$.}
@@ -1361,14 +1534,14 @@ equation $\to$ output values & put in $n=0,1,2,\ldots$ in order, one step at a t
 \stepdown
 \stepbox{6. $n=5$ AND LATER}{All three inputs are $0$ $\Rightarrow$ $y=0$}
 
-\wk{16}{run the accumulator $y[n]=y[n-1]+x[n]$ with $x[n]=u[n]$, $y[-1]=0$}
+\wk{16}{run the accumulator $y[n]=y[n-1]+x[n]$ with the switch $x[n]=u[n]$, $y[-1]=0$}
 \stepbox{1. $n=0$}{$y[0]=y[-1]+u[0]=0+1=1$}
 \stepdown
 \stepbox{2. $n=1$}{$y[1]=y[0]+u[1]=1+1=2$}
 \stepdown
 \stepbox{3. $n=2$}{$y[2]=2+1=3$}
 \stepdown
-\stepbox{4. PATTERN}{$y[n]=(n+1)\,u[n]=\keyres{r[n+1]}$ \; \why{accumulating a step gives a ramp}}
+\stepbox{4. PATTERN}{$y[n]=(n+1)\,u[n]=\keyres{r[n+1]}$ \; \why{the running total of the switch is a ramp}}
 
 \wk{12}{(both forms agree) accumulator as a sum, $x[n]=u[n]$, at $n=2$}
 \stepbox{1. SUM FORM}{$y[2]=\sum_{k=-\infty}^{2}u[k]=u[0]+u[1]+u[2]$}
@@ -1377,93 +1550,102 @@ equation $\to$ output values & put in $n=0,1,2,\ldots$ in order, one step at a t
 
 % ------------------------------------------------------------ 12
 \filbreak \subsection{12. system properties}
-\begin{itemize}
-\item \term{Memoryless}: $y$ at time $n$ uses only $x$ at time $n$.
-\item \term{Causal}: $y$ at time $n$ uses no $x$ from a later time.
-\item \term{Stable} (BIBO): each bounded input gives a bounded output.
-\item \term{Invertible}: different inputs give different outputs. You can solve for $x$.
-\item \term{Time invariant}: a delay in $x$ gives the same delay in $y$.
-\item \term{Linear}: superposition holds. If $x_1\to y_1$ and $x_2\to y_2$, then $ax_1+bx_2\to ay_1+by_2$.
-\end{itemize}
-\warn{Quick linearity test}: a linear system gives $y=0$ for $x=0$. If it does not, it is not linear.
+\idea{Properties are yes/no questions you ask about a machine. Each one is separate: a machine can pass one and fail another.}
 
-\warn{Hidden time variance}: a $t$ or $n$ outside of $x(\cdot)$, or inside it as $x(2t)$ or $x(-t)$, is a warning sign.
+{\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}p{0.24\linewidth}p{0.72\linewidth}@{}}
+\term{Property} & \term{In plain English} \\\hline
+memoryless & It only looks at \emph{now}. No looking back, no looking ahead. \\
+causal & It cannot see the future. It may remember the past. \\
+stable (BIBO) & It does not blow up. If the input stays under a ceiling, so does the output. \\
+invertible & You can undo it. Different inputs give different outputs, so you can solve for $x$. \\
+time invariant & It ignores the clock. Delay the input, and the output is the same, just delayed. \\
+linear & Scale in $\to$ scale out, and add in $\to$ add out. If $x_1\to y_1$ and $x_2\to y_2$, then $ax_1+bx_2\to ay_1+by_2$. \\
+\end{tabular}}
 
-\warn{$y(t)=x(-t)$ is not causal}: at $t=-1$ it needs $x(1)$, a later time.
+\filbreak \subsubsection{Quick red flags}
+\trap{\textbf{Linearity}: put in $x=0$. A linear machine must give $y=0$. If it gives anything else (like the $+3$ in $2x+3$), it is not linear.}
+\trap{\textbf{Time invariance}: an $n$ or $t$ \emph{outside} of $x(\cdot)$, like $n\,x[n]$, means the machine reads the clock. Scaling or flipping inside, like $x(2t)$ or $x(-t)$, also fails.}
+\trap{\textbf{Causality}: look for an \emph{advance}, like $x[n+1]$. And $y(t)=x(-t)$ is not causal: at $t=-1$ it needs $x(1)$, a later time.}
+\trap{\textbf{Stability}: an $n$ multiplying $x$, or a sum with no end, can blow up.}
 
 \wk{10}{memory and causality of $y[n]=x[n]+x[n-1]$ and $y[n]=x[n+1]$}
 \stepbox{1. $y[n]=x[n]+x[n-1]$}{It uses $x[n-1]$, a past value. \; \warn{has memory}, \keyres{causal}}
 \stepdown
-\stepbox{2. $y[n]=x[n+1]$}{At $n=0$ it needs $x[1]$, a later value. \; \warn{not causal}}
+\stepbox{2. $y[n]=x[n+1]$}{At $n=0$ it needs $x[1]$, a future value. \; \warn{not causal}}
 
 \wk{12}{stability of $y[n]=\sum_{k=-\infty}^{n}x[k]$}
-\stepbox{1. PICK A BOUNDED INPUT}{$x[n]=u[n]$. It is never larger than $1$.}
+\stepbox{1. PICK A CAPPED INPUT}{The switch, $x[n]=u[n]$. It never goes above $1$.}
 \stepdown
-\stepbox{2. COMPUTE THE OUTPUT}{$y[n]=\sum_{k=0}^{n}1=n+1$ for $n\geq0$}
+\stepbox{2. COMPUTE THE OUTPUT}{$y[n]=\sum_{k=0}^{n}1=n+1$ for $n\geq0$ \; \why{the running total of the switch: a ramp}}
 \stepdown
-\stepbox{3. IS IT BOUNDED?}{$n+1$ grows without limit $\Rightarrow$ \warn{not stable}}
+\stepbox{3. IS IT CAPPED?}{$n+1$ grows without limit $\Rightarrow$ \warn{not stable}}
 
 \wk{10}{invertibility of $y=2x$ and $y=x^2$}
 \stepbox{1. $y=2x$}{Solve: $x=\dfrac{y}{2}$ $\Rightarrow$ \keyres{invertible}}
 \stepdown
-\stepbox{2. $y=x^2$}{$x=1$ and $x=-1$ both give $y=1$ $\Rightarrow$ \warn{not invertible}}
+\stepbox{2. $y=x^2$}{$x=1$ and $x=-1$ both give $y=1$ $\Rightarrow$ \warn{not invertible} \; \why{squaring throws away the sign}}
+
+\filbreak \subsubsection{Time invariance: two paths, then compare}
+\term{Path 1}: delay the input first, then run the machine. \term{Path 2}: run the machine, then delay the output. If both give the same thing, the machine ignores the clock.
 
 \wk{14}{time invariance of $y[n]=n\,x[n]$}
-\stepbox{1. DELAY THE INPUT, THEN APPLY THE SYSTEM}{New input $x_2[n]=x[n-n_0]$. \; Output: $y_2[n]=n\,x[n-n_0]$}
+\stepbox{1. PATH 1: DELAY IN, THEN MACHINE}{New input $x_2[n]=x[n-n_0]$. \; Output: $y_2[n]=n\,x[n-n_0]$}
 \stepdown
-\stepbox{2. APPLY THE SYSTEM, THEN DELAY THE OUTPUT}{Replace each $n$ in $y[n]=n\,x[n]$ with $n-n_0$: \; $y[n-n_0]=(n-n_0)\,x[n-n_0]$}
+\stepbox{2. PATH 2: MACHINE, THEN DELAY OUT}{Replace each $n$ in $y[n]=n\,x[n]$ with $n-n_0$: \; $y[n-n_0]=(n-n_0)\,x[n-n_0]$}
 \stepdown
-\stepbox{3. COMPARE}{$n\,x[n-n_0]\neq(n-n_0)\,x[n-n_0]$ $\Rightarrow$ \warn{time varying}}
+\stepbox{3. COMPARE}{$n\,x[n-n_0]\neq(n-n_0)\,x[n-n_0]$ $\Rightarrow$ \warn{time varying} \; \why{the lone $n$ reads the clock}}
 
 \wk{14}{time invariance of $y(t)=x(2t)$}
-\stepbox{1. DELAY THE INPUT, THEN APPLY THE SYSTEM}{$x_2(t)=x(t-t_0)$. \; $y_2(t)=x_2(2t)=x(2t-t_0)$ \; \why{put $2t$ where $t$ was in $x_2$}}
+\stepbox{1. PATH 1: DELAY IN, THEN MACHINE}{$x_2(t)=x(t-t_0)$. \; $y_2(t)=x_2(2t)=x(2t-t_0)$ \; \why{put $2t$ where $t$ was in $x_2$}}
 \stepdown
-\stepbox{2. APPLY THE SYSTEM, THEN DELAY THE OUTPUT}{$y(t-t_0)=x\big(2(t-t_0)\big)=x(2t-2t_0)$}
+\stepbox{2. PATH 2: MACHINE, THEN DELAY OUT}{$y(t-t_0)=x\big(2(t-t_0)\big)=x(2t-2t_0)$}
 \stepdown
 \stepbox{3. COMPARE}{$x(2t-t_0)\neq x(2t-2t_0)$ $\Rightarrow$ \warn{time varying}}
 
 \wk{12}{time invariance of $y[n]=x[n-1]$}
-\stepbox{1. DELAY THE INPUT, THEN APPLY THE SYSTEM}{$y_2[n]=x_2[n-1]=x[n-1-n_0]$}
+\stepbox{1. PATH 1: DELAY IN, THEN MACHINE}{$y_2[n]=x_2[n-1]=x[n-1-n_0]$}
 \stepdown
-\stepbox{2. APPLY THE SYSTEM, THEN DELAY THE OUTPUT}{$y[n-n_0]=x[n-n_0-1]$}
+\stepbox{2. PATH 2: MACHINE, THEN DELAY OUT}{$y[n-n_0]=x[n-n_0-1]$}
 \stepdown
 \stepbox{3. COMPARE}{The same $\Rightarrow$ \keyres{time invariant}}
+
+\filbreak \subsubsection{Linearity: combine first, or combine after?}
+\term{Path 1}: mix the inputs ($ax_1+bx_2$), then run the machine. \term{Path 2}: run each input separately, then mix the outputs ($ay_1+by_2$). Linear means both paths agree.
 
 \wk{14}{linearity of $y[n]=2x[n]+3$}
 \stepbox{1. QUICK TEST}{$x=0$ gives $y=3\neq0$ $\Rightarrow$ not linear. The full test confirms it:}
 \stepdown
-\stepbox{2. OUTPUT FOR THE COMBINED INPUT}{$x_3=ax_1+bx_2$. \; $y_3=2(ax_1+bx_2)+3=2ax_1+2bx_2+3$}
+\stepbox{2. PATH 1: MIX, THEN MACHINE}{$x_3=ax_1+bx_2$. \; $y_3=2(ax_1+bx_2)+3=2ax_1+2bx_2+3$}
 \stepdown
-\stepbox{3. COMBINATION OF THE OUTPUTS}{$ay_1+by_2=a(2x_1+3)+b(2x_2+3)=2ax_1+2bx_2+3a+3b$}
+\stepbox{3. PATH 2: MACHINE, THEN MIX}{$ay_1+by_2=a(2x_1+3)+b(2x_2+3)=2ax_1+2bx_2+3a+3b$}
 \stepdown
 \stepbox{4. COMPARE}{$3\neq3a+3b$ for most $a$, $b$ $\Rightarrow$ \warn{not linear} \; \why{linear plus a constant: \term{incrementally linear}}}
 
 \wk{12}{linearity of $y[n]=n\,x[n]$}
-\stepbox{1. OUTPUT FOR THE COMBINED INPUT}{$y_3=n\big(ax_1[n]+bx_2[n]\big)=a\,n\,x_1[n]+b\,n\,x_2[n]$}
+\stepbox{1. PATH 1: MIX, THEN MACHINE}{$y_3=n\big(ax_1[n]+bx_2[n]\big)=a\,n\,x_1[n]+b\,n\,x_2[n]$}
 \stepdown
-\stepbox{2. COMBINATION OF THE OUTPUTS}{$ay_1+by_2=a\,n\,x_1[n]+b\,n\,x_2[n]$}
+\stepbox{2. PATH 2: MACHINE, THEN MIX}{$ay_1+by_2=a\,n\,x_1[n]+b\,n\,x_2[n]$}
 \stepdown
 \stepbox{3. COMPARE}{The same $\Rightarrow$ \keyres{linear} \; \why{linear, but time varying: the properties are separate}}
 
-\filbreak \subsubsection{Stability with a bound $B$ --- the procedure}
-\term{BIBO stable}: each \keyres{bounded} input gives a \keyres{bounded} output. Bounded means there is a finite number $B$ with
-$$\lvert x[n]\rvert\leq B<\infty \quad\text{for every } n$$
+\filbreak \subsubsection{Stability with a ceiling $B$ --- the procedure}
+\idea{\term{BIBO} means \term{bounded in, bounded out}. ``Bounded'' just means there is a ceiling: some finite number $B$ the input never goes above in size, $\lvert x[n]\rvert\leq B<\infty$. Stable means the output has a ceiling too. This is Lesson 1 again: it asks whether a signal's size stays finite.}
 \term{To show stable}:
 \begin{enumerate}
-\item Assume $\lvert x[n]\rvert\leq B$ for every $n$. Then each shifted input is also $\leq B$: $\lvert x[n-1]\rvert\leq B$.
+\item Assume the input is capped: $\lvert x[n]\rvert\leq B$ for every $n$. Shifted inputs are capped too: $\lvert x[n-1]\rvert\leq B$.
 \item Take the absolute value of the equation.
-\item Use $\lvert a+b\rvert\leq\lvert a\rvert+\lvert b\rvert$ and $\lvert c\,x\rvert=\lvert c\rvert\,\lvert x\rvert$.
+\item Split it with $\lvert a+b\rvert\leq\lvert a\rvert+\lvert b\rvert$ and $\lvert c\,x\rvert=\lvert c\rvert\,\lvert x\rvert$.
 \item Replace each $\lvert x[\cdot]\rvert$ with $B$.
-\item If the result is a \keyres{finite number} (no $n$ left, no infinite sum), the system is stable.
+\item If you are left with a \keyres{finite number} (no $n$ left, no endless sum), the output is capped: stable.
 \end{enumerate}
-\term{To show unstable}: find \keyres{one} bounded input (for example $x[n]=1$ or $u[n]$) whose output grows without limit.
+\term{To show unstable}: find \keyres{one} capped input (for example $x[n]=1$, or the switch $u[n]$) whose output grows without limit. One counterexample is enough.
 
-\warn{An $n$ that multiplies $x$ means the bound fails.} $\lvert n\,x[n]\rvert\leq\lvert n\rvert B$ grows with $n$.
-
-\warn{A sum with no end can fail.} The accumulator adds $B$ again at each step.
+\trap{An $n$ multiplying $x$ breaks the ceiling: $\lvert n\,x[n]\rvert\leq\lvert n\rvert B$ grows with $n$.}
+\trap{An endless sum can break it: the accumulator adds another $B$ at every step.}
 
 \wk{14}{is $y[n]=2x[n]+x[n-1]$ stable?}
-\stepbox{1. ASSUME A BOUND}{$\lvert x[n]\rvert\leq B$ for every $n$, so $\lvert x[n-1]\rvert\leq B$ too}
+\stepbox{1. ASSUME A CEILING}{$\lvert x[n]\rvert\leq B$ for every $n$, so $\lvert x[n-1]\rvert\leq B$ too}
 \stepdown
 \stepbox{2. ABSOLUTE VALUE}{$\lvert y[n]\rvert=\lvert 2x[n]+x[n-1]\rvert$}
 \stepdown
@@ -1479,21 +1661,21 @@ $$\lvert x[n]\rvert\leq B<\infty \quad\text{for every } n$$
 \stepbox{2. PUT IN $B$}{$\leq\frac13(B+B+B)=B$ $\Rightarrow$ \keyres{stable}}
 
 \wk{12}{is $y[n]=n\,x[n]$ stable?}
-\stepbox{1. TRY A BOUNDED INPUT}{$x[n]=1$ for all $n$. \; $B=1$}
+\stepbox{1. TRY A CAPPED INPUT}{$x[n]=1$ for all $n$. \; $B=1$}
 \stepdown
 \stepbox{2. OUTPUT}{$y[n]=n\cdot1=n$}
 \stepdown
 \stepbox{3. CONCLUDE}{$n$ grows without limit $\Rightarrow$ \warn{not stable} \; \why{one counterexample is enough}}
 
 \wk{12}{is $y[n]=e^{x[n]}$ stable?}
-\stepbox{1. ASSUME A BOUND}{$-B\leq x[n]\leq B$}
+\stepbox{1. ASSUME A CEILING}{$-B\leq x[n]\leq B$}
 \stepdown
 \stepbox{2. $e^{(\cdot)}$ INCREASES}{$e^{-B}\leq e^{x[n]}\leq e^{B}$}
 \stepdown
 \stepbox{3. CONCLUDE}{$\lvert y\rvert\leq e^{B}$, finite $\Rightarrow$ \keyres{stable}}
 
 \wk{18}{(recursive) is $y[n]=0.5\,y[n-1]+x[n]$ stable, with $y[-1]=0$?}
-\stepbox{1. UNROLL THE RECURSION}{$y[0]=x[0]$. \; $y[1]=x[1]+0.5x[0]$. \; $y[2]=x[2]+0.5x[1]+0.25x[0]$.}
+\stepbox{1. UNROLL THE RECURSION}{$y[0]=x[0]$. \; $y[1]=x[1]+0.5x[0]$. \; $y[2]=x[2]+0.5x[1]+0.25x[0]$. \; \why{each past input echoes, halved each step}}
 \stepdown
 \stepbox{2. PATTERN}{$y[n]=\sum_{k=0}^{n}(0.5)^k\,x[n-k]$}
 \stepdown
@@ -1501,7 +1683,7 @@ $$\lvert x[n]\rvert\leq B<\infty \quad\text{for every } n$$
 \stepdown
 \stepbox{4. GEOMETRIC SUM}{$\sum_{k=0}^{\infty}(0.5)^k=\dfrac{1}{1-0.5}=2$}
 \stepdown
-\stepbox{5. CONCLUDE}{$\lvert y\rvert\leq2B$ $\Rightarrow$ \keyres{stable} \why{with $1.01$ in place of $0.5$, the sum has no limit: unstable}}
+\stepbox{5. CONCLUDE}{$\lvert y\rvert\leq2B$ $\Rightarrow$ \keyres{stable} \why{with $1.01$ in place of $0.5$, the echoes grow and the sum has no limit: unstable}}
 
 \filbreak \subsubsection{Properties of common DT systems}
 {\small\renewcommand{\arraystretch}{1.15}
@@ -1522,7 +1704,7 @@ $0.5\,y[n-1]+x[n]$ & \warn{no} & \keyres{yes} & \keyres{yes} & \keyres{yes} & \k
 \par\vspace{2pt}
 Mless $=$ memoryless. \; TI $=$ time invariant. \; The recursive system starts at rest ($y[-1]=0$).
 
-\warn{The properties are separate.} A system can be linear but not time invariant ($n\,x[n]$), or stable but not causal ($x[n+1]$).
+\trap{The properties are separate. A machine can be linear but not time invariant ($n\,x[n]$), or stable but not causal ($x[n+1]$).}
 
 \end{multicols}
 
