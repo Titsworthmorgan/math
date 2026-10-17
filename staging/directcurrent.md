@@ -117,6 +117,21 @@ wire/.style={white, thick},
 iarrow/.style={-{Latex[length=1.6mm]}, uHi, thick}}
 
 \newcommand{\why}[1]{\emph{\scriptsize(#1)}}
+% ---- puzzle-piece format: a colored piece in the diagram goes in the same-colored slot ----
+\definecolor{pcA}{HTML}{F0955F}
+\definecolor{pcB}{HTML}{5CCB96}
+\definecolor{pcC}{HTML}{B3A6F5}
+\definecolor{pcD}{HTML}{66B8F0}
+\definecolor{pcE}{HTML}{E8C95A}
+\newcommand{\pA}[1]{{\syntaxonfalse\color{pcA}#1}}
+\newcommand{\pB}[1]{{\syntaxonfalse\color{pcB}#1}}
+\newcommand{\pC}[1]{{\syntaxonfalse\color{pcC}#1}}
+\newcommand{\pD}[1]{{\syntaxonfalse\color{pcD}#1}}
+\newcommand{\pE}[1]{{\syntaxonfalse\color{pcE}#1}}
+% empty slot in a template: \slot{color}{what goes here}
+\newcommand{\slot}[2]{{\setlength{\fboxsep}{1.2pt}\fcolorbox{#1}{black}{\syntaxonfalse\color{#1}\scriptsize #2}}}
+% ground symbol at a coordinate
+\newcommand{\gnd}[1]{\draw[wire] #1 -- ++(0,-0.12); \draw[wire] #1 ++(-0.15,-0.12) -- ++(0.3,0); \draw[wire] #1 ++(-0.09,-0.18) -- ++(0.18,0); \draw[wire] #1 ++(-0.03,-0.24) -- ++(0.06,0);}
 \newcommand{\wk}[2]{\needspace{#1\baselineskip}\subsubsection{Worked: #2}}
 % single loop: source #1, top resistor #2, right resistor #3
 \newcommand{\loopckt}[3]{%
@@ -164,15 +179,15 @@ iarrow/.style={-{Latex[length=1.6mm]}, uHi, thick}}
 \newcommand{\st}{\rule[-7pt]{0pt}{19pt}}
 % formula table: symbols | words
 \newenvironment{ftab}{\par\vspace{2pt}\noindent\small\renewcommand{\arraystretch}{1.3}%
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.40\linewidth}>{\raggedright\arraybackslash}p{0.56\linewidth}@{}}\term{Formula} & \term{In words} \\\hline}%
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.40\linewidth}>{\raggedright\arraybackslash}p{0.555\linewidth}@{}}\term{Formula} & \term{In words} \\\hline}%
 {\end{tabular}\par\vspace{3pt}}
 % quick-example table: given | work and answer
 \newenvironment{qtab}{\par\vspace{2pt}\noindent\small\renewcommand{\arraystretch}{1.3}%
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.36\linewidth}>{\raggedright\arraybackslash}p{0.60\linewidth}@{}}\term{Quick example} & \term{Work $\to$ answer} \\\hline}%
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.36\linewidth}>{\raggedright\arraybackslash}p{0.595\linewidth}@{}}\term{Quick example} & \term{Work $\to$ answer} \\\hline}%
 {\end{tabular}\par\vspace{3pt}}
 % plain two-column lookup table
 \newenvironment{ltab}[2]{\par\vspace{2pt}\noindent\small\renewcommand{\arraystretch}{1.2}%
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.40\linewidth}>{\raggedright\arraybackslash}p{0.56\linewidth}@{}}\term{#1} & \term{#2} \\\hline}%
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.40\linewidth}>{\raggedright\arraybackslash}p{0.555\linewidth}@{}}\term{#1} & \term{#2} \\\hline}%
 {\end{tabular}\par\vspace{3pt}}
 \newcommand{\bk}[1]{{\scriptsize\textcolor{white!55}{[book #1]}}}
 % resistor color swatch
@@ -236,7 +251,7 @@ Lowercase ($q$, $i$, $v$, $p$, $w$) can change with time. Uppercase ($Q$, $I$, $
 
 \filbreak \subsection{constants and conversions}
 {\small
-\begin{tabular}{@{}p{0.42\linewidth}p{0.54\linewidth}@{}}
+\begin{tabular}{@{}p{0.42\linewidth}p{0.534\linewidth}@{}}
 \term{Item} & \term{Value} \\\hline
 charge of one electron & $-e$, \; $e=1.6\times10^{-19}$ C \; (more exact: $1.602$) \\[1pt]
 charge of one proton & $+e$ \\[1pt]
@@ -254,7 +269,7 @@ The book uses $e=1.6\times10^{-19}$ C. Use it to match the book's answers.
 
 \filbreak \subsection{circuit terminology}
 {\small
-\begin{tabular}{@{}p{0.30\linewidth}p{0.66\linewidth}@{}}
+\begin{tabular}{@{}p{0.3\linewidth}p{0.654\linewidth}@{}}
 \term{Term} & \term{Meaning} \bk{Table 1-4} \\\hline
 node & all the wire between elements: one voltage. Points joined by a wire or a short are the \keyres{same node} \\[1pt]
 ordinary node & connects to \keyres{2} elements \\[1pt]
@@ -366,12 +381,19 @@ The multiplier band is the \keyres{number of zeros}. Digits $2$--$7$ follow the 
 \fill[rcViolet] (0.95,-0.32) rectangle (1.2,0.32);
 \fill[rcRed] (1.45,-0.32) rectangle (1.7,0.32);
 \fill[rcGold] (2.35,-0.32) rectangle (2.6,0.32);
-\node[below] at (0.575,-0.35) {$4$}; \node[below] at (1.075,-0.35) {$7$};
-\node[below] at (1.575,-0.35) {$\times100$}; \node[below] at (2.475,-0.35) {$\pm5\%$};
+\node[below, text=pcA] at (0.575,-0.35) {$4$}; \node[below, text=pcB] at (1.075,-0.35) {$7$};
+\node[below, text=pcC] at (1.575,-0.35) {$\times100$}; \node[below, text=pcD] at (2.475,-0.35) {$\pm5\%$};
+\node[above, text=pcA] at (0.575,0.35) {1}; \node[above, text=pcB] at (1.075,0.35) {2}; \node[above, text=pcC] at (1.575,0.35) {mult}; \node[above, text=pcD] at (2.475,0.35) {tol};
 \end{tikzpicture}
 
+\wk{8}{read the resistor above}
+\stepbox{1. PIECES (WIDE GAP ON THE RIGHT, READ LEFT TO RIGHT)}{yellow $\to$ \pA{4}, \; purple $\to$ \pB{7}, \; red $\to$ \pC{$\times100$}, \; gold $\to$ \pD{$\pm5\%$}}
+\stepdown
+\stepbox{2. TEMPLATE (4 BANDS)}{$R=\big(\slot{pcA}{digit 1}\,\slot{pcB}{digit 2}\big)\times\slot{pcC}{multiplier}\;\pm\;\slot{pcD}{tolerance}$}
+\stepdown
+\stepbox{3. PLACE}{$R=(\pA{4}\pB{7})\times\pC{100}\pm\pD{5\%}=\keyres{4.7\text{ k}\Omega}$; \; range $4465$ to $4935\,\Omega$}
+
 \begin{qtab}
-yellow, purple, red, gold (above) & $47\times100=\keyres{4.7\text{ k}\Omega}$, $\pm5\%$: $4465$ to $4935\,\Omega$ \\
 brown, black, orange, gold & $10\times10^3=\keyres{10\text{ k}\Omega}$, $\pm5\%$ \\
 5 bands: brown, black, black, red, brown & $100\times10^2=\keyres{10\text{ k}\Omega}$, $\pm1\%$ \\
 red, red, gold, gold & $22\times0.1=\keyres{2.2\,\Omega}$, $\pm5\%$ \\
@@ -380,7 +402,7 @@ red, red, gold, gold & $22\times0.1=\keyres{2.2\,\Omega}$, $\pm5\%$ \\
 
 \filbreak \subsection{formula sheet (symbols only)}
 {\small\renewcommand{\arraystretch}{1.25}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.34\linewidth}>{\raggedright\arraybackslash}p{0.62\linewidth}@{}}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.34\linewidth}>{\raggedright\arraybackslash}p{0.614\linewidth}@{}}
 \term{2. charge, current} & $Q=It$, \; $i=\dfrac{dq}{dt}$, \; $\Delta Q=\int_{t_1}^{t_2}i\,dt$, \; $n=\dfrac{\lvert Q\rvert}{e}$ \st\\
 \term{3. voltage} & $v_{ab}=\dfrac{dw}{dq}$, \; $V_{ab}=V_a-V_b$, \; $W=QV$ \st\\
 \term{4. power, energy} & $p=vi$, \; $\sum p=0$, \; $w=\int p\,dt$, \; $W=Pt$, \; $P_{av}=\dfrac1T\int_0^Tp\,dt$ \st\\
@@ -399,7 +421,7 @@ red, red, gold, gold & $22\times0.1=\keyres{2.2\,\Omega}$, $\pm5\%$ \\
 \filbreak \subsection{calculus and algebra tools}
 \term{Derivatives} ($a$, $\omega$, $n$, $c$ constants):
 {\small\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{@{}p{0.34\linewidth}p{0.62\linewidth}@{}}
+\begin{tabular}{@{}p{0.34\linewidth}p{0.614\linewidth}@{}}
 \term{Function} & \term{Derivative} \\\hline
 $c$, \; $t^n$ & $0$, \; $n\,t^{n-1}$ \\
 $e^{at}$ & $a\,e^{at}$ \\
@@ -410,7 +432,7 @@ $f(g(t))$ (chain) & $f'(g)\cdot g'$; \; e.g. $\sin^2(\omega t)\to2\omega\sin(\om
 \par\vspace{2pt}
 \term{Integrals}:
 {\small\renewcommand{\arraystretch}{1.25}
-\begin{tabular}{@{}p{0.34\linewidth}p{0.62\linewidth}@{}}
+\begin{tabular}{@{}p{0.34\linewidth}p{0.614\linewidth}@{}}
 \term{Function} & \term{Antiderivative} \\\hline
 $t^n$ & $\dfrac{t^{n+1}}{n+1}$ \st\\
 $e^{at}$ & $\dfrac{e^{at}}{a}$ \st\\
@@ -438,7 +460,7 @@ $3x+2y=12$, \; $x-y=-1$ & $D=3(-1)-1(2)=-5$; \; $x=\frac{12(-1)-(-1)(2)}{-5}=\ke
 The number in parentheses is the concept section.
 \par\vspace{2pt}
 {\small
-\begin{tabular}{@{}p{0.46\linewidth}p{0.50\linewidth}@{}}
+\begin{tabular}{@{}p{0.46\linewidth}p{0.494\linewidth}@{}}
 \term{Given} $\to$ \term{find} & \term{Do this} \\\hline
 a circuit $\to$ nodes, series, parallel & terminology table \hfill (1) \\[1pt]
 charge $Q\to$ electrons & $n=\lvert Q\rvert/e$ \hfill (2) \\[1pt]
@@ -476,18 +498,40 @@ diode or LED in a circuit & assume on, check $I>0$ \hfill (14) \\
 \filbreak \subsection{1. reading a circuit \bk{1-3}}
 Label the nodes first. Every wire segment between elements is one node, even if it is drawn long. Merge points joined by a wire or a short.
 
-\nopagebreak
-\noindent\hfil\threeckt{$v_s$}{$R_1$}{$R_2$}{$R_3$}
+\term{Puzzle pieces.} In every diagram example, a \pA{colored piece} in the picture goes in the slot \slot{pcA}{of that color}. Order: \textbf{pieces} $\to$ \textbf{template} $\to$ \textbf{place} $\to$ \textbf{solve}.
 
-\begin{qtab}
-nodes above & a (ordinary: $v_s$, $R_1$), \; b and c (extraordinary: $3$ elements each) \\
-series pairs above & $v_s$ and $R_1$: only ordinary node a between them \\
-parallel pairs above & $R_2$ and $R_3$: both connect to b and c \\
-meshes above & $2$: \; ($v_s$, $R_1$, $R_2$) and ($R_2$, $R_3$) \\
-\end{qtab}
-\term{Meters} \bk{Fig. 1-18}: a \keyres{voltmeter} goes in \keyres{parallel} (across the element), red lead on $+$. Ideal: draws no current. An \keyres{ammeter} goes in \keyres{series} (in the path). Ideal: no voltage drop.
+\needspace{17\baselineskip}
+\noindent\hfil
+\begin{tikzpicture}[font=\scriptsize]
+\node[src] (vs) at (0,1) {};
+\node[font=\tiny] at (0,1.13) {$+$};
+\node[font=\tiny] at (0,0.85) {$-$};
+\node[left=0.05cm of vs] {$v_s$};
+\node[res] (r1) at (1.5,2) {}; \node[above=0.05cm of r1] {$R_1$};
+\node[vres] (r2) at (3,1) {}; \node[right=0.1cm of r2] {$R_2$};
+\node[vres] (r3) at (4.5,1) {}; \node[right=0.1cm of r3] {$R_3$};
+\draw[wire] (vs.north) -- (0,2) -- (r1.west);
+\draw[wire] (r1.east) -- (4.5,2) -- (r3.north);
+\draw[wire] (3,2) -- (r2.north);
+\draw[wire] (r2.south) -- (3,0);
+\draw[wire] (r3.south) -- (4.5,0) -- (0,0) -- (vs.south);
+\fill[pcA] (0,2) circle (2.2pt) node[above left, text=pcA] {a};
+\fill[pcB] (3,2) circle (2.2pt) node[above, text=pcB] {b};
+\fill[pcC] (3,0) circle (2.2pt) node[below, text=pcC] {c};
+\end{tikzpicture}
 
-\warn{Same branch, same direction = same current.} Two currents in one branch with opposite arrows are negatives.
+\wk{8}{classify the circuit above}
+\stepbox{1. PIECES (WHAT TOUCHES EACH NODE)}{\pA{a}: $v_s$, $R_1$ (2) \quad \pB{b}: $R_1$, $R_2$, $R_3$ (3) \quad \pC{c}: $v_s$, $R_2$, $R_3$ (3)}
+\stepdown
+\stepbox{2. TEMPLATES}{\textbf{series}: only an \slot{pcA}{ordinary node (2 elements)} between them\\
+\textbf{parallel}: they share \slot{pcB}{one end node} and \slot{pcC}{the other}}
+\stepdown
+\stepbox{3. PLACE}{\pA{a} ordinary $\Rightarrow$ $v_s$, $R_1$ \keyres{series}. \; $R_2$, $R_3$ share \pB{b} and \pC{c} $\Rightarrow$ \keyres{parallel}.\\
+Meshes: ($v_s$, $R_1$, $R_2$) and ($R_2$, $R_3$) $=$ \keyres{2}.}
+
+\term{Meters} \bk{Fig. 1-18}: a \keyres{voltmeter} goes in \keyres{parallel} (across the element), red lead on $+$; ideal: no current. An \keyres{ammeter} goes in \keyres{series} (in the path); ideal: no drop.
+
+\warn{Same branch, same direction = same current.} Opposite arrows in one branch are negatives.
 
 % ------------------------------------------------------------ 2
 \filbreak \subsection{2. charge and current \bk{1-4}}
@@ -514,7 +558,7 @@ $i=0.4e^{-0.5t}$ nA, total to $\infty$ & $\frac{A}{a}=\frac{0.4}{0.5}=\keyres{0.
 \end{qtab}
 \warn{Time in seconds.} \; \warn{Given charge, find current: differentiate.} If your answer has a higher power of $t$, you integrated.
 
-\wk{16}{(integrate) $i(t)=20e^{-0.5t}$ mA from $t=0$ to $4$ s}
+\wk{8}{(integrate) $i(t)=20e^{-0.5t}$ mA from $t=0$ to $4$ s}
 \stepbox{1. ANTIDERIVATIVE}{$F(t)=\dfrac{20}{-0.5}e^{-0.5t}=-40e^{-0.5t}$}
 \stepdown
 \stepbox{2. TOP ($t=4$)}{$F(4)=-40e^{-2}=-40(0.1353)=-5.413$}
@@ -523,7 +567,7 @@ $i=0.4e^{-0.5t}$ nA, total to $\infty$ & $\frac{A}{a}=\frac{0.4}{0.5}=\keyres{0.
 \stepdown
 \stepbox{4. TOP MINUS BOTTOM}{$-5.413-(-40)=\keyres{34.59}$ mC \; \why{mA$\cdot$s $=$ mC}}
 
-\wk{12}{(product rule) $q(t)=0.5t\cos(100\pi t)$ $\mu$C}
+\wk{8}{(product rule) $q(t)=0.5t\cos(100\pi t)$ $\mu$C}
 \stepbox{1. PARTS}{$f=0.5t$, $f'=0.5$. \; $g=\cos(100\pi t)$, $g'=-100\pi\sin(100\pi t)$}
 \stepdown
 \stepbox{2. $f'g+fg'$}{$i=\keyres{0.5\cos(100\pi t)-50\pi t\sin(100\pi t)}$ $\mu$A}
@@ -557,26 +601,32 @@ $P_{av}=\dfrac{1}{T}\int_0^T p\,dt$ & (average power) $=$ (energy over $T$) $\di
 \end{ftab}
 \term{Passive sign convention}: $i$ enters the $+$ side of $v$ $\Rightarrow$ $p=+vi$. Enters the $-$ side $\Rightarrow$ $p=-vi$. Then $p>0$: the device \keyres{receives} (absorbs) power. $p<0$: it \keyres{supplies} power.
 
-\nopagebreak
+\needspace{17\baselineskip}
 \noindent\hfil
 \begin{tikzpicture}[font=\scriptsize]
 \node[res, minimum width=1.0cm, minimum height=0.35cm] (e1) at (1,0) {};
 \draw[wire] (0,0) -- (e1.west); \draw[wire] (e1.east) -- (2,0);
-\node at (0.3,-0.22) {$+$}; \node at (1.7,-0.22) {$-$};
+\node[text=pcA] at (0.3,-0.22) {$+$}; \node at (1.7,-0.22) {$-$};
 \node at (1,-0.38) {$v$};
-\draw[iarrow] (-0.1,0.25) -- (0.4,0.25) node[midway, above] {$i$};
-\node[text=keyHi] at (1,0.6) {$p=+v\,i$};
+\draw[-{Latex[length=1.6mm]}, pcA, thick] (-0.1,0.25) -- (0.4,0.25) node[midway, above] {$i$};
+\node[text=pcA] at (1,0.65) {$p=+v\,i$};
 \node[res, minimum width=1.0cm, minimum height=0.35cm] (e2) at (4,0) {};
 \draw[wire] (3,0) -- (e2.west); \draw[wire] (e2.east) -- (5,0);
-\node at (3.3,-0.22) {$+$}; \node at (4.7,-0.22) {$-$};
+\node at (3.3,-0.22) {$+$}; \node[text=pcC] at (4.7,-0.22) {$-$};
 \node at (4,-0.38) {$v$};
-\draw[iarrow] (5.1,0.25) -- (4.6,0.25) node[midway, above] {$i$};
-\node[text=warnHi] at (4,0.6) {$p=-v\,i$};
+\draw[-{Latex[length=1.6mm]}, pcC, thick] (5.1,0.25) -- (4.6,0.25) node[midway, above] {$i$};
+\node[text=pcC] at (4,0.65) {$p=-v\,i$};
 \end{tikzpicture}
 
+\wk{8}{passive sign: who receives, who supplies}
+\stepbox{1. PIECES}{the side the arrow enters: \pA{$+$} or \pC{$-$}; \; the values $v$, $i$}
+\stepdown
+\stepbox{2. TEMPLATE}{$p=\slot{pcA}{$+$}\!/\!\slot{pcC}{$-$}\;v\,i$ \qquad $p>0$ receives, \; $p<0$ supplies}
+\stepdown
+\stepbox{3. PLACE}{$5$ V, $2$ A into \pA{$+$}: $\pA{+}(5)(2)=\keyres{+10}$ W receives \quad into \pC{$-$}: $\pC{-}(5)(2)=\keyres{-10}$ W supplies\\
+$-3$ V, $4$ A into \pA{$+$}: $\pA{+}(-3)(4)=\keyres{-12}$ W supplies}
+
 \begin{qtab}
-$5$ V, $2$ A into $+$; \; into $-$ & $+10$ W \keyres{receives}; \; $-10$ W \keyres{supplies} \\
-$-3$ V, $4$ A into $+$ & $+(-3)(4)=-12$ W: \keyres{supplies} \\
 three devices: $+20$, $-50$, $p_3$ & $20-50+p_3=0$ $\Rightarrow$ $p_3=\keyres{30}$ W \\
 $24$ W for $1$ h & $24\cdot3600=\keyres{86{,}400}$ J \\
 $p=10t$ W over $0$--$2$ s $\to P_{av}$ & $\frac12\int_0^210t\,dt=\frac12(20)=\keyres{10}$ W \\
@@ -585,7 +635,7 @@ $v=50(1-e^{-0.5t})$ V, $i=4e^{-0.5t}$ mA at $t=1$ & $19.67\cdot2.426=\keyres{47.
 \end{qtab}
 \warn{$\int v\,i\,dt\neq\int v\,dt\cdot\int i\,dt$.} Multiply first. \; \warn{Maximum power}: set $\frac{dp}{dt}=0$.
 
-\wk{16}{total energy, $v=50(1-e^{-0.5t})$ V, $i=4e^{-0.5t}$ mA, $0\to\infty$}
+\wk{8}{total energy, $v=50(1-e^{-0.5t})$ V, $i=4e^{-0.5t}$ mA, $0\to\infty$}
 \stepbox{1. MULTIPLY}{$p=200\big(1-e^{-0.5t}\big)e^{-0.5t}$ mW}
 \stepdown
 \stepbox{2. DISTRIBUTE, COMBINE EXPONENTS}{$p=200e^{-0.5t}-200e^{-t}$ \; \why{$e^{-0.5t}e^{-0.5t}=e^{-t}$}}
@@ -620,7 +670,7 @@ $125{,}580$ J at $15$ cents/kWh & $0.03488\cdot15=\keyres{0.523}$ cents \\
 \filbreak \subsection{6. circuit elements, sources, switches \bk{1-6}}
 \term{Active} devices need a power source (transistors, ICs). \term{Passive} devices do not (resistors, capacitors, inductors).
 {\small
-\begin{tabular}{@{}p{0.30\linewidth}p{0.66\linewidth}@{}}
+\begin{tabular}{@{}p{0.3\linewidth}p{0.654\linewidth}@{}}
 \term{Element} & \term{Rule} \\\hline
 ideal voltage source & $v=V_s$ for any current. $i$--$v$ graph: vertical line \\[1pt]
 ideal current source & $i=I_s$ for any voltage. $i$--$v$ graph: horizontal line \\[1pt]
@@ -693,7 +743,7 @@ $10$ k$\Omega$ pot, wiper $30\%$ from terminal 1 & $R_{13}=\keyres{3}$ k$\Omega$
 
 \needspace{9\baselineskip}
 {\small\renewcommand{\arraystretch}{1.35}
-\begin{tabular}{@{}p{0.30\linewidth}p{0.66\linewidth}@{}}
+\begin{tabular}{@{}p{0.3\linewidth}p{0.654\linewidth}@{}}
 \term{Wire design chain} & \term{Copper, AWG-18, target $R=0.5\,\Omega$} \\\hline
 1. $R$ (from $V$, $I$ if given) & $R=\dfrac{V}{I}$; here $0.5\,\Omega$ is given \st\\
 2. $d$ from the AWG table & $1.0$ mm $=1.0\times10^{-3}$ m \\
@@ -722,71 +772,184 @@ $V_{ab}=$ sum along any path a$\to$b & path rule: $+v$ if you meet $+$ first \\
 \item Put Ohm's law in, then solve the system (Cramer's rule, reference page).
 \end{enumerate}
 
-\nopagebreak
+\needspace{17\baselineskip}
 \noindent\hfil
 \begin{tikzpicture}[font=\scriptsize]
 \fill[white] (0,0) circle (2pt);
-\draw[iarrow] (-1.3,0) -- (-0.1,0) node[pos=0.4, above] {$4$ A};
-\draw[iarrow] (0,1.0) -- (0,0.1) node[pos=0.4, right] {$2$ A};
-\draw[iarrow] (0.1,0) -- (1.3,0) node[pos=0.6, above] {$3$ A};
-\draw[iarrow] (0,-0.1) -- (0,-1.0) node[pos=0.6, right] {$i$};
+\draw[-{Latex[length=1.6mm]}, pcA, thick] (-1.3,0) -- (-0.1,0) node[pos=0.4, above] {$4$ A};
+\draw[-{Latex[length=1.6mm]}, pcA, thick] (0,1.0) -- (0,0.1) node[pos=0.4, right] {$2$ A};
+\draw[-{Latex[length=1.6mm]}, pcB, thick] (0.1,0) -- (1.3,0) node[pos=0.6, above] {$3$ A};
+\draw[-{Latex[length=1.6mm]}, pcB, thick] (0,-0.1) -- (0,-1.0) node[pos=0.6, right] {$i$};
+\node[text=pcA] at (-0.9,-0.55) {in};
+\node[text=pcB] at (0.9,-0.55) {out};
 \end{tikzpicture}
 \hfil
 \begin{tikzpicture}[font=\scriptsize]
-\fill[keyHi] (0,0) circle (1.6pt) node[above, text=keyHi] {a};
+\fill[white] (0,0) circle (1.6pt) node[above] {a};
 \node[res, minimum width=0.5cm] (e1) at (0.7,0) {}; \node[res, minimum width=0.5cm] (e2) at (1.7,0) {}; \node[res, minimum width=0.5cm] (e3) at (2.7,0) {};
 \draw[wire] (0,0) -- (e1.west); \draw[wire] (e1.east) -- (e2.west); \draw[wire] (e2.east) -- (e3.west); \draw[wire] (e3.east) -- (3.4,0);
-\fill[keyHi] (3.4,0) circle (1.6pt) node[above, text=keyHi] {b};
-\node at (0.35,0.2) {$+$}; \node at (1.05,0.2) {$-$}; \node at (0.7,-0.28) {$5$ V};
-\node at (1.35,0.2) {$-$}; \node at (2.05,0.2) {$+$}; \node at (1.7,-0.28) {$3$ V};
-\node at (2.35,0.2) {$+$}; \node at (3.05,0.2) {$-$}; \node at (2.7,-0.28) {$2$ V};
+\fill[white] (3.4,0) circle (1.6pt) node[above] {b};
+\node[text=pcA] at (0.35,0.2) {$+$}; \node at (1.05,0.2) {$-$}; \node[text=pcA] at (0.7,-0.28) {$5$ V};
+\node[text=pcC] at (1.35,0.2) {$-$}; \node at (2.05,0.2) {$+$}; \node[text=pcC] at (1.7,-0.28) {$3$ V};
+\node[text=pcA] at (2.35,0.2) {$+$}; \node at (3.05,0.2) {$-$}; \node[text=pcA] at (2.7,-0.28) {$2$ V};
+\draw[-{Latex[length=1.4mm]}, white!60] (0.2,-0.55) -- (3.2,-0.55) node[midway, below] {walk a $\to$ b};
 \end{tikzpicture}
 
+\wk{8}{KCL at the dot (left)}
+\stepbox{1. PIECES}{\pA{in}: $4$ A, $2$ A \qquad \pB{out}: $3$ A, $i$}
+\stepdown
+\stepbox{2. TEMPLATE}{$\slot{pcA}{in}+\slot{pcA}{in}=\slot{pcB}{out}+\slot{pcB}{out}$}
+\stepdown
+\stepbox{3. PLACE, SOLVE}{$\pA{4}+\pA{2}=\pB{3}+\pB{i}$ $\Rightarrow$ $i=\keyres{3}$ A}
+
+\wk{8}{$V_{ab}$ by walking the path (right)}
+\stepbox{1. PIECES (SIGN MET FIRST)}{\pA{$+$ first}: $5$ V, $2$ V \qquad \pC{$-$ first}: $3$ V}
+\stepdown
+\stepbox{2. TEMPLATE}{$V_{ab}=\slot{pcA}{$+v$}\;\slot{pcC}{$-v$}\;\cdots$ \; one term per element, in walking order}
+\stepdown
+\stepbox{3. PLACE, SOLVE}{$V_{ab}=\pA{+5}\;\pC{-3}\;\pA{+2}=\keyres{4}$ V}
+
 \begin{qtab}
-node (left figure) & $4+2=3+i$ $\Rightarrow$ $i=\keyres{3}$ A \\
 $1$ A in; $3$ A and $i$ out & $i=-2$: \keyres{$2$ A in}, against the arrow \\
 $10$ A in; $i_x$ and $1.5\,i_x$ out & $10=2.5\,i_x$ $\Rightarrow$ $i_x=\keyres{4}$ A \\
-$V_{ab}$ (right figure) & $+5-3+2=\keyres{4}$ V \\
 $12$ V source, $5$ V on $R_1$, find $v_2$ & $-12+5+v_2=0$ $\Rightarrow$ $\keyres{7}$ V \\
 $36$ V, $2\,\Omega$, $4\,\Omega$, CCVS $3i$ in one loop & $36=2i+4i+3i$ $\Rightarrow$ $i=\keyres{4}$ A \\
 $3$ unknown currents, $1$ current source & $M=$ loops that avoid the source; rest KCL \\
 \end{qtab}
-\warn{A negative answer is fine.} It means the current flows opposite to your arrow.
+\warn{A negative answer is fine.} The current flows opposite to your arrow.
 
-\nopagebreak
-\noindent\hfil\loopckt{$12$ V}{$2\,\Omega$}{$4\,\Omega$}
-
-\wk{12}{KVL around the loop above}
-\stepbox{1. KVL CLOCKWISE}{$-12+v_1+v_2=0$}
-\stepdown
-\stepbox{2. OHM'S LAW IN}{$-12+2i+4i=0$ $\Rightarrow$ $6i=12$ $\Rightarrow$ $i=\keyres{2}$ A}
-\stepdown
-\stepbox{3. VOLTAGES AND POWER}{$v_1=\keyres{4}$ V, $v_2=\keyres{8}$ V. \; $p$: $8$, $16$, source $-24$ W \; \why{$\sum p=0$ \checkmark}}
-
-\nopagebreak
+\needspace{17\baselineskip}
 \noindent\hfil
 \begin{tikzpicture}[font=\scriptsize]
-\node[src] (is) at (0,1) {};
-\draw[-{Latex[length=1.4mm]}, white, thick] (0,0.82) -- (0,1.2);
-\node[left=0.05cm of is] {$6$ A};
-\node[vres] (ra) at (1.6,1) {}; \node[right=0.1cm of ra] {$2\,\Omega$};
-\node[vres] (rb) at (3.0,1) {}; \node[right=0.1cm of rb] {$3\,\Omega$};
+\node[src, draw=pcA] (vs) at (0,1) {};
+\node[font=\tiny, text=pcA] at (0,1.13) {$+$};
+\node[font=\tiny, text=pcA] at (0,0.85) {$-$};
+\node[left=0.05cm of vs, text=pcA] {$12$ V};
+\node[res, draw=pcB] (r1) at (1.5,2) {};
+\node[above=0.05cm of r1, text=pcB] {$2\,\Omega$};
+\node[vres, draw=pcC] (r2) at (3,1) {};
+\node[right=0.12cm of r2, text=pcC] {$4\,\Omega$};
+\draw[wire] (vs.north) -- (0,2) -- (r1.west);
+\draw[wire] (r1.east) -- (3,2) -- (r2.north);
+\draw[wire] (r2.south) -- (3,0) -- (0,0) -- (vs.south);
+\draw[iarrow] (0.35,2.2) -- (0.9,2.2) node[midway, above] {$i$};
+\node[text=pcB] at (1.05,1.75) {$+$}; \node[text=pcB] at (1.95,1.75) {$-$};
+\node[text=pcB, below=0.08cm of r1] {$v_1$};
+\node[text=pcC] at (2.72,1.35) {$+$}; \node[text=pcC] at (2.72,0.65) {$-$};
+\node[text=pcC] at (2.6,1) {$v_2$};
+\end{tikzpicture}
+
+\wk{8}{KVL clockwise around the loop above}
+\stepbox{1. PIECES (SIGN MET FIRST, FROM BOTTOM LEFT)}{\pA{source} at $-$ \qquad \pB{$v_1$} at $+$ \qquad \pC{$v_2$} at $+$}
+\stepdown
+\stepbox{2. TEMPLATE}{$\slot{pcA}{$\pm$ source}+\slot{pcB}{$\pm v_1$}+\slot{pcC}{$\pm v_2$}=0$, \; Ohm: $v=iR$}
+\stepdown
+\stepbox{3. PLACE, SOLVE}{$\pA{-12}+\pB{2i}+\pC{4i}=0$ $\Rightarrow$ $i=\keyres{2}$ A; \; $v_1=\keyres{4}$ V, $v_2=\keyres{8}$ V}
+\stepdown
+\stepbox{4. CHECK (POWER)}{$8+16-24=0$ \checkmark \; \why{source supplies $24$ W}}
+
+\needspace{17\baselineskip}
+\noindent\hfil
+\begin{tikzpicture}[font=\scriptsize]
+\node[src, draw=pcA] (is) at (0,1) {};
+\draw[-{Latex[length=1.4mm]}, pcA, thick] (0,0.82) -- (0,1.2);
+\node[left=0.05cm of is, text=pcA] {$6$ A};
+\node[vres, draw=pcB] (ra) at (1.6,1) {}; \node[right=0.1cm of ra, text=pcB] {$2\,\Omega$};
+\node[vres, draw=pcC] (rb) at (3.0,1) {}; \node[right=0.1cm of rb, text=pcC] {$3\,\Omega$};
 \draw[wire] (is.north) -- (0,2) -- (3.0,2) -- (rb.north);
 \draw[wire] (1.6,2) -- (ra.north);
 \draw[wire] (is.south) -- (0,0) -- (3.0,0) -- (rb.south);
 \draw[wire] (ra.south) -- (1.6,0);
-\fill[keyHi] (1.6,2) circle (1.6pt) node[above, text=keyHi] {a: $v$};
-\node[below, white!70] at (1.6,0) {ground, $0$ V};
-\draw[iarrow] (1.32,1.75) -- (1.32,1.3) node[midway, left] {$i_1$};
-\draw[iarrow] (2.72,1.75) -- (2.72,1.3) node[midway, left] {$i_2$};
+\fill[white] (1.6,2) circle (1.8pt) node[above] {a: $v$};
+\node[below, text=pcD] at (1.6,0) {ground, $0$ V};
 \end{tikzpicture}
 
-\wk{12}{KCL with a node voltage: the circuit above}
-\stepbox{1. RESISTOR CURRENTS}{$i_1=\dfrac{v}{2}$, \quad $i_2=\dfrac{v}{3}$ \; \why{ground is $0$ V}}
+\wk{8}{KCL with a node voltage (above)}
+\stepbox{1. PIECES (STAND AT a, CROSS EACH $R$)}{\pA{$6$ A} in \qquad \pB{$2\,\Omega$} $\to$ \pD{ground} \qquad \pC{$3\,\Omega$} $\to$ \pD{ground}}
 \stepdown
-\stepbox{2. KCL AT a}{$6=\dfrac{v}{2}+\dfrac{v}{3}=\dfrac{5v}{6}$}
+\stepbox{2. TEMPLATE}{$\slot{pcA}{in}=\dfrac{v-\slot{pcD}{far}}{\slot{pcB}{$R$}}+\dfrac{v-\slot{pcD}{far}}{\slot{pcC}{$R$}}$}
 \stepdown
-\stepbox{3. SOLVE}{$v=\keyres{7.2}$ V; \; $i_1=\keyres{3.6}$ A, \; $i_2=\keyres{2.4}$ A \; \why{$3.6+2.4=6$ \checkmark}}
+\stepbox{3. PLACE, SOLVE}{$\pA{6}=\dfrac{v-\pD{0}}{\pB{2}}+\dfrac{v-\pD{0}}{\pC{3}}=\dfrac{5v}{6}$ $\Rightarrow$ $v=\keyres{7.2}$ V; \; $3.6+2.4=6$ A \checkmark}
+
+% ------------------------------------------------------------ 8b
+\filbreak \subsection{8b. nodal analysis: the walk}
+Unknowns are node voltages; write one KCL per unknown node. KVL is automatic, since every drop is a difference of node voltages.
+\begin{ftab}
+$i=\dfrac{V_{\text{here}}-V_{\text{far}}}{R}$ & current \emph{leaving} through one $R$: stand here, cross it, note where you land \st\\
+$\sum i_{\text{leaving}}=0$ & one fraction per $R$ touching the node \\
+source $+$ series $R$ & far node $=$ source top $=+v_s$; \; $-$ on top: $-v_s$ \\
+$p_{src}=v_s\lvert i_{\text{series}}\rvert$ & leaves its $+$: \keyres{supplies}; enters $+$: \keyres{absorbs} \\
+\end{ftab}
+\term{Steps}: (1) ground the node most sources touch. (2) Mark known nodes (source tops). (3) KCL at each unknown, here-node first. (4) Multiply \emph{every term} by the LCD. (5) Solve; plug back in, each equation $=0$.
+
+\needspace{17\baselineskip}
+\noindent\hfil
+\begin{tikzpicture}[font=\scriptsize]
+\node[src] (v1) at (0,1) {}; \node[font=\tiny] at (0,1.13) {$+$}; \node[font=\tiny] at (0,0.85) {$-$};
+\node[left=0.05cm of v1] {$12$ V};
+\node[src] (v2) at (5,1) {}; \node[font=\tiny] at (5,1.13) {$+$}; \node[font=\tiny] at (5,0.85) {$-$};
+\node[right=0.05cm of v2] {$3$ V};
+\node[res, draw=pcB] (ra) at (1.4,2) {}; \node[above=0.05cm of ra, text=pcB] {$2\,\Omega$};
+\node[vres, draw=pcC] (rb) at (2.5,1) {}; \node[right=0.08cm of rb, text=pcC] {$2\,\Omega$};
+\node[res, draw=pcD] (rc) at (3.6,2) {}; \node[above=0.05cm of rc, text=pcD] {$2\,\Omega$};
+\draw[wire] (v1.north) -- (0,2) -- (ra.west); \draw[wire] (ra.east) -- (rc.west); \draw[wire] (rc.east) -- (5,2) -- (v2.north);
+\draw[wire] (2.5,2) -- (rb.north); \draw[wire] (rb.south) -- (2.5,0);
+\draw[wire] (v1.south) -- (0,0) -- (5,0) -- (v2.south);
+\fill[pcB] (0.4,2) circle (1.6pt) node[below right, text=pcB] {$12$};
+\fill[pcD] (4.6,2) circle (1.6pt) node[below left, text=pcD] {$3$};
+\fill[pcA] (2.5,2) circle (2.2pt) node[above, text=pcA] {$V_a$};
+\node[below, text=pcC] at (2.5,0) {ground $0$};
+\end{tikzpicture}
+
+\wk{8}{one unknown node (above)}
+\stepbox{1. PIECES (STAND AT \pA{$V_a$})}{\pB{left $2\,\Omega$} $\to$ \pB{$12$} \qquad \pC{middle $2\,\Omega$} $\to$ \pC{$0$} \qquad \pD{right $2\,\Omega$} $\to$ \pD{$3$}}
+\stepdown
+\stepbox{2. TEMPLATE}{$\dfrac{\pA{V_a}-\slot{pcB}{far}}{\slot{pcB}{$R$}}+\dfrac{\pA{V_a}-\slot{pcC}{far}}{\slot{pcC}{$R$}}+\dfrac{\pA{V_a}-\slot{pcD}{far}}{\slot{pcD}{$R$}}=0$}
+\stepdown
+\stepbox{3. PLACE}{$\dfrac{\pA{V_a}-\pB{12}}{\pB{2}}+\dfrac{\pA{V_a}-\pC{0}}{\pC{2}}+\dfrac{\pA{V_a}-\pD{3}}{\pD{2}}=0$}
+\stepdown
+\stepbox{4. $\times2$ EVERY TERM, SOLVE}{$3V_a-15=0$ $\Rightarrow$ $V_a=\keyres{5}$ V \why{between $3$ and $12$}\\
+leaving: $\pB{-3.5}$ A \why{$3.5$ A in}, \; $\pC{2.5}$ A, \; $\pD{1}$ A \why{sum $0$ \checkmark}}
+\stepdown
+\stepbox{5. POWER: $p_{src}=\slot{white}{$v_s$}\cdot\slot{pcB}{$\lvert i_{\text{series}}\rvert$}$, \; $p_R=i^2R$}{$12$ V: $3.5$ A leaves $+$ $\Rightarrow$ $12(3.5)=\keyres{42}$ W supplied. \; $3$ V: $1$ A enters $+$ $\Rightarrow$ $\keyres{3}$ W absorbed.\\
+resistors $24.5+12.5+2=39$; \; $39+3=42$ \checkmark}
+
+\needspace{17\baselineskip}
+\noindent\hfil
+\begin{tikzpicture}[font=\scriptsize]
+\node[src] (v1) at (0,0.6) {}; \node[font=\tiny] at (0,0.73) {$+$}; \node[font=\tiny] at (0,0.45) {$-$};
+\node[left=0.05cm of v1] {$14$ V};
+\node[vres, draw=pcB] (r1) at (0,1.65) {}; \node[left=0.08cm of r1, text=pcB] {$2\,\Omega$};
+\node[vres] (r2) at (1.5,1.2) {}; \node[right=0.08cm of r2] {$2\,\Omega$};
+\node[res, draw=pcC] (r3) at (2.5,2.3) {}; \node[above=0.05cm of r3, text=pcC] {$2\,\Omega$};
+\node[vres] (r4) at (3.5,1.2) {}; \node[right=0.08cm of r4] {$2\,\Omega$};
+\node[vres, draw=pcD] (r5) at (5,1.65) {}; \node[right=0.08cm of r5, text=pcD] {$2\,\Omega$};
+\node[src] (v2) at (5,0.6) {}; \node[font=\tiny] at (5,0.73) {$-$}; \node[font=\tiny] at (5,0.45) {$+$};
+\node[right=0.05cm of v2] {$2$ V};
+\draw[wire] (v1.north) -- (r1.south); \draw[wire] (r1.north) -- (0,2.3) -- (r3.west);
+\draw[wire] (r3.east) -- (5,2.3) -- (r5.north); \draw[wire] (r5.south) -- (v2.north);
+\draw[wire] (1.5,2.3) -- (r2.north); \draw[wire] (r2.south) -- (1.5,0);
+\draw[wire] (3.5,2.3) -- (r4.north); \draw[wire] (r4.south) -- (3.5,0);
+\draw[wire] (v1.south) -- (0,0) -- (5,0) -- (v2.south);
+\fill[pcB] (0,1.0) circle (1.6pt) node[right, text=pcB] {$+14$};
+\fill[pcD] (5,1.0) circle (1.6pt) node[left, text=pcD] {$-2$};
+\fill[pcA] (1.5,2.3) circle (2.2pt) node[above, text=pcA] {$V_a$};
+\fill[pcE] (3.5,2.3) circle (2.2pt) node[above, text=pcE] {$V_b$};
+\node[below] at (2.5,0) {ground $0$};
+\end{tikzpicture}
+
+\wk{8}{two unknown nodes (above)}
+\stepbox{1. PIECES}{known: \pB{$+14$}, \pD{$-2$} \why{$-$ on top}. \quad at \pA{$V_a$}: \pB{$\to14$}, $\to0$, \pC{$\to V_b$}. \quad at \pE{$V_b$}: \pD{$\to-2$}, $\to0$, \pC{$\to V_a$}}
+\stepdown
+\stepbox{2. PLACE AT $V_a$, $\times2$}{$\dfrac{\pA{V_a}-\pB{14}}{\pB2}+\dfrac{\pA{V_a}-0}{2}+\dfrac{\pA{V_a}-\pC{V_b}}{\pC2}=0$ $\Rightarrow$ $3V_a-V_b=14$}
+\stepdown
+\stepbox{3. PLACE AT $V_b$, $\times2$}{$\dfrac{\pE{V_b}-(\pD{-2})}{\pD2}+\dfrac{\pE{V_b}-0}{2}+\dfrac{\pE{V_b}-\pC{V_a}}{\pC2}=0$ $\Rightarrow$ $3V_b-V_a=-2$}
+\stepdown
+\stepbox{4. SUBSTITUTE THE COEFFICIENT-1 VARIABLE}{$V_a=3V_b+2$ $\Rightarrow$ $3(3V_b+2)-V_b=14$ $\Rightarrow$ $V_b=\keyres{1}$ V, \; $V_a=\keyres{5}$ V}
+\stepdown
+\stepbox{5. CHECK}{$3(5)-1=14$ \checkmark \qquad $3(1)-5=-2$ \checkmark}
+
+\warn{One node, one voltage}: every $R$ touching it goes in the same equation; the shared $R$ appears in both, flipped. \; \warn{Minus before parentheses flips every term}: $-(x-8)=-x+8$. \; \warn{Labeled $\pm V_x$}: $+$ end minus $-$ end.
 
 % ------------------------------------------------------------ 9
 \filbreak \subsection{9. series and parallel resistors \bk{2-3}}
@@ -801,7 +964,7 @@ $G_{eq}=G_1+G_2+\cdots$ & parallel conductances add \\
 
 \filbreak \subsubsection{Combination chart}
 {\small\renewcommand{\arraystretch}{1.35}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.27\linewidth}>{\raggedright\arraybackslash}p{0.28\linewidth}>{\raggedright\arraybackslash}p{0.39\linewidth}@{}}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.25\linewidth}>{\raggedright\arraybackslash}p{0.27\linewidth}>{\raggedright\arraybackslash}p{0.38\linewidth}@{}}
 \term{Pattern} & \term{Formula} & \term{Example ($\Omega$)} \\\hline
 two in series & $R_1+R_2$ & $2+3=\keyres{5}$ \\
 three in series & $R_1+R_2+R_3$ & $1+2+3=\keyres{6}$ \\
@@ -821,69 +984,138 @@ missing $R$, parallel & $R=\dfrac{R_{eq}R_1}{R_1-R_{eq}}$ & $R\parallel12=4$: $\
 \par\vspace{2pt}
 \term{How to reduce}: label the nodes. Merge nodes joined by wires or shorts. Find a clear series pair or parallel pair. Replace it. Redraw. Repeat, starting \keyres{farthest from the terminals}.
 
-\nopagebreak
+\needspace{17\baselineskip}
 \noindent\hfil
 \begin{tikzpicture}[font=\scriptsize]
-\node[res] (r1) at (1,2) {}; \node[above=0.05cm of r1] {$R_1=4\,\Omega$};
-\node[vres] (r2) at (2,1) {}; \node[right=0.1cm of r2] {$R_2=24\,\Omega$};
-\node[res] (r3) at (3.3,2) {}; \node[above=0.05cm of r3] {$R_3=2\,\Omega$};
-\node[vres] (r4) at (4.6,1) {}; \node[right=0.1cm of r4] {$R_4=6\,\Omega$};
+\node[res, draw=pcC] (r1) at (1,2) {}; \node[above=0.05cm of r1, text=pcC] {$R_1=4\,\Omega$};
+\node[vres, draw=pcB] (r2) at (2,1) {}; \node[right=0.1cm of r2, text=pcB] {$R_2=24\,\Omega$};
+\node[res, draw=pcA] (r3) at (3.3,2) {}; \node[above=0.05cm of r3, text=pcA] {$R_3=2\,\Omega$};
+\node[vres, draw=pcA] (r4) at (4.6,1) {}; \node[right=0.1cm of r4, text=pcA] {$R_4=6\,\Omega$};
 \draw[wire] (0,2) -- (r1.west); \draw[wire] (r1.east) -- (2,2) -- (r3.west); \draw[wire] (2,2) -- (r2.north);
 \draw[wire] (r2.south) -- (2,0); \draw[wire] (r3.east) -- (4.6,2) -- (r4.north); \draw[wire] (r4.south) -- (4.6,0) -- (0,0);
 \draw[white, fill=black] (0,2) circle (2pt) node[left, text=keyHi] {a};
 \draw[white, fill=black] (0,0) circle (2pt) node[left, text=keyHi] {b};
 \end{tikzpicture}
 
-\wk{12}{reduce the ladder above to $R_{ab}$}
-\stepbox{1. FAR END: $R_3+R_4$ (SERIES)}{$2+6=8\,\Omega$}
+\wk{8}{reduce the ladder above to $R_{ab}$}
+\stepbox{1. PIECES (FARTHEST FROM a, b FIRST)}{\pA{$R_3$, $R_4$} series \qquad \pB{$R_2$} parallel to that pair \qquad \pC{$R_1$} series with the rest}
 \stepdown
-\stepbox{2. WITH $R_2$ (PARALLEL)}{$24\parallel8=\dfrac{192}{32}=6\,\Omega$}
+\stepbox{2. TEMPLATES}{series: $\slot{pcA}{R}+\slot{pcA}{R}$ \qquad parallel: $\dfrac{\slot{pcB}{R}\cdot\slot{pcA}{R}}{\slot{pcB}{R}+\slot{pcA}{R}}$}
 \stepdown
-\stepbox{3. WITH $R_1$ (SERIES)}{$R_{ab}=4+6=\keyres{10}\,\Omega$}
+\stepbox{3. PLACE (INSIDE OUT)}{$\pA{2+6}=\pA{8}$; \quad $\dfrac{\pB{24}\cdot\pA{8}}{\pB{24}+\pA{8}}=6$; \quad $R_{ab}=\pC{4}+6=\keyres{10}\,\Omega$}
 
-\wk{14}{reduce $R_{eq}=2+\big[12\parallel(4+6\parallel3)\big]$ $\Omega$, inside out}
-\stepbox{1. $6\parallel3$}{$\dfrac{18}{9}=2\,\Omega$}
-\stepdown
-\stepbox{2. $4+2$}{$6\,\Omega$}
-\stepdown
-\stepbox{3. $12\parallel6$}{$\dfrac{72}{18}=4\,\Omega$}
-\stepdown
-\stepbox{4. $2+4$}{$R_{eq}=\keyres{6}\,\Omega$}
+\wk{8}{reduce $R_{eq}=2+\big[12\parallel(4+6\parallel3)\big]$ $\Omega$, inside out}
+\stepbox{INNERMOST BRACKET FIRST}{$6\parallel3=2$ \; $\to$ \; $4+2=6$ \; $\to$ \; $12\parallel6=4$ \; $\to$ \; $R_{eq}=2+4=\keyres{6}\,\Omega$}
 
 % ------------------------------------------------------------ 10
 \filbreak \subsection{10. voltage and current dividers \bk{2-3}}
 \begin{ftab}
 $v_1=\dfrac{R_1}{R_1+R_2}\,v_s$ & \term{voltage divider} (series): \keyres{own} $R$ on top \st\\
 $v_k=\dfrac{R_k}{R_1+\cdots+R_N}\,v_s$ & $N$ series resistors \st\\
+$V_{\text{node}}=\dfrac{R_{\text{below}}}{R_T}\,v_s$ & node voltage (from ground): $R_{\text{below}}=$ sum of every $R$ between the node and ground \st\\
+$v_k=V_{\text{top}}-V_{\text{bottom}}$ & across one resistor $=$ difference of its two end nodes \\
+$p_k=(V_{\text{top}}-V_{\text{bottom}})\,I$ & series power; all $p_k$ add to $v_s I$ \\
 $R_2=\dfrac{R_1\,v_2}{v_s-v_2}$ & resistor for a target $v_2$ \st\\
 $i_1=\dfrac{R_2}{R_1+R_2}\,i_s=\dfrac{G_1}{G_{eq}}\,i_s$ & \term{current divider} (parallel): \keyres{other} $R$ on top, or own $G$ \st\\
 $i_k=\dfrac{R_{eq}}{R_k}\,i_s$ & any number of parallel branches \st\\
 $R_2=\dfrac{R_1\,(i_s-i_2)}{i_2}$ & resistor for a target $i_2$ \st\\
 \end{ftab}
-\nopagebreak
-\noindent\hfil\loopckt{$v_s$}{$R_1$}{$R_2$}
+
+\needspace{17\baselineskip}
+\noindent\hfil
+\begin{tikzpicture}[font=\scriptsize]
+\node[src, draw=pcC] (vs) at (0,1) {};
+\node[font=\tiny, text=pcC] at (0,1.13) {$+$}; \node[font=\tiny, text=pcC] at (0,0.85) {$-$};
+\node[left=0.05cm of vs, text=pcC] {$12$ V};
+\node[res, draw=pcA] (r1) at (1.5,2) {}; \node[above=0.05cm of r1, text=pcA] {$R_1=2$ k};
+\node[vres, draw=pcB] (r2) at (3,1) {}; \node[right=0.12cm of r2, text=pcB] {$R_2=4$ k};
+\draw[wire] (vs.north) -- (0,2) -- (r1.west);
+\draw[wire] (r1.east) -- (3,2) -- (r2.north);
+\draw[wire] (r2.south) -- (3,0) -- (0,0) -- (vs.south);
+\node[text=pcA, below=0.08cm of r1] {$+\;v_1\;-$};
+\node[text=pcB] at (2.6,1) {$v_2$};
+\end{tikzpicture}
+
+\wk{8}{voltage divider: $v_1$ and $v_2$ above}
+\stepbox{1. PIECES (FOR $v_1$)}{own: \pA{$R_1$} \qquad all series: \pA{$R_1$}, \pB{$R_2$} \qquad source: \pC{$12$ V}}
+\stepdown
+\stepbox{2. TEMPLATE}{$v=\dfrac{\slot{pcA}{own $R$}}{\slot{pcB}{every series $R$}}\cdot\slot{pcC}{source}$}
+\stepdown
+\stepbox{3. PLACE}{$v_1=\dfrac{\pA{2}}{\pA{2}+\pB{4}}\cdot\pC{12}=\keyres{4}$ V; \; own $\to$ \pB{$R_2$}: $v_2=\dfrac{\pB4}{6}\cdot12=\keyres{8}$ V \why{$4+8=12$ \checkmark}}
+
+\needspace{17\baselineskip}
+\noindent\hfil
+\begin{tikzpicture}[font=\scriptsize]
+\node[src] (vs) at (0,1.5) {};
+\node[font=\tiny] at (0,1.63) {$+$}; \node[font=\tiny] at (0,1.35) {$-$};
+\node[left=0.05cm of vs] {$12$ V};
+\node[vres] (r1) at (2,2.55) {}; \node[left=0.1cm of r1] {$R_1=2$};
+\node[vres, draw=pcA] (r2) at (2,1.5) {}; \node[left=0.1cm of r2, text=pcA] {$R_2=4$};
+\node[vres, draw=pcA] (r3) at (2,0.45) {}; \node[left=0.1cm of r3, text=pcA] {$R_3=6$};
+\draw[wire] (vs.north) -- (0,3.1) -- (2,3.1) -- (r1.north);
+\draw[wire] (r1.south) -- (r2.north); \draw[wire] (r2.south) -- (r3.north);
+\draw[wire] (r3.south) -- (2,-0.1) -- (0,-0.1) -- (vs.south);
+\fill[white] (2,3.1) circle (1.6pt) node[right] {A $=12$};
+\fill[pcB] (2,2.025) circle (2pt) node[right, text=pcB] {B};
+\fill[white] (2,0.975) circle (1.6pt) node[right] {C};
+\fill[white] (2,-0.1) circle (1.6pt) node[below] {D $=0$ (ground)};
+\draw[pcA] (2.9,1.95) -- (3.0,1.95) -- (3.0,-0.05) -- (2.9,-0.05);
+\node[right, text=pcA] at (3.0,0.95) {below B};
+\end{tikzpicture}
+
+\wk{8}{node voltages in a series stack (above), $R$ in $\Omega$}
+\stepbox{1. PIECES}{$R_T=12$ \qquad between \pB{B} and ground: \pA{$R_2$, $R_3$}}
+\stepdown
+\stepbox{2. TEMPLATES}{$V_{\text{node}}=\dfrac{\slot{pcA}{sum of $R$ below the node}}{\slot{white}{$R_T$}}\cdot v_s$ \qquad $v_k=\slot{white}{$V_{\text{top}}$}-\slot{white}{$V_{\text{bottom}}$}$}
+\stepdown
+\stepbox{3. PLACE}{$V_{\pB{B}}=\dfrac{\pA{4+6}}{12}\cdot12=\keyres{10}$ V, \; $V_C=\dfrac{6}{12}\cdot12=\keyres{6}$ V, \; $v_2=V_B-V_C=\keyres{4}$ V \why{$=\frac4{12}\cdot12$ \checkmark}}
+\stepdown
+\stepbox{4. POWER: $p=(V_{\text{top}}-V_{\text{bottom}})\,I$}{$I=1$ A: \; $p_1=2$, $p_2=4$, $p_3=6$ W; \; sum $12=v_sI$ \checkmark}
+
+\warn{Node voltage $=$ voltage across only when the other end is ground.} $V_B\neq v_2$; $V_C=v_3$.
+
+\needspace{17\baselineskip}
+\noindent\hfil
+\begin{tikzpicture}[font=\scriptsize]
+\node[src, draw=pcC] (is) at (0,1) {};
+\draw[-{Latex[length=1.4mm]}, pcC, thick] (0,0.82) -- (0,1.2);
+\node[left=0.05cm of is, text=pcC] {$6$ A};
+\node[vres, draw=pcA] (ra) at (1.6,1) {}; \node[right=0.1cm of ra, text=pcA] {$3\,\Omega$};
+\node[vres, draw=pcB] (rb) at (3.0,1) {}; \node[right=0.1cm of rb, text=pcB] {$6\,\Omega$};
+\draw[wire] (is.north) -- (0,2) -- (3.0,2) -- (rb.north);
+\draw[wire] (1.6,2) -- (ra.north);
+\draw[wire] (is.south) -- (0,0) -- (3.0,0) -- (rb.south);
+\draw[wire] (ra.south) -- (1.6,0);
+\draw[iarrow] (1.32,1.75) -- (1.32,1.3) node[midway, left] {$i_1$};
+\end{tikzpicture}
+
+\wk{8}{current divider: $i_1$ above}
+\stepbox{1. PIECES (FOR $i_1$)}{own: \pA{$3\,\Omega$} \qquad other: \pB{$6\,\Omega$} \qquad source: \pC{$6$ A}}
+\stepdown
+\stepbox{2. TEMPLATE}{$i=\dfrac{\slot{pcB}{other $R$}}{\slot{white}{both $R$ added}}\cdot\slot{pcC}{$i_s$}$}
+\stepdown
+\stepbox{3. PLACE}{$i_1=\dfrac{\pB6}{\pA3+\pB6}\cdot\pC6=\keyres{4}$ A; \; $i_2=\dfrac{\pA3}{9}\cdot6=\keyres{2}$ A \why{sum $6$ \checkmark}}
+
 \begin{qtab}
-$12$ V, $R_1=2$ k, $R_2=4$ k & $v_1=\frac26\cdot12=\keyres{4}$ V, \; $v_2=\keyres{8}$ V \\
 $12$ V, $R_1=9$ k, want $v_2=3$ V & $R_2=\frac{9\cdot3}{12-3}=\keyres{3}$ k$\Omega$ \\
-$6$ A into $3\parallel6\,\Omega$ & $\frac69\cdot6=\keyres{4}$ A, \; $\frac39\cdot6=\keyres{2}$ A \\
 $12$ A into $2$, $3$, $6\,\Omega$ ($R_{eq}=1$) & $\frac{1}{2}\cdot12=\keyres{6}$, $\frac13\cdot12=\keyres{4}$, $\frac16\cdot12=\keyres{2}$ A \\
 $10$ A, $R_1=4\,\Omega$, want $i_2=2$ A & $R_2=\frac{4(10-2)}{2}=\keyres{16}\,\Omega$ \\
 \end{qtab}
 \warn{A load across a divider changes it.} Combine the load with the resistor it sits across first, then divide.
 
-\nopagebreak
+\needspace{17\baselineskip}
 \noindent\hfil
 \begin{tikzpicture}[font=\scriptsize]
-\node[src] (vs) at (0,1) {};
-\node[font=\tiny] at (0,1.13) {$+$};
-\node[font=\tiny] at (0,0.85) {$-$};
-\node[left=0.05cm of vs] {$12$ V};
-\node[res] (r1) at (1.5,2) {};
-\node[above=0.05cm of r1] {$R_1=10$ k$\Omega$};
-\node[vres] (r2) at (3,1) {};
-\node[left=0.1cm of r2] {$R_2=10$ k$\Omega$};
-\node[vres] (rl) at (4.3,1) {};
-\node[right=0.1cm of rl] {$R_L=10$ k$\Omega$};
+\node[src, draw=pcC] (vs) at (0,1) {};
+\node[font=\tiny, text=pcC] at (0,1.13) {$+$};
+\node[font=\tiny, text=pcC] at (0,0.85) {$-$};
+\node[left=0.05cm of vs, text=pcC] {$12$ V};
+\node[res, draw=pcB] (r1) at (1.5,2) {};
+\node[above=0.05cm of r1, text=pcB] {$R_1=10$ k$\Omega$};
+\node[vres, draw=pcA] (r2) at (3,1) {};
+\node[left=0.1cm of r2, text=pcA] {$R_2=10$ k$\Omega$};
+\node[vres, draw=pcA] (rl) at (4.3,1) {};
+\node[right=0.1cm of rl, text=pcA] {$R_L=10$ k$\Omega$};
 \draw[wire] (vs.north) -- (0,2) -- (r1.west);
 \draw[wire] (r1.east) -- (4.3,2) -- (rl.north);
 \draw[wire] (3,2) -- (r2.north);
@@ -892,33 +1124,33 @@ $10$ A, $R_1=4\,\Omega$, want $i_2=2$ A & $R_2=\frac{4(10-2)}{2}=\keyres{16}\,\O
 \fill[keyHi] (3,2) circle (1.6pt) node[above, text=keyHi] {$v_{out}$};
 \end{tikzpicture}
 
-\wk{12}{the loaded divider above}
-\stepbox{1. NO LOAD}{$v_{out}=\dfrac{10}{20}\cdot12=6$ V}
+\wk{8}{the loaded divider above}
+\stepbox{1. PIECES}{\pA{$R_L$} across \pA{$R_2$} merge into \emph{one} piece \pA{$R_2\parallel R_L$} \qquad top: \pB{$R_1$} \qquad source: \pC{$12$ V}}
 \stepdown
-\stepbox{2. COMBINE THE LOAD FIRST}{$R_2\parallel R_L=10\parallel10=5$ k$\Omega$}
+\stepbox{2. TEMPLATE}{$v_{out}=\dfrac{\slot{pcA}{$R_2\parallel R_L$}}{\slot{pcB}{$R_1$}+\slot{pcA}{$R_2\parallel R_L$}}\cdot\slot{pcC}{$v_s$}$}
 \stepdown
-\stepbox{3. DIVIDE}{$v_{out}=\dfrac{5}{10+5}\cdot12=\keyres{4}$ V \; \why{the load pulls it down}}
+\stepbox{3. PLACE}{$\pA{10\parallel10=5}$; \; $v_{out}=\dfrac{\pA5}{\pB{10}+\pA5}\cdot\pC{12}=\keyres{4}$ V \why{unloaded: $6$ V; the load pulls it down}}
 
 % ------------------------------------------------------------ 11
 \filbreak \subsection{11. source transformation and combining sources \bk{2-3}}
 A voltage source $v_s$ in series with $R_s$ acts exactly like a current source $i_s$ in parallel with the \keyres{same} $R_s$.
 
-\nopagebreak
+\needspace{17\baselineskip}
 \noindent\hfil
 \begin{tikzpicture}[font=\scriptsize]
-\node[src] (vs) at (0,1) {};
-\node[font=\tiny] at (0,1.13) {$+$}; \node[font=\tiny] at (0,0.85) {$-$};
-\node[left=0.05cm of vs] {$v_s$};
-\node[res] (rs) at (1.0,2) {}; \node[above=0.05cm of rs] {$R_s$};
+\node[src, draw=pcC] (vs) at (0,1) {};
+\node[font=\tiny, text=pcC] at (0,1.13) {$+$}; \node[font=\tiny, text=pcC] at (0,0.85) {$-$};
+\node[left=0.05cm of vs, text=pcC] {$v_s$};
+\node[res, draw=pcA] (rs) at (1.0,2) {}; \node[above=0.05cm of rs, text=pcA] {$R_s$};
 \draw[wire] (vs.north) -- (0,2) -- (rs.west); \draw[wire] (rs.east) -- (1.9,2);
 \draw[wire] (vs.south) -- (0,0) -- (1.9,0);
 \draw[white, fill=black] (1.9,2) circle (2pt) node[right, text=keyHi] {a};
 \draw[white, fill=black] (1.9,0) circle (2pt) node[right, text=keyHi] {b};
 \node at (2.75,1) {$\Longleftrightarrow$};
-\node[src] (is) at (3.6,1) {};
-\draw[-{Latex[length=1.4mm]}, white, thick] (3.6,0.82) -- (3.6,1.2);
-\node[left=0.05cm of is] {$i_s$};
-\node[vres] (rp) at (4.6,1) {}; \node[right=0.08cm of rp] {$R_s$};
+\node[src, draw=pcB] (is) at (3.6,1) {};
+\draw[-{Latex[length=1.4mm]}, pcB, thick] (3.6,0.82) -- (3.6,1.2);
+\node[left=0.05cm of is, text=pcB] {$i_s$};
+\node[vres, draw=pcA] (rp) at (4.6,1) {}; \node[right=0.08cm of rp, text=pcA] {$R_s$};
 \draw[wire] (is.north) -- (3.6,2) -- (5.4,2); \draw[wire] (4.6,2) -- (rp.north);
 \draw[wire] (is.south) -- (3.6,0) -- (5.4,0); \draw[wire] (rp.south) -- (4.6,0);
 \draw[white, fill=black] (5.4,2) circle (2pt) node[right, text=keyHi] {a};
@@ -932,9 +1164,17 @@ arrow of $i_s$ & points toward the $+$ end of $v_s$ \\
 $v_{eq}=v_1-v_2+v_3$ & voltage sources in series: add with signs \\
 $i_{eq}=i_1-i_2+i_3$ & current sources in parallel: add with directions \\
 \end{ftab}
+
+\wk{8}{transform $12$ V in series with $4\,\Omega$ (left $\to$ right above)}
+\stepbox{1. PIECES}{\pC{$v_s=12$ V} ($+$ on top) \qquad \pA{$R_s=4\,\Omega$} in series}
+\stepdown
+\stepbox{2. TEMPLATE}{$\slot{pcB}{$i_s$}=\dfrac{\slot{pcC}{$v_s$}}{\slot{pcA}{$R_s$}}$; \; same \slot{pcA}{$R_s$}, now parallel; arrow toward $+$}
+\stepdown
+\stepbox{3. PLACE}{$\pB{i_s}=\dfrac{\pC{12}}{\pA4}=\keyres{3}$ A, pointing up, $\parallel$ \pA{$4\,\Omega$}}
+\stepdown
+\stepbox{4. REVERSE (RIGHT $\to$ LEFT)}{\pB{$2$ A} $\parallel$ \pA{$5\,\Omega$}: $\pC{v_s}=\pB2\cdot\pA5=\keyres{10}$ V in series with \pA{$5\,\Omega$}}
+
 \begin{qtab}
-$12$ V in series with $4\,\Omega$ & $i_s=12/4=\keyres{3}$ A in parallel with $4\,\Omega$ \\
-$2$ A in parallel with $5\,\Omega$ & $v_s=2\cdot5=\keyres{10}$ V in series with $5\,\Omega$ \\
 $9$ V and $3$ V in series, opposing & $\keyres{6}$ V \\
 $2$ A up, $5$ A up, $1$ A down, in parallel & $2+5-1=\keyres{6}$ A up \\
 open-circuit voltage of a real source & no current, no drop on $R_s$: $V_{oc}=\keyres{v_s}$ \\
@@ -947,22 +1187,22 @@ open-circuit voltage of a real source & no current, no drop on $R_s$: $V_{oc}=\k
 \filbreak \subsection{12. wye--delta (Y--$\Delta$, T--$\Pi$) \bk{2-4}}
 For networks that are neither series nor parallel (a bridge). Both shapes connect the same three nodes 1, 2, 3. The \keyres{book's labels}: $Y$ arms $R_1$, $R_2$, $R_3$ go to nodes 1, 2, 3. $\Delta$ side $R_a$ is \keyres{opposite} node 1 (between 2 and 3), $R_b$ opposite node 2, $R_c$ opposite node 3.
 
-\nopagebreak
+\needspace{17\baselineskip}
 \noindent\hfil
 \begin{tikzpicture}[font=\scriptsize]
 \coordinate (a) at (1,1.5); \coordinate (b) at (0,0); \coordinate (c) at (2,0);
-\draw[wire] (a) -- node[res, sloped, minimum width=0.5cm] {} (b);
-\draw[wire] (b) -- node[res, sloped, minimum width=0.5cm] {} (c);
-\draw[wire] (c) -- node[res, sloped, minimum width=0.5cm] {} (a);
-\node at (0.1,0.95) {$R_c$}; \node at (1.9,0.95) {$R_b$}; \node at (1,-0.3) {$R_a$};
-\node[above, text=keyHi] at (a) {1}; \node[left, text=keyHi] at (b) {2}; \node[right, text=keyHi] at (c) {3};
+\draw[wire] (a) -- node[res, sloped, minimum width=0.5cm, draw=pcA] {} (b);
+\draw[wire] (b) -- node[res, sloped, minimum width=0.5cm, draw=pcB] {} (c);
+\draw[wire] (c) -- node[res, sloped, minimum width=0.5cm, draw=pcA] {} (a);
+\node[text=pcA] at (0.05,0.95) {$R_c$}; \node[text=pcA] at (1.95,0.95) {$R_b$}; \node[text=pcB] at (1,-0.3) {$R_a$};
+\fill[pcA] (a) circle (1.6pt); \node[above, text=pcA] at (a) {1}; \node[left] at (b) {2}; \node[right] at (c) {3};
 \node at (1,-0.65) {$\Delta$};
 \coordinate (a2) at (4.5,1.5); \coordinate (b2) at (3.5,0); \coordinate (c2) at (5.5,0); \coordinate (o) at (4.5,0.6);
-\draw[wire] (a2) -- node[res, sloped, minimum width=0.4cm] {} (o);
+\draw[wire] (a2) -- node[res, sloped, minimum width=0.4cm, draw=pcB] {} (o);
 \draw[wire] (b2) -- node[res, sloped, minimum width=0.4cm] {} (o);
 \draw[wire] (c2) -- node[res, sloped, minimum width=0.4cm] {} (o);
-\node at (4.8,1.1) {$R_1$}; \node at (3.75,0.5) {$R_2$}; \node at (5.25,0.5) {$R_3$};
-\node[above, text=keyHi] at (a2) {1}; \node[left, text=keyHi] at (b2) {2}; \node[right, text=keyHi] at (c2) {3};
+\node[text=pcB] at (4.8,1.1) {$R_1$}; \node at (3.75,0.5) {$R_2$}; \node at (5.25,0.5) {$R_3$};
+\node[above] at (a2) {1}; \node[left] at (b2) {2}; \node[right] at (c2) {3};
 \node at (4.5,-0.65) {$Y$};
 \end{tikzpicture}
 
@@ -973,32 +1213,47 @@ $R_a=\dfrac{R_1R_2+R_2R_3+R_1R_3}{R_1}$ & $Y\to\Delta$: (sum of pair products) $
 $R_b=\dfrac{N}{R_2}$, \; $R_c=\dfrac{N}{R_3}$ & same pattern, $N=$ the numerator above \st\\
 $R_Y=\dfrac{R_\Delta}{3}$, \; $R_\Delta=3R_Y$ & balanced (all equal) \st\\
 \end{ftab}
+
+\wk{8}{$\Delta\to Y$ with $R_a=10$, $R_b=20$, $R_c=30\,\Omega$ (left figure)}
+\stepbox{1. PIECES FOR ARM $R_1$}{sides touching node \pA{1}: \pA{$R_b=20$, $R_c=30$} \qquad all three: $\Sigma=60$}
+\stepdown
+\stepbox{2. TEMPLATE}{$R_{\text{arm}}=\dfrac{\slot{pcA}{side touching}\cdot\slot{pcA}{side touching}}{\slot{white}{all three added}}$}
+\stepdown
+\stepbox{3. PLACE}{$R_1=\dfrac{\pA{20}\cdot\pA{30}}{60}=\keyres{10}$\\ node 2 touches $R_a$, $R_c$: $R_2=\dfrac{10\cdot30}{60}=\keyres{5}$\\ node 3 touches $R_a$, $R_b$: $R_3=\dfrac{10\cdot20}{60}=\keyres{3.33}\,\Omega$}
+
+\wk{8}{$Y\to\Delta$, reversing the example (right figure)}
+\stepbox{1. PIECES FOR SIDE $R_a$}{arm at the opposite node (1): \pB{$R_1=10$} \qquad $N=50+16.7+33.3=100$}
+\stepdown
+\stepbox{2. TEMPLATE}{$R_{\text{side}}=\dfrac{\slot{white}{$N$}}{\slot{pcB}{arm at the opposite node}}$}
+\stepdown
+\stepbox{3. PLACE}{$\pB{R_a}=\dfrac{100}{\pB{10}}=\keyres{10}$, \; $R_b=\dfrac{100}{5}=\keyres{20}$, \; $R_c=\dfrac{100}{3.33}=\keyres{30}\,\Omega$ \why{matches the start \checkmark}}
+
 \begin{qtab}
-$\Delta$: $R_a=10$, $R_b=20$, $R_c=30$ & $\Sigma=60$: \; $R_1=\frac{600}{60}=\keyres{10}$, $R_2=\frac{300}{60}=\keyres{5}$, $R_3=\frac{200}{60}=\keyres{3.33}$ \\
-(reverse) $Y$: $10$, $5$, $3.33$ & $N=50+16.67+33.33=100$: \; $R_a=\frac{100}{10}=10$, $R_b=\frac{100}{5}=20$, $R_c=\frac{100}{3.33}=30$ \\
 balanced $\Delta$, each $30\,\Omega$ & $R_Y=\keyres{10}\,\Omega$ \\
 \end{qtab}
 \warn{Other books swap the labels.} Always match by \emph{position}: a $Y$ arm uses the two $\Delta$ sides that touch its node.
 
 % ------------------------------------------------------------ 13
-\filbreak \subsection{13. Wheatstone bridge and resistive sensors \bk{2-5, 2-6.3}}
-\nopagebreak
+\needspace{22\baselineskip}\subsection{13. Wheatstone bridge and resistive sensors \bk{2-5, 2-6.3}}
+\needspace{17\baselineskip}
 \noindent\hfil
 \begin{tikzpicture}[font=\scriptsize]
 \coordinate (T) at (2,2.2); \coordinate (B) at (2,0); \coordinate (L) at (1,1.1); \coordinate (Rt) at (3,1.1);
-\draw[wire] (T) -- node[res, sloped, minimum width=0.45cm] {} (L);
-\draw[wire] (L) -- node[res, sloped, minimum width=0.45cm] {} (B);
-\draw[wire] (T) -- node[res, sloped, minimum width=0.45cm] {} (Rt);
-\draw[wire] (Rt) -- node[res, sloped, minimum width=0.45cm] {} (B);
-\node at (1.25,1.85) {$R_1$}; \node at (1.25,0.35) {$R_3$};
-\node at (2.75,1.85) {$R_2$}; \node at (2.75,0.35) {$R_x$};
-\node[src] (vs) at (0,1.1) {}; \node[left=0.05cm of vs] {$V_0$};
+\draw[wire] (T) -- node[res, sloped, minimum width=0.45cm, draw=pcA] {} (L);
+\draw[wire] (L) -- node[res, sloped, minimum width=0.45cm, draw=pcB] {} (B);
+\draw[wire] (T) -- node[res, sloped, minimum width=0.45cm, draw=pcA] {} (Rt);
+\draw[wire] (Rt) -- node[res, sloped, minimum width=0.45cm, draw=pcB] {} (B);
+\node[text=pcA] at (1.25,1.85) {$R_1$}; \node[text=pcB] at (1.25,0.35) {$R_3$};
+\node[text=pcA] at (2.75,1.85) {$R_2$}; \node[text=pcB] at (2.75,0.35) {$R_x$};
+\node[src, draw=pcC] (vs) at (0,1.1) {}; \node[left=0.05cm of vs, text=pcC] {$V_0$};
 \node[font=\tiny] at (0,1.23) {$+$}; \node[font=\tiny] at (0,0.95) {$-$};
 \draw[wire] (vs.north) -- (0,2.2) -- (T); \draw[wire] (vs.south) -- (0,0) -- (B);
 \node[draw=uHi, thick, circle, inner sep=1pt, font=\tiny] (am) at (2,1.1) {A};
 \draw[uHi, thick] (L) -- (am.west); \draw[uHi, thick] (am.east) -- (Rt);
 \fill[keyHi] (L) circle (1.4pt) node[left, text=keyHi] {1};
 \fill[keyHi] (Rt) circle (1.4pt) node[right, text=keyHi] {2};
+\node[text=pcA] at (3.9,1.85) {tops};
+\node[text=pcB] at (3.9,0.35) {bottoms};
 \end{tikzpicture}
 
 \begin{ftab}
@@ -1008,6 +1263,21 @@ $V_{out}=\dfrac{V_0\,\Delta R}{4R+2\Delta R}$ & sensor bridge: three arms $R$, o
 $V_{out}\approx\dfrac{V_0}{4}\cdot\dfrac{\Delta R}{R}$ & when $\Delta R\ll R$ \st\\
 $\dfrac{\Delta R}{R}=\dfrac{4V_{out}}{V_0}$ & (relative change) from the reading \st\\
 \end{ftab}
+
+\wk{8}{balance: $R_1=100$, $R_2=200$, $R_3=150\,\Omega$, find $R_x$}
+\stepbox{1. PIECES}{\pA{tops}: $100$ (left), $200$ (right) \qquad \pB{bottoms}: $150$ (left), $R_x$ (right)}
+\stepdown
+\stepbox{2. TEMPLATE (BALANCED: SAME RATIO EACH SIDE)}{$\dfrac{\slot{pcA}{left top}}{\slot{pcB}{left bottom}}=\dfrac{\slot{pcA}{right top}}{\slot{pcB}{right bottom}}$}
+\stepdown
+\stepbox{3. PLACE}{$\dfrac{\pA{100}}{\pB{150}}=\dfrac{\pA{200}}{\pB{R_x}}$ $\Rightarrow$ $R_x=\dfrac{200\cdot150}{100}=\keyres{300}\,\Omega$}
+
+\wk{8}{sensor bridge: $V_0=5$ V, $\Delta R/R=0.01$}
+\stepbox{1. PIECES}{source \pC{$5$ V} \qquad the changed arm: \pA{$\Delta R/R=0.01$}}
+\stepdown
+\stepbox{2. TEMPLATE}{$V_{out}\approx\dfrac{\slot{pcC}{$V_0$}}{4}\cdot\slot{pcA}{$\Delta R/R$}$}
+\stepdown
+\stepbox{3. PLACE}{$\dfrac{\pC5}{4}\cdot\pA{0.01}=\keyres{12.5}$ mV \; (exact: $12.4$ mV)}
+
 \term{Piezoresistor} (pressure sensor):
 \begin{ftab}
 $R=R_0(1+\alpha P)$, \; $\Delta R=R_0\alpha P$ & $P$ in N/m$^2$; $P>0$ stretch, $P<0$ squeeze \\
@@ -1017,8 +1287,6 @@ $V_{out}=\dfrac{V_0}{4}\,\alpha P=\dfrac{V_0}{4}\,\alpha\,\dfrac{FL}{WH^2}$ & br
 \end{ftab}
 Silicon: $\alpha\approx-1\times10^{-9}$ m$^2$/N (usually negative).
 \begin{qtab}
-$R_1=100$, $R_2=200$, balance at $R_3=150\,\Omega$ & $R_x=\frac{200}{100}\cdot150=\keyres{300}\,\Omega$ \\
-$V_0=5$ V, $\Delta R/R=0.01$ & $\frac54\cdot0.01=\keyres{12.5}$ mV \; (exact: $12.4$ mV) \\
 $V_0=4$ V reads $2$ mV & $\frac{\Delta R}{R}=\frac{4\cdot0.002}{4}=\keyres{0.002}$ \\
 cantilever $F=10^{-3}$ N, $L=1$ mm, $W=0.1$ mm, $H=10\,\mu$m & $P=\frac{10^{-3}\cdot10^{-3}}{10^{-4}\cdot10^{-10}}=10^{8}$ N/m$^2$ \\
 same, $V_0=1$ V, $\alpha=-10^{-9}$ & $V_{out}=\frac14(-10^{-9})(10^8)=\keyres{-25}$ mV \\
@@ -1049,19 +1317,41 @@ red LED at $20$ mA from $5$ V & $R=\frac{5-1.6}{0.02}=\keyres{170}\,\Omega$ \\
 \filbreak \subsection{15. putting it together: one full circuit}
 Reduce, find the source current, then expand back out with Ohm's law, KVL, and KCL.
 
-\nopagebreak
-\noindent\hfil\threeckt{$12$ V}{$2\,\Omega$}{$6\,\Omega$}{$3\,\Omega$}
+\needspace{17\baselineskip}
+\noindent\hfil
+\begin{tikzpicture}[font=\scriptsize]
+\node[src, draw=pcC] (vs) at (0,1) {};
+\node[font=\tiny, text=pcC] at (0,1.13) {$+$};
+\node[font=\tiny, text=pcC] at (0,0.85) {$-$};
+\node[left=0.05cm of vs, text=pcC] {$12$ V};
+\node[res, draw=pcA] (r1) at (1.5,2) {};
+\node[above=0.05cm of r1, text=pcA] {$R_1=2\,\Omega$};
+\node[vres, draw=pcB] (r2) at (3,1) {};
+\node[right=0.1cm of r2, text=pcB] {$6\,\Omega$};
+\node[vres, draw=pcB] (r3) at (4.5,1) {};
+\node[right=0.1cm of r3, text=pcB] {$3\,\Omega$};
+\draw[wire] (vs.north) -- (0,2) -- (r1.west);
+\draw[wire] (r1.east) -- (4.5,2) -- (r3.north);
+\draw[wire] (3,2) -- (r2.north);
+\draw[wire] (r2.south) -- (3,0);
+\draw[wire] (r3.south) -- (4.5,0) -- (0,0) -- (vs.south);
+\fill[keyHi] (0,2) circle (1.6pt) node[above left, text=keyHi] {a};
+\fill[keyHi] (3,2) circle (1.6pt) node[above, text=keyHi] {b};
+\fill[keyHi] (3,0) circle (1.6pt) node[below, text=keyHi] {c};
+\end{tikzpicture}
 
-\wk{18}{find every current, voltage, and power}
-\stepbox{1. COMBINE: $R_2\parallel R_3$, THEN $+R_1$}{$6\parallel3=2\,\Omega$; \; $R_{eq}=2+2=4\,\Omega$}
+\wk{8}{find every current, voltage, and power}
+\stepbox{1. PIECES}{\pB{$6$, $3\,\Omega$} parallel (share b, c) \qquad \pA{$R_1$} series \qquad \pC{$12$ V}}
 \stepdown
-\stepbox{2. SOURCE CURRENT (OHM ON $R_{eq}$)}{$i=\dfrac{12}{4}=\keyres{3}$ A}
+\stepbox{2. COMBINE (\S9)}{$\dfrac{\pB{6}\cdot\pB{3}}{\pB6+\pB3}=\pB{2}\,\Omega$; \; $R_{eq}=\pA{2}+\pB{2}=4\,\Omega$}
 \stepdown
-\stepbox{3. VOLTAGE ON $R_1$, THEN ON THE PAIR (KVL)}{$v_1=3\cdot2=\keyres{6}$ V; \; $v_{bc}=12-6=\keyres{6}$ V}
+\stepbox{3. SOURCE CURRENT: $i=v_s/R_{eq}$}{$i=\dfrac{\pC{12}}{4}=\keyres{3}$ A}
 \stepdown
-\stepbox{4. BRANCH CURRENTS (OHM)}{$i_2=\keyres{1}$ A, \; $i_3=\keyres{2}$ A \; \why{KCL: $1+2=3$ \checkmark}}
+\stepbox{4. DROPS: $v=iR$, THEN KVL}{$v_1=3\cdot\pA2=\keyres{6}$ V; \; $v_{bc}=12-6=\keyres{6}$ V \why{or $3\cdot\pB2$}}
 \stepdown
-\stepbox{5. POWER}{$p_1=18$, $p_2=6$, $p_3=12$ W. \; Total $36$ W $=12\cdot3$ from the source \checkmark}
+\stepbox{5. BRANCH CURRENTS: $i=v_{bc}/R$}{$i_2=\frac{6}{\pB6}=\keyres{1}$ A, \; $i_3=\frac{6}{\pB3}=\keyres{2}$ A \; \why{KCL: $1+2=3$ \checkmark}}
+\stepdown
+\stepbox{6. POWER}{$p_1=18$, $p_2=6$, $p_3=12$ W. \; Total $36$ W $=12\cdot3$ from the source \checkmark}
 
 \end{multicols}
 

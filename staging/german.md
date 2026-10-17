@@ -310,17 +310,6 @@ Wie & \textbf{heißen} & Sie?\tr{What is your name?} \\\grp
 \watch{If another word is first (Jetzt \trs{now}, Hier \trs{here}), the subject moves after the verb: Jetzt wohne \textbf{ich} in Berlin.}
 
 % ------------------------------------------------------------
-\filbreak \subsection{numbers 0--12 \les{4}}
-\begin{sheet}{L{0.07}L{0.17}L{0.07}L{0.17}L{0.07}L{0.17}}
-0 & null & 5 & fünf & 10 & zehn \\
-1 & eins & 6 & sechs & 11 & elf \\
-2 & zwei & 7 & sieben & 12 & zwölf \\
-3 & drei & 8 & acht & & \\
-4 & vier & 9 & neun & & \\
-\end{sheet}
-Phone numbers are read digit by digit: 4187 = vier, eins, acht, sieben.
-
-% ------------------------------------------------------------
 \filbreak \subsection{small words and phrases}
 \begin{sheet}{L{0.36}L{0.60}}
 \h{German} & \h{English} \\\hline
@@ -394,6 +383,216 @@ machen & macht & to make, to do \\
 suchen & sucht & to look for \\
 sprechen & \irr{spricht} & to speak \\
 helfen & \irr{hilft} & to help (someone) \\
+\end{sheet}
+
+\end{multicols}
+
+\newpage
+\section{Numbers and Personal Details}
+
+\begin{multicols}{2}
+\raggedcolumns
+
+All names, numbers, and addresses in this section are made up.
+
+% ------------------------------------------------------------
+\filbreak \subsection{counting 0--20}
+\begin{sheet}{L{0.07}L{0.20}L{0.07}L{0.20}L{0.07}L{0.20}}
+\h{\#} & \h{German} & \h{\#} & \h{German} & \h{\#} & \h{German} \\\hline
+0 & null & 7 & sieben & 14 & vierzehn \\
+1 & eins & 8 & acht & 15 & fünfzehn \\
+2 & zwei & 9 & neun & 16 & \irr{sechzehn} \\
+3 & drei & 10 & zehn & 17 & \irr{siebzehn} \\
+4 & vier & 11 & \irr{elf} & 18 & achtzehn \\
+5 & fünf & 12 & \irr{zwölf} & 19 & neunzehn \\
+6 & sechs & 13 & dreizehn & 20 & \irr{zwanzig} \\
+\end{sheet}
+\begin{itemize}
+\item 13--19 = number + \textbf{zehn}: drei + zehn = dreizehn.
+\item sechzehn drops the s of sechs. siebzehn drops the en of sieben.
+\end{itemize}
+
+% ------------------------------------------------------------
+\filbreak \subsection{tens, hundreds, thousands}
+\begin{sheet}{L{0.09}L{0.22}L{0.13}L{0.52}}
+\h{\#} & \h{German} & \h{\#} & \h{German} \\\hline
+20 & \irr{zwanzig} & 100 & (ein)hundert \\
+30 & \irr{dreißig} & 200 & zweihundert \\
+40 & vierzig & 1000 & (ein)tausend \\
+50 & fünfzig & 2000 & zweitausend \\
+60 & \irr{sechzig} & & \\
+70 & \irr{siebzig} & & \\
+80 & achtzig & & \\
+90 & neunzig & & \\
+\end{sheet}
+Tens = number + \textbf{zig}. dreißig ends in \textbf{ßig}, not zig.
+
+% ------------------------------------------------------------
+\filbreak \subsection{21--99: say the ones first}
+Say the \textbf{ones} first, then \textbf{und} \trs{and}, then the \textbf{tens}. Write it as one word.
+\begin{sheet}{L{0.09}L{0.40}L{0.47}}
+\h{\#} & \h{Build} & \h{German} \\\hline
+21 & ein + und + zwanzig & einundzwanzig \\
+25 & fünf + und + zwanzig & fünfundzwanzig \\
+47 & sieben + und + vierzig & siebenundvierzig \\
+68 & acht + und + sechzig & achtundsechzig \\
+99 & neun + und + neunzig & neunundneunzig \\
+\end{sheet}
+\watch{47 is ``sieben\-und\-vierzig'' \trs{seven-and-forty}. Write the digits in the order you hear them: first 7, then 4 in front of it.}
+
+% ------------------------------------------------------------
+\filbreak \subsection{big numbers}
+Big numbers are one word: hundreds, then the 1--99 part.
+\begin{sheet}{L{0.14}L{0.82}}
+\h{\#} & \h{German} \\\hline
+101 & hundert\textbf{eins} \\
+112 & hundertzwölf \\
+345 & dreihundertfünfundvierzig \\
+2026 & zweitausendsechsundzwanzig \\
+\end{sheet}
+\begin{itemize}
+\item \textbf{eins} at the end of a number, \textbf{ein} in front of und or hundert: einundzwanzig, einhundert, hunderteins.
+\item Years before 2000 count hundreds: 1995 = neunzehnhundertfünfundneunzig \trs{nineteen hundred ninety-five}.
+\end{itemize}
+
+% ------------------------------------------------------------
+\filbreak \subsection{age}
+\begin{sheet}{L{0.29}L{0.29}L{0.38}}
+\h{Ask (du)} & \h{Ask (Sie)} & \h{Answer} \\\hline
+Wie alt bist du?\tr{How old are you?} & Wie alt sind Sie?\tr{How old are you?} & Ich bin 25 (Jahre alt).\tr{I am 25 (years old).} \\
+\end{sheet}
+\watch{German uses \textbf{sein} \trs{to be} for age, like English. Say the number: fünfundzwanzig.}
+
+% ------------------------------------------------------------
+\filbreak \subsection{my, your: mein, dein, Ihr}
+The ending follows the noun's article. Add \textbf{-e} for a \die{} noun.
+\begin{sheet}{L{0.24}L{0.20}L{0.20}L{0.32}}
+\h{Noun is} & \h{my} & \h{your (du)} & \h{your (Sie)} \\\hline
+\der{} / \das{} & mein & dein & Ihr \\
+\die{} & mein\en{e} & dein\en{e} & Ihr\en{e} \\
+\end{sheet}
+\begin{sheet}{L{0.46}L{0.50}}
+\h{Example} & \h{English} \\\hline
+mein Name \trs{\der{} Name} & my name \\
+mein Pass \trs{\der{} Pass} & my passport \\
+mein Auto \trs{\das{} Auto} & my car \\
+meine Adresse \trs{\die{} Adresse} & my address \\
+deine Handynummer \trs{\die{} Handynummer} & your mobile number \\
+Ihre E-Mail-Adresse \trs{\die{} E-Mail-Adresse} & your (formal) email address \\
+\end{sheet}
+\watch{Formal \textbf{Ihr} \trs{your} has a capital I, like Sie. All the contact words below are \die{} nouns, so they take mein\textbf{e}, dein\textbf{e}, Ihr\textbf{e}.}
+
+% ------------------------------------------------------------
+\filbreak \subsection{contact words}
+\begin{sheet}{L{0.42}L{0.30}L{0.24}}
+\h{Singular} & \h{Plural} & \h{English} \\\hline
+\die{} Adresse & \die{} Adressen & address \\
+\die{} Straße & \die{} Straßen & street \\
+\die{} Hausnummer & \die{} Hausnummern & house number \\
+\die{} Postleitzahl (PLZ) & \die{} Postleitzahlen & postal code, ZIP \\
+\die{} Stadt & \die{} Städte & city \\
+\die{} E-Mail-Adresse & \die{} E-Mail-Adressen & email address \\
+\die{} Handynummer & \die{} Handynummern & mobile number \\
+\die{} Telefonnummer & \die{} Telefonnummern & phone number \\\grp
+\der{} Ort & \die{} Orte & town, place \\
+\das{} Handy & \die{} Handys & mobile phone \\
+\das{} Formular & \die{} Formulare & form (to fill in) \\
+\end{sheet}
+\textbf{Handy} is the German word for a mobile phone. It is not an English word in German.
+
+% ------------------------------------------------------------
+\filbreak \subsection{asking for details}
+\begin{sheet}{L{0.29}L{0.29}L{0.38}}
+\h{Ask (du)} & \h{Ask (Sie)} & \h{Answer} \\\hline
+Wo wohnst du?\tr{Where do you live?} & Wo wohnen Sie?\tr{Where do you live?} & Ich wohne in Köln.\tr{I live in Cologne.} \\
+Wie ist deine Adresse?\tr{What is your address?} & Wie ist Ihre Adresse?\tr{What is your address?} & Meine Adresse ist Rosenweg 14, 50667 Köln.\tr{My address is Rosenweg 14, 50667 Cologne.} \\
+Was ist deine Postleitzahl?\tr{What is your postal code?} & Was ist Ihre Postleitzahl?\tr{What is your postal code?} & Meine Postleitzahl ist 50667.\tr{My postal code is 50667.} \\
+Was ist deine E-Mail-Adresse?\tr{What is your email address?} & Was ist Ihre E-Mail-Adresse?\tr{What is your email address?} & Meine E-Mail-Adresse ist anna.berger@beispiel.de.\tr{My email address is \ldots} \\
+Was ist deine Handynummer?\tr{What is your mobile number?} & Was ist Ihre Handynummer?\tr{What is your mobile number?} & Meine Handynummer ist 0151 2468 1357.\tr{My mobile number is \ldots} \\
+\end{sheet}
+\begin{itemize}
+\item \textbf{Wie ist} \ldots? and \textbf{Was ist} \ldots? both work for an address or a number. Textbooks often use Wie ist.
+\item To answer, change deine or Ihre to \textbf{meine}.
+\end{itemize}
+
+% ------------------------------------------------------------
+\filbreak \subsection{address format}
+Street first, then the house number. Postal code first, then the city.
+\begin{sheet}{L{0.38}L{0.58}}
+\h{Line} & \h{Example} \\\hline
+name & Anna Berger \\
+street + house number & Rosenweg 14 \\
+postal code + city & 50667 Köln \\
+\end{sheet}
+\watch{The house number comes \textbf{after} the street: Rosenweg 14, not 14 Rosenweg. German postal codes have 5 digits.}
+
+% ------------------------------------------------------------
+\filbreak \subsection{saying phone numbers and postal codes}
+\begin{sheet}{L{0.30}L{0.66}}
+\h{Way} & \h{0151 2468 1357} \\\hline
+digit by digit & null, eins, fünf, eins, \ldots \\
+in pairs & null, eins, einundfünfzig, vierundzwanzig, achtundsechzig, \ldots \\
+\end{sheet}
+\begin{itemize}
+\item Digit by digit is always correct and easier to understand. People often read in pairs.
+\item On the phone, people say \textbf{zwo} for zwei. Zwo does not sound like drei.
+\item Postal code 50667: fünf, null, sechs, sechs, sieben.
+\end{itemize}
+
+% ------------------------------------------------------------
+\filbreak \subsection{saying an email address}
+\begin{sheet}{L{0.14}L{0.42}L{0.40}}
+\h{Sign} & \h{German} & \h{English} \\\hline
+@ & at \trs{said like English ``at''} & at \\
+. & Punkt & dot \\
+- & Bindestrich & dash, hyphen \\
+\_ & Unterstrich & underscore \\
+a & klein a & small (lowercase) a \\
+A & groß A & capital A \\
+\end{sheet}
+anna.berger@beispiel.de = anna \textbf{Punkt} berger \textbf{at} beispiel \textbf{Punkt} de.
+
+% ------------------------------------------------------------
+\filbreak \subsection{spelling help}
+\begin{sheet}{L{0.50}L{0.46}}
+\h{German} & \h{English} \\\hline
+Wie schreibt man das? & How do you spell that? \\
+Kannst du das buchstabieren? & Can you spell that? (du) \\
+Können Sie das buchstabieren? & Can you spell that? (Sie) \\
+Wie bitte? & Pardon? / Sorry? \\
+Noch einmal, bitte. & Once more, please. \\
+Langsam, bitte. & Slowly, please. \\
+\end{sheet}
+
+% ------------------------------------------------------------
+\filbreak \subsection{the alphabet}
+Gold marks letter names that sound different from English. The hint is how to say the name.
+\begin{sheet}{L{0.06}L{0.20}L{0.06}L{0.20}L{0.06}L{0.30}}
+\h{} & \h{Say} & \h{} & \h{Say} & \h{} & \h{Say} \\\hline
+A & ah & K & kah & U & oo \\
+B & bay & L & ell & V & \irr{fow} \\
+C & tsay & M & emm & W & \irr{vay} \\
+D & day & N & enn & X & iks \\
+E & \irr{ay} & O & oh & Y & \irr{ÜP-see-lon} \\
+F & eff & P & pay & Z & \irr{tset} \\
+G & gay & Q & koo & Ä & \irr{eh} (a-Umlaut) \\
+H & hah & R & air & Ö & ö (o-Umlaut) \\
+I & \irr{ee} & S & ess & Ü & ü (u-Umlaut) \\
+J & \irr{yot} & T & tay & ß & \irr{ess-TSET} \\
+\end{sheet}
+\watch{The easiest letters to mix up: E \trs{ay} and I \trs{ee}, J \trs{yot} and G \trs{gay}, V \trs{fow} and W \trs{vay}.}
+
+% ------------------------------------------------------------
+\filbreak \subsection{sample form (Formular)}
+\begin{sheet}{L{0.40}L{0.56}}
+\h{Field} & \h{Filled in} \\\hline
+Vorname\tr{first name} & Anna \\
+Familienname\tr{last name} & Berger \\
+Alter\tr{age} & 25 \\
+Straße, Hausnummer\tr{street, house number} & Rosenweg 14 \\
+PLZ, Ort\tr{postal code, town} & 50667 Köln \\
+Handynummer\tr{mobile number} & 0151 2468 1357 \\
+E-Mail\tr{email} & anna.berger@beispiel.de \\
 \end{sheet}
 
 \end{multicols}
