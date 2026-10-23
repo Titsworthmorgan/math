@@ -123,11 +123,11 @@ iarrow/.style={-{Latex[length=1.6mm]}, uHi, thick}}
 \definecolor{pcC}{HTML}{B3A6F5}
 \definecolor{pcD}{HTML}{66B8F0}
 \definecolor{pcE}{HTML}{E8C95A}
-\newcommand{\pA}[1]{{\syntaxonfalse\color{pcA}#1}}
-\newcommand{\pB}[1]{{\syntaxonfalse\color{pcB}#1}}
-\newcommand{\pC}[1]{{\syntaxonfalse\color{pcC}#1}}
-\newcommand{\pD}[1]{{\syntaxonfalse\color{pcD}#1}}
-\newcommand{\pE}[1]{{\syntaxonfalse\color{pcE}#1}}
+\newcommand{\pA}[1]{\leavevmode{\syntaxonfalse\color{pcA}#1}}
+\newcommand{\pB}[1]{\leavevmode{\syntaxonfalse\color{pcB}#1}}
+\newcommand{\pC}[1]{\leavevmode{\syntaxonfalse\color{pcC}#1}}
+\newcommand{\pD}[1]{\leavevmode{\syntaxonfalse\color{pcD}#1}}
+\newcommand{\pE}[1]{\leavevmode{\syntaxonfalse\color{pcE}#1}}
 % empty slot in a template: \slot{color}{what goes here}
 \newcommand{\slot}[2]{{\setlength{\fboxsep}{1.2pt}\fcolorbox{#1}{black}{\syntaxonfalse\color{#1}\scriptsize #2}}}
 % ground symbol at a coordinate
@@ -391,7 +391,11 @@ The multiplier band is the \keyres{number of zeros}. Digits $2$--$7$ follow the 
 \stepdown
 \stepbox{2. TEMPLATE (4 BANDS)}{$R=\big(\slot{pcA}{digit 1}\,\slot{pcB}{digit 2}\big)\times\slot{pcC}{multiplier}\;\pm\;\slot{pcD}{tolerance}$}
 \stepdown
-\stepbox{3. PLACE}{$R=(\pA{4}\pB{7})\times\pC{100}\pm\pD{5\%}=\keyres{4.7\text{ k}\Omega}$; \; range $4465$ to $4935\,\Omega$}
+\stepbox{3. PLACE}{$R=(\pA{4}\pB{7})\times\pC{100}\pm\pD{5\%}=\keyres{4.7\text{ k}\Omega}$}
+\stepdown
+\stepbox{4. TOLERANCE RANGE}{$4700\times0.05=235$: \; from $\keyres{4465}$ to $\keyres{4935}\,\Omega$}
+\stepdown
+\stepbox{5. CHECK (REVERSE)}{$4700=47\times10^2$: digits $4$, $7$, then $2$ zeros: yellow, purple, red \checkmark}
 
 \begin{qtab}
 brown, black, orange, gold & $10\times10^3=\keyres{10\text{ k}\Omega}$, $\pm5\%$ \\
@@ -407,9 +411,9 @@ red, red, gold, gold & $22\times0.1=\keyres{2.2\,\Omega}$, $\pm5\%$ \\
 \term{3. voltage} & $v_{ab}=\dfrac{dw}{dq}$, \; $V_{ab}=V_a-V_b$, \; $W=QV$ \st\\
 \term{4. power, energy} & $p=vi$, \; $\sum p=0$, \; $w=\int p\,dt$, \; $W=Pt$, \; $P_{av}=\dfrac1T\int_0^Tp\,dt$ \st\\
 \term{5. extras} & $\text{Wh}=V\cdot\text{Ah}$, \; $t=\dfrac{\text{Ah}}{I}$, \; $E=cm\Delta T$, \; kWh $=\dfrac{\text{J}}{3.6\times10^6}$ \st\\
-\term{6. sources} & $V_L=\dfrac{R_L}{R_s+R_L}v_s$; \; dependent: $\alpha v_x$, $r i_x$, $g v_x$, $\beta i_x$ \st\\
+\term{6. sources} & $V_L=\dfrac{R_L}{R_s+R_L}v_s$. \; dependent: $\alpha v_x$, $r i_x$, $g v_x$, $\beta i_x$ \st\\
 \term{7. resistors} & $V=IR$, \; $R=\dfrac{\rho\ell}{A}=\dfrac{\ell}{\sigma A}$, \; $P=I^2R=\dfrac{V^2}{R}$, \; $R=R_0(1+\alpha T)$ \st\\
-\term{8. KCL, KVL} & $\sum i_{\text{in}}=\sum i_{\text{out}}$, \; $\sum v=0$; \; $N$ unknowns: $M$ KVL $+$ $(N-M)$ KCL \\
+\term{8. KCL, KVL} & $\sum i_{\text{in}}=\sum i_{\text{out}}$, \; $\sum v=0$. \; $N$ unknowns: $M$ KVL $+$ $(N-M)$ KCL \\
 \term{9. combine} & $R_1+R_2$, \; $\dfrac{R_1R_2}{R_1+R_2}$, \; $G_{eq}=\sum G$ \st\\
 \term{10. dividers} & $v_1=\dfrac{R_1}{R_1+R_2}v_s$, \; $i_1=\dfrac{R_2}{R_1+R_2}i_s=\dfrac{G_1}{G_{eq}}i_s$ \st\\
 \term{11. source transf.} & $i_s=\dfrac{v_s}{R_s}$, \; $v_s=i_sR_s$ (same $R_s$) \st\\
@@ -427,7 +431,7 @@ $c$, \; $t^n$ & $0$, \; $n\,t^{n-1}$ \\
 $e^{at}$ & $a\,e^{at}$ \\
 $\sin(\omega t)$, \; $\cos(\omega t)$ & $\omega\cos(\omega t)$, \; $-\omega\sin(\omega t)$ \\
 $f\cdot g$ (product) & $f'g+fg'$ \\
-$f(g(t))$ (chain) & $f'(g)\cdot g'$; \; e.g. $\sin^2(\omega t)\to2\omega\sin(\omega t)\cos(\omega t)$ \\
+$f(g(t))$ (chain) & $f'(g)\cdot g'$. \; For example, $\sin^2(\omega t)\to2\omega\sin(\omega t)\cos(\omega t)$ \\
 \end{tabular}}
 \par\vspace{2pt}
 \term{Integrals}:
@@ -446,14 +450,14 @@ $\int_0^\infty Ae^{-at}\,dt$ & $\dfrac{A}{a}$ \; ($a>0$) \st\\
 
 \term{Trig identities}: $\sin x\cos x=\tfrac12\sin2x$, \; $\cos^2x=\tfrac12(1+\cos2x)$, \; $\sin^2x=\tfrac12(1-\cos2x)$.
 
-\term{Maximum or minimum}: set the derivative to $0$ and solve for $t$. Example: largest $q$ where $\frac{dq}{dt}=0$; largest $p$ where $\frac{dp}{dt}=0$.
+\term{Maximum or minimum}: set the derivative to $0$ and solve for $t$. Example: largest $q$ where $\frac{dq}{dt}=0$, and the largest $p$ where $\frac{dp}{dt}=0$.
 
 \filbreak \subsubsection{Solving simultaneous equations}
 \term{2 unknowns} ($a_1x+b_1y=c_1$, \; $a_2x+b_2y=c_2$), Cramer's rule:
 $$D=a_1b_2-a_2b_1 \qquad x=\frac{c_1b_2-c_2b_1}{D} \qquad y=\frac{a_1c_2-a_2c_1}{D}$$
 \term{3 unknowns}: $D=\begin{vmatrix}a_1&b_1&c_1\\a_2&b_2&c_2\\a_3&b_3&c_3\end{vmatrix}=a_1(b_2c_3-b_3c_2)-b_1(a_2c_3-a_3c_2)+c_1(a_2b_3-a_3b_2)$. \; $x_k=\dfrac{D_k}{D}$, where $D_k$ is $D$ with column $k$ replaced by the right-hand sides. Or: eliminate one unknown at a time, or use a calculator's matrix solver (rref). \bk{App. B}
 \begin{qtab}
-$3x+2y=12$, \; $x-y=-1$ & $D=3(-1)-1(2)=-5$; \; $x=\frac{12(-1)-(-1)(2)}{-5}=\keyres{2}$, \; $y=\frac{3(-1)-1(12)}{-5}=\keyres{3}$ \\
+$3x+2y=12$, \; $x-y=-1$ & $D=3(-1)-1(2)=-5$. \; $x=\frac{12(-1)-(-1)(2)}{-5}=\keyres{2}$, \; $y=\frac{3(-1)-1(12)}{-5}=\keyres{3}$ \\
 \end{qtab}
 
 \filbreak \subsection{which tool? --- given $\to$ find}
@@ -464,24 +468,24 @@ The number in parentheses is the concept section.
 \term{Given} $\to$ \term{find} & \term{Do this} \\\hline
 a circuit $\to$ nodes, series, parallel & terminology table \hfill (1) \\[1pt]
 charge $Q\to$ electrons & $n=\lvert Q\rvert/e$ \hfill (2) \\[1pt]
-$q(t)\to i$; \; $i(t)\to\Delta Q$ & differentiate; integrate \hfill (2) \\[1pt]
-a $q(t)$ or $i(t)$ graph & slope; area \hfill (2) \\[1pt]
+$q(t)\to i$ / $i(t)\to\Delta Q$ & differentiate / integrate \hfill (2) \\[1pt]
+a $q(t)$ or $i(t)$ graph & slope / area \hfill (2) \\[1pt]
 node voltages, new ground & subtract the new ground's old value \hfill (3) \\[1pt]
 $V$, $I\to$ power, sign & $P=VI$, passive sign convention \hfill (4) \\[1pt]
-$v(t)$, $i(t)\to$ energy, average power & $\int vi\,dt$; \; $\frac1T\int p\,dt$ \hfill (4) \\[1pt]
+$v(t)$, $i(t)\to$ energy, average power & $\int vi\,dt$ / $\frac1T\int p\,dt$ \hfill (4) \\[1pt]
 battery, kWh, heat, cost & extras \hfill (5) \\[1pt]
 switch at $t_0$ & redraw: closed $=$ short, open $=$ open \hfill (6) \\[1pt]
 two of $V$, $I$, $R\to$ the third & Ohm's law \hfill (7) \\[1pt]
 wire: $R\leftrightarrow\ell$, $A$, material & $R=\rho\ell/A$ and the tables \hfill (7) \\[1pt]
 resistance at a new temperature & $R=R_0(1+\alpha T)$ \hfill (7) \\[1pt]
 color bands $\to R$ & color chart (ref) \\[1pt]
-currents at a node; voltages in a loop & KCL; KVL \hfill (8) \\[1pt]
+currents at a node / voltages in a loop & KCL / KVL \hfill (8) \\[1pt]
 $N$ unknown currents & $M$ KVL $+$ $(N-M)$ KCL, solve \hfill (8) \\[1pt]
 network $\to R_{eq}$ & combination chart \hfill (9) \\[1pt]
-series $\to v$ share; parallel $\to i$ share & dividers \hfill (10) \\[1pt]
+series $\to v$ share / parallel $\to i$ share & dividers \hfill (10) \\[1pt]
 mixed sources and resistors & source transformation \hfill (11) \\[1pt]
 not series, not parallel (a bridge) & $\Delta\leftrightarrow Y$ \hfill (12) \\[1pt]
-bridge balance; sensor output & Wheatstone \hfill (13) \\[1pt]
+bridge balance / sensor output & Wheatstone \hfill (13) \\[1pt]
 force on a sensor $\to V_{out}$ & piezoresistor, cantilever \hfill (13) \\[1pt]
 diode or LED in a circuit & assume on, check $I>0$ \hfill (14) \\
 \end{tabular}}
@@ -494,11 +498,22 @@ diode or LED in a circuit & assume on, check $I>0$ \hfill (14) \\
 \begin{multicols}{2}
 \raggedcolumns
 
+\term{How to read a worked example.} Every example is a puzzle: a colored piece in the problem or the diagram goes in the slot of the same color.
+{\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}p{0.27\linewidth}p{0.684\linewidth}@{}}
+\term{Step} & \term{What it does} \\\hline
+1. PIECES & Read each value off the problem or diagram. Give each one a color. Where to stand or what to read first is named in this title. \\[1pt]
+2. TEMPLATE & The formula, with an empty slot \slot{pcA}{like this} for each piece, in the piece's color. \\[1pt]
+3. PLACE & Put each piece in its slot. Then do the arithmetic. \\[1pt]
+middle steps & One operation each, named by the operation: SOLVE, DROPS, REVERSE. \\[1pt]
+last: CHECK & Test the answer: KCL, KVL, power balance, or a reverse calculation. \\
+\end{tabular}}
+\par\vspace{2pt}
+\term{Colors.} Step 1 sets the colors for each example. In a diagram, a colored element goes in the slot of its color.
+
 % ------------------------------------------------------------ 1
 \filbreak \subsection{1. reading a circuit \bk{1-3}}
 Label the nodes first. Every wire segment between elements is one node, even if it is drawn long. Merge points joined by a wire or a short.
-
-\term{Puzzle pieces.} In every diagram example, a \pA{colored piece} in the picture goes in the slot \slot{pcA}{of that color}. Order: \textbf{pieces} $\to$ \textbf{template} $\to$ \textbf{place} $\to$ \textbf{solve}.
 
 \needspace{17\baselineskip}
 \noindent\hfil
@@ -528,8 +543,10 @@ Label the nodes first. Every wire segment between elements is one node, even if 
 \stepdown
 \stepbox{3. PLACE}{\pA{a} ordinary $\Rightarrow$ $v_s$, $R_1$ \keyres{series}. \; $R_2$, $R_3$ share \pB{b} and \pC{c} $\Rightarrow$ \keyres{parallel}.\\
 Meshes: ($v_s$, $R_1$, $R_2$) and ($R_2$, $R_3$) $=$ \keyres{2}.}
+\stepdown
+\stepbox{4. CHECK}{meshes $=$ branches $-$ nodes $+1=4-3+1=2$ \checkmark}
 
-\term{Meters} \bk{Fig. 1-18}: a \keyres{voltmeter} goes in \keyres{parallel} (across the element), red lead on $+$; ideal: no current. An \keyres{ammeter} goes in \keyres{series} (in the path); ideal: no drop.
+\term{Meters} \bk{Fig. 1-18}: a \keyres{voltmeter} goes in \keyres{parallel} (across the element), red lead on $+$. Ideal: no current. An \keyres{ammeter} goes in \keyres{series} (in the path). Ideal: no drop.
 
 \warn{Same branch, same direction = same current.} Opposite arrows in one branch are negatives.
 
@@ -547,8 +564,8 @@ graph of $i(t)$ & charge $=$ \keyres{area} under it (piece by piece) \\
 \end{ftab}
 \begin{qtab}
 $2$ mC $\to$ electrons & $\dfrac{2\times10^{-3}}{1.6\times10^{-19}}=\keyres{1.25\times10^{16}}$ \st\\
-$3\times10^{18}$ electrons/s go $+x$; $10^{18}$ protons/s go $-x$ & both are current toward $-x$: $4\times10^{18}\cdot1.6\times10^{-19}=\keyres{0.64}$ A in $-x$ \\
-$90$ C in $30$ s; \; $0.5$ A for $2$ min & $\keyres{3}$ A; \; $0.5\cdot120=\keyres{60}$ C \\
+$3\times10^{18}$ electrons/s go $+x$ / $10^{18}$ protons/s go $-x$ & both are current toward $-x$: $4\times10^{18}\cdot1.6\times10^{-19}=\keyres{0.64}$ A in $-x$ \\
+$90$ C in $30$ s / \ / $0.5$ A for $2$ min & $\keyres{3}$ A / \ / $0.5\cdot120=\keyres{60}$ C \\
 $q=3t^2$ mC $\to i$ & $\keyres{6t}$ mA \\
 $q=0.8(1-e^{-0.5t})$ nC $\to i$ & $0.8\cdot0.5e^{-0.5t}=\keyres{0.4e^{-0.5t}}$ nA \\
 $q$ rises $0\to6$ C in a line over $0$--$3$ s & slope: $6/3=\keyres{2}$ A \\
@@ -559,18 +576,24 @@ $i=0.4e^{-0.5t}$ nA, total to $\infty$ & $\frac{A}{a}=\frac{0.4}{0.5}=\keyres{0.
 \warn{Time in seconds.} \; \warn{Given charge, find current: differentiate.} If your answer has a higher power of $t$, you integrated.
 
 \wk{8}{(integrate) $i(t)=20e^{-0.5t}$ mA from $t=0$ to $4$ s}
-\stepbox{1. ANTIDERIVATIVE}{$F(t)=\dfrac{20}{-0.5}e^{-0.5t}=-40e^{-0.5t}$}
+\stepbox{1. PIECES}{\pA{$A=20$} mA \qquad \pB{$a=-0.5$} \qquad limits \pC{$0$}, \pC{$4$}}
 \stepdown
-\stepbox{2. TOP ($t=4$)}{$F(4)=-40e^{-2}=-40(0.1353)=-5.413$}
+\stepbox{2. TEMPLATE}{$\Delta Q=\displaystyle\int_{\slot{pcC}{bottom}}^{\slot{pcC}{top}}\slot{pcA}{$A$}\,e^{\slot{pcB}{$a$}t}\,dt=F(\text{top})-F(\text{bottom})$, \quad $F=\dfrac{\slot{pcA}{$A$}}{\slot{pcB}{$a$}}e^{\slot{pcB}{$a$}t}$}
 \stepdown
-\stepbox{3. BOTTOM ($t=0$)}{$F(0)=-40e^{0}=-40$ \; \why{$e^0=1$}}
+\stepbox{3. PLACE}{$F(t)=\dfrac{\pA{20}}{\pB{-0.5}}e^{\pB{-0.5}t}=-40e^{-0.5t}$}
 \stepdown
-\stepbox{4. TOP MINUS BOTTOM}{$-5.413-(-40)=\keyres{34.59}$ mC \; \why{mA$\cdot$s $=$ mC}}
+\stepbox{4. TOP MINUS BOTTOM}{$F(\pC4)-F(\pC0)=-40e^{-2}-(-40)=-5.413+40=\keyres{34.59}$ mC \why{mA$\cdot$s $=$ mC, $e^0=1$}}
+\stepdown
+\stepbox{5. CHECK}{all the way to $\infty$ gives $\frac{A}{\lvert a\rvert}=40$ mC. \; $34.59<40$, most of it by $4$ s \checkmark}
 
 \wk{8}{(product rule) $q(t)=0.5t\cos(100\pi t)$ $\mu$C}
-\stepbox{1. PARTS}{$f=0.5t$, $f'=0.5$. \; $g=\cos(100\pi t)$, $g'=-100\pi\sin(100\pi t)$}
+\stepbox{1. PIECES}{\pA{$f=0.5t$}, \pA{$f'=0.5$} \qquad \pB{$g=\cos(100\pi t)$}, \pB{$g'=-100\pi\sin(100\pi t)$}}
 \stepdown
-\stepbox{2. $f'g+fg'$}{$i=\keyres{0.5\cos(100\pi t)-50\pi t\sin(100\pi t)}$ $\mu$A}
+\stepbox{2. TEMPLATE}{$i=\dfrac{dq}{dt}=\slot{pcA}{$f'$}\,\slot{pcB}{$g$}+\slot{pcA}{$f$}\,\slot{pcB}{$g'$}$}
+\stepdown
+\stepbox{3. PLACE}{$i=\pA{0.5}\,\pB{\cos(100\pi t)}+\pA{0.5t}\,\pB{\big(-100\pi\sin(100\pi t)\big)}=\keyres{0.5\cos(100\pi t)-50\pi t\sin(100\pi t)}$ $\mu$A}
+\stepdown
+\stepbox{4. CHECK}{$t=0$: $i=0.5$ $\mu$A. Near $0$, $q\approx0.5t$, slope $0.5$ \checkmark}
 
 % ------------------------------------------------------------ 3
 \filbreak \subsection{3. voltage, node voltage, and ground \bk{1-5.1}}
@@ -619,36 +642,38 @@ $P_{av}=\dfrac{1}{T}\int_0^T p\,dt$ & (average power) $=$ (energy over $T$) $\di
 \end{tikzpicture}
 
 \wk{8}{passive sign: who receives, who supplies}
-\stepbox{1. PIECES}{the side the arrow enters: \pA{$+$} or \pC{$-$}; \; the values $v$, $i$}
+\stepbox{1. PIECES}{the side the arrow enters: \pA{$+$} or \pC{$-$}, \; and the values $v$, $i$}
 \stepdown
 \stepbox{2. TEMPLATE}{$p=\slot{pcA}{$+$}\!/\!\slot{pcC}{$-$}\;v\,i$ \qquad $p>0$ receives, \; $p<0$ supplies}
 \stepdown
 \stepbox{3. PLACE}{$5$ V, $2$ A into \pA{$+$}: $\pA{+}(5)(2)=\keyres{+10}$ W receives \quad into \pC{$-$}: $\pC{-}(5)(2)=\keyres{-10}$ W supplies\\
 $-3$ V, $4$ A into \pA{$+$}: $\pA{+}(-3)(4)=\keyres{-12}$ W supplies}
+\stepdown
+\stepbox{4. CHECK}{a resistor always receives: its current enters $+$, so $p=+vi>0$ \checkmark}
 
 \begin{qtab}
 three devices: $+20$, $-50$, $p_3$ & $20-50+p_3=0$ $\Rightarrow$ $p_3=\keyres{30}$ W \\
 $24$ W for $1$ h & $24\cdot3600=\keyres{86{,}400}$ J \\
 $p=10t$ W over $0$--$2$ s $\to P_{av}$ & $\frac12\int_0^210t\,dt=\frac12(20)=\keyres{10}$ W \\
-$p(t)$ graph & energy $=$ \keyres{area} under $p$; \; build $p=v\cdot i$ piece by piece \\
+$p(t)$ graph & energy $=$ \keyres{area} under $p$. \; Build $p=v\cdot i$ piece by piece \\
 $v=50(1-e^{-0.5t})$ V, $i=4e^{-0.5t}$ mA at $t=1$ & $19.67\cdot2.426=\keyres{47.7}$ mW \\
 \end{qtab}
 \warn{$\int v\,i\,dt\neq\int v\,dt\cdot\int i\,dt$.} Multiply first. \; \warn{Maximum power}: set $\frac{dp}{dt}=0$.
 
 \wk{8}{total energy, $v=50(1-e^{-0.5t})$ V, $i=4e^{-0.5t}$ mA, $0\to\infty$}
-\stepbox{1. MULTIPLY}{$p=200\big(1-e^{-0.5t}\big)e^{-0.5t}$ mW}
+\stepbox{1. PIECES}{\pA{$v=50(1-e^{-0.5t})$} V \qquad \pB{$i=4e^{-0.5t}$} mA \qquad limits \pC{$0$}, \pC{$\infty$}}
 \stepdown
-\stepbox{2. DISTRIBUTE, COMBINE EXPONENTS}{$p=200e^{-0.5t}-200e^{-t}$ \; \why{$e^{-0.5t}e^{-0.5t}=e^{-t}$}}
+\stepbox{2. TEMPLATE (MULTIPLY FIRST)}{$w=\displaystyle\int_{\slot{pcC}{bottom}}^{\slot{pcC}{top}}\slot{pcA}{$v$}\cdot\slot{pcB}{$i$}\,dt$}
 \stepdown
-\stepbox{3. ANTIDERIVATIVE OF EACH TERM}{$F(t)=-400e^{-0.5t}+200e^{-t}$}
+\stepbox{3. PLACE, MULTIPLY}{$p=\pA{50(1-e^{-0.5t})}\cdot\pB{4e^{-0.5t}}=200e^{-0.5t}-200e^{-t}$ mW \why{$e^{-0.5t}e^{-0.5t}=e^{-t}$}}
 \stepdown
-\stepbox{4. TOP ($t\to\infty$) AND BOTTOM ($t=0$)}{Top: $0$. \quad Bottom: $-400+200=-200$}
+\stepbox{4. INTEGRATE (SHORTCUT $\int_0^\infty Ae^{-at}dt=\frac Aa$)}{$w=\dfrac{200}{0.5}-\dfrac{200}{1}=400-200=\keyres{200}$ mJ \why{V$\cdot$mA$\cdot$s $=$ mJ}}
 \stepdown
-\stepbox{5. TOP MINUS BOTTOM}{$0-(-200)=\keyres{200}$ mJ}
+\stepbox{5. CHECK (ANTIDERIVATIVE)}{$F=-400e^{-0.5t}+200e^{-t}$: \; $F(\infty)-F(0)=0-(-200)=200$ \checkmark}
 
 % ------------------------------------------------------------ 5
 \filbreak \subsection{5. batteries, utility energy, heat, cost}
-Course-assignment topics. Ah is \keyres{charge}; Wh and kWh are \keyres{energy}.
+Course-assignment topics. Ah is \keyres{charge}. Wh and kWh are \keyres{energy}.
 \begin{ftab}
 $\text{Wh}=V\cdot\text{Ah}$ & (energy rating) $=$ (voltage)(charge rating) \\
 $t=\dfrac{\text{Ah}}{I}=\dfrac{\text{Wh}}{P}$ & (run time, hours) \st\\
@@ -660,8 +685,8 @@ cost $=\dfrac{\text{J}}{3.6\times10^6}\cdot$ rate & joules $\to$ kWh $\to$ cost 
 \end{ftab}
 \begin{qtab}
 $2.5$ Ah, $500$ mA load & $2.5/0.5=\keyres{5}$ h \\
-$12$ V, $60$ Wh, $250$ mA load & $P=3$ W; \; $60/3=\keyres{20}$ h \\
-$1.08$ MJ fills $3000$ mAh, $3.7$ V batteries & one: $11.1$ Wh $=39{,}960$ J; \; $27.03\to\keyres{27}$ \\
+$12$ V, $60$ Wh, $250$ mA load & $P=3$ W. \; $60/3=\keyres{20}$ h \\
+$1.08$ MJ fills $3000$ mAh, $3.7$ V batteries & one: $11.1$ Wh $=39{,}960$ J. \; $27.03\to\keyres{27}$ \\
 $0.5$ kg water, $20\to80^\circ$C & $4186\cdot0.5\cdot60=\keyres{125{,}580}$ J \\
 $125{,}580$ J at $15$ cents/kWh & $0.03488\cdot15=\keyres{0.523}$ cents \\
 \end{qtab}
@@ -733,10 +758,10 @@ $10$ V across $2$ k$\Omega$ & $I=\keyres{5}$ mA \\
 $100$ W lamp at $120$ V & $R=120^2/100=\keyres{144}\,\Omega$ \\
 $2$ W in $50\,\Omega$ & $I=\sqrt{2/50}=\keyres{0.2}$ A \\
 $\frac14$ W rating, $1$ k$\Omega$ & $I_{max}=\sqrt{0.25/1000}=\keyres{15.8}$ mA \\
-carbon film: $\ell=2$ cm, $1$ mm wide, $0.1$ mm thick & $A=10^{-3}\cdot10^{-4}=10^{-7}$ m$^2$; \; $R=\frac{1.40\times10^{-5}\cdot0.02}{10^{-7}}=\keyres{2.8}\,\Omega$ \\
-twin cable $10$ m long, AWG-14 copper & both wires: $\ell=\keyres{20}$ m; \; $R=\frac{1.72\times10^{-8}\cdot20}{2.01\times10^{-6}}=\keyres{0.171}\,\Omega$ \\
-$12$ V, cable $0.1\,\Omega$, load $2.9\,\Omega$ & $I=4$ A; \; $\frac{16\cdot2.9}{12\cdot4}=\frac{46.4}{48}=\keyres{0.967}$ \\
-copper $R_0=100\,\Omega$ at $50^\circ$C & $100(1+0.004\cdot50)=\keyres{120}\,\Omega$ \\
+carbon film: $\ell=2$ cm, $1$ mm wide, $0.1$ mm thick & $A=10^{-3}\cdot10^{-4}=10^{-7}$ m$^2$. \; $R=\frac{1.40\times10^{-5}\cdot0.02}{10^{-7}}=\keyres{2.8}\,\Omega$ \\
+twin cable $10$ m long, AWG-14 copper & both wires: $\ell=\keyres{20}$ m. \; $R=\frac{1.72\times10^{-8}\cdot20}{2.01\times10^{-6}}=\keyres{0.171}\,\Omega$ \\
+$12$ V, cable $0.1\,\Omega$, load $2.9\,\Omega$ & $I=4$ A. \; $\frac{16\cdot2.9}{12\cdot4}=\frac{46.4}{48}=\keyres{0.967}$ \\
+copper, $R_0=100\,\Omega$: $R$ at $50^\circ$C & $100(1+0.004\cdot50)=\keyres{120}\,\Omega$ \\
 when is copper $R$ $10\%$ above $R_0$? & $T=\frac{1.1-1}{0.004}=\keyres{25}^\circ$C \\
 $10$ k$\Omega$ pot, wiper $30\%$ from terminal 1 & $R_{13}=\keyres{3}$ k$\Omega$, \; $R_{23}=\keyres{7}$ k$\Omega$ \\
 \end{qtab}
@@ -745,7 +770,7 @@ $10$ k$\Omega$ pot, wiper $30\%$ from terminal 1 & $R_{13}=\keyres{3}$ k$\Omega$
 {\small\renewcommand{\arraystretch}{1.35}
 \begin{tabular}{@{}p{0.3\linewidth}p{0.654\linewidth}@{}}
 \term{Wire design chain} & \term{Copper, AWG-18, target $R=0.5\,\Omega$} \\\hline
-1. $R$ (from $V$, $I$ if given) & $R=\dfrac{V}{I}$; here $0.5\,\Omega$ is given \st\\
+1. $R$ (from $V$, $I$ if given) & $R=\dfrac{V}{I}$. Here $0.5\,\Omega$ is given \st\\
 2. $d$ from the AWG table & $1.0$ mm $=1.0\times10^{-3}$ m \\
 3. area & $A=\dfrac{\pi(1.0\times10^{-3})^2}{4}=7.854\times10^{-7}$ m$^2$ \st\\
 4. length & $\ell=\dfrac{RA}{\rho}=\dfrac{0.5\cdot7.854\times10^{-7}}{1.72\times10^{-8}}=\keyres{22.8}$ m \st\\
@@ -801,6 +826,8 @@ $V_{ab}=$ sum along any path a$\to$b & path rule: $+v$ if you meet $+$ first \\
 \stepbox{2. TEMPLATE}{$\slot{pcA}{in}+\slot{pcA}{in}=\slot{pcB}{out}+\slot{pcB}{out}$}
 \stepdown
 \stepbox{3. PLACE, SOLVE}{$\pA{4}+\pA{2}=\pB{3}+\pB{i}$ $\Rightarrow$ $i=\keyres{3}$ A}
+\stepdown
+\stepbox{4. CHECK}{in $6$ A, out $3+3=6$ A \checkmark}
 
 \wk{8}{$V_{ab}$ by walking the path (right)}
 \stepbox{1. PIECES (SIGN MET FIRST)}{\pA{$+$ first}: $5$ V, $2$ V \qquad \pC{$-$ first}: $3$ V}
@@ -808,13 +835,15 @@ $V_{ab}=$ sum along any path a$\to$b & path rule: $+v$ if you meet $+$ first \\
 \stepbox{2. TEMPLATE}{$V_{ab}=\slot{pcA}{$+v$}\;\slot{pcC}{$-v$}\;\cdots$ \; one term per element, in walking order}
 \stepdown
 \stepbox{3. PLACE, SOLVE}{$V_{ab}=\pA{+5}\;\pC{-3}\;\pA{+2}=\keyres{4}$ V}
+\stepdown
+\stepbox{4. CHECK (WALK BACK b $\to$ a)}{$-2+3-5=-4=V_{ba}=-V_{ab}$ \checkmark}
 
 \begin{qtab}
-$1$ A in; $3$ A and $i$ out & $i=-2$: \keyres{$2$ A in}, against the arrow \\
-$10$ A in; $i_x$ and $1.5\,i_x$ out & $10=2.5\,i_x$ $\Rightarrow$ $i_x=\keyres{4}$ A \\
+$1$ A in / $3$ A and $i$ out & $i=-2$: \keyres{$2$ A in}, against the arrow \\
+$10$ A in / $i_x$ and $1.5\,i_x$ out & $10=2.5\,i_x$ $\Rightarrow$ $i_x=\keyres{4}$ A \\
 $12$ V source, $5$ V on $R_1$, find $v_2$ & $-12+5+v_2=0$ $\Rightarrow$ $\keyres{7}$ V \\
 $36$ V, $2\,\Omega$, $4\,\Omega$, CCVS $3i$ in one loop & $36=2i+4i+3i$ $\Rightarrow$ $i=\keyres{4}$ A \\
-$3$ unknown currents, $1$ current source & $M=$ loops that avoid the source; rest KCL \\
+$3$ unknown currents, $1$ current source & $M=$ loops that avoid the source, the rest KCL \\
 \end{qtab}
 \warn{A negative answer is fine.} The current flows opposite to your arrow.
 
@@ -844,7 +873,7 @@ $3$ unknown currents, $1$ current source & $M=$ loops that avoid the source; res
 \stepdown
 \stepbox{2. TEMPLATE}{$\slot{pcA}{$\pm$ source}+\slot{pcB}{$\pm v_1$}+\slot{pcC}{$\pm v_2$}=0$, \; Ohm: $v=iR$}
 \stepdown
-\stepbox{3. PLACE, SOLVE}{$\pA{-12}+\pB{2i}+\pC{4i}=0$ $\Rightarrow$ $i=\keyres{2}$ A; \; $v_1=\keyres{4}$ V, $v_2=\keyres{8}$ V}
+\stepbox{3. PLACE, SOLVE}{$\pA{-12}+\pB{2i}+\pC{4i}=0$ $\Rightarrow$ $i=\keyres{2}$ A. \; $v_1=\keyres{4}$ V, $v_2=\keyres{8}$ V}
 \stepdown
 \stepbox{4. CHECK (POWER)}{$8+16-24=0$ \checkmark \; \why{source supplies $24$ W}}
 
@@ -869,18 +898,20 @@ $3$ unknown currents, $1$ current source & $M=$ loops that avoid the source; res
 \stepdown
 \stepbox{2. TEMPLATE}{$\slot{pcA}{in}=\dfrac{v-\slot{pcD}{far}}{\slot{pcB}{$R$}}+\dfrac{v-\slot{pcD}{far}}{\slot{pcC}{$R$}}$}
 \stepdown
-\stepbox{3. PLACE, SOLVE}{$\pA{6}=\dfrac{v-\pD{0}}{\pB{2}}+\dfrac{v-\pD{0}}{\pC{3}}=\dfrac{5v}{6}$ $\Rightarrow$ $v=\keyres{7.2}$ V; \; $3.6+2.4=6$ A \checkmark}
+\stepbox{3. PLACE, SOLVE}{$\pA{6}=\dfrac{v-\pD{0}}{\pB{2}}+\dfrac{v-\pD{0}}{\pC{3}}=\dfrac{5v}{6}$ $\Rightarrow$ $v=\keyres{7.2}$ V}
+\stepdown
+\stepbox{4. CHECK}{$\frac{7.2}{2}+\frac{7.2}{3}=3.6+2.4=6$ A \checkmark}
 
 % ------------------------------------------------------------ 8b
 \filbreak \subsection{8b. nodal analysis: the walk}
-Unknowns are node voltages; write one KCL per unknown node. KVL is automatic, since every drop is a difference of node voltages.
+Unknowns are node voltages. Write one KCL per unknown node. KVL is automatic, since every drop is a difference of node voltages.
 \begin{ftab}
 $i=\dfrac{V_{\text{here}}-V_{\text{far}}}{R}$ & current \emph{leaving} through one $R$: stand here, cross it, note where you land \st\\
 $\sum i_{\text{leaving}}=0$ & one fraction per $R$ touching the node \\
-source $+$ series $R$ & far node $=$ source top $=+v_s$; \; $-$ on top: $-v_s$ \\
-$p_{src}=v_s\lvert i_{\text{series}}\rvert$ & leaves its $+$: \keyres{supplies}; enters $+$: \keyres{absorbs} \\
+source $+$ series $R$ & far node $=$ source top $=+v_s$, \; $-$ on top: $-v_s$ \\
+$p_{src}=v_s\lvert i_{\text{series}}\rvert$ & leaves its $+$: \keyres{supplies}, enters $+$: \keyres{absorbs} \\
 \end{ftab}
-\term{Steps}: (1) ground the node most sources touch. (2) Mark known nodes (source tops). (3) KCL at each unknown, here-node first. (4) Multiply \emph{every term} by the LCD. (5) Solve; plug back in, each equation $=0$.
+\term{Steps}: (1) ground the node most sources touch. (2) Mark known nodes (source tops). (3) KCL at each unknown, here-node first. (4) Multiply \emph{every term} by the LCD. (5) Solve, then plug back in: each equation $=0$.
 
 \needspace{17\baselineskip}
 \noindent\hfil
@@ -911,8 +942,8 @@ $p_{src}=v_s\lvert i_{\text{series}}\rvert$ & leaves its $+$: \keyres{supplies};
 \stepbox{4. $\times2$ EVERY TERM, SOLVE}{$3V_a-15=0$ $\Rightarrow$ $V_a=\keyres{5}$ V \why{between $3$ and $12$}\\
 leaving: $\pB{-3.5}$ A \why{$3.5$ A in}, \; $\pC{2.5}$ A, \; $\pD{1}$ A \why{sum $0$ \checkmark}}
 \stepdown
-\stepbox{5. POWER: $p_{src}=\slot{white}{$v_s$}\cdot\slot{pcB}{$\lvert i_{\text{series}}\rvert$}$, \; $p_R=i^2R$}{$12$ V: $3.5$ A leaves $+$ $\Rightarrow$ $12(3.5)=\keyres{42}$ W supplied. \; $3$ V: $1$ A enters $+$ $\Rightarrow$ $\keyres{3}$ W absorbed.\\
-resistors $24.5+12.5+2=39$; \; $39+3=42$ \checkmark}
+\stepbox{5. CHECK (POWER): $p_{src}=\slot{white}{$v_s$}\cdot\slot{pcB}{$\lvert i_{\text{series}}\rvert$}$, \; $p_R=i^2R$}{$12$ V: $3.5$ A leaves $+$ $\Rightarrow$ $12(3.5)=\keyres{42}$ W supplied. \; $3$ V: $1$ A enters $+$ $\Rightarrow$ $\keyres{3}$ W absorbed.\\
+resistors $24.5+12.5+2=39$. \; $39+3=42$ \checkmark}
 
 \needspace{17\baselineskip}
 \noindent\hfil
@@ -941,15 +972,17 @@ resistors $24.5+12.5+2=39$; \; $39+3=42$ \checkmark}
 \wk{8}{two unknown nodes (above)}
 \stepbox{1. PIECES}{known: \pB{$+14$}, \pD{$-2$} \why{$-$ on top}. \quad at \pA{$V_a$}: \pB{$\to14$}, $\to0$, \pC{$\to V_b$}. \quad at \pE{$V_b$}: \pD{$\to-2$}, $\to0$, \pC{$\to V_a$}}
 \stepdown
-\stepbox{2. PLACE AT $V_a$, $\times2$}{$\dfrac{\pA{V_a}-\pB{14}}{\pB2}+\dfrac{\pA{V_a}-0}{2}+\dfrac{\pA{V_a}-\pC{V_b}}{\pC2}=0$ $\Rightarrow$ $3V_a-V_b=14$}
+\stepbox{2. TEMPLATE (ONE KCL PER UNKNOWN NODE)}{$\displaystyle\sum\frac{V_{\text{here}}-\slot{white}{far}}{R}=0$, \; one fraction per $R$ touching the node}
 \stepdown
-\stepbox{3. PLACE AT $V_b$, $\times2$}{$\dfrac{\pE{V_b}-(\pD{-2})}{\pD2}+\dfrac{\pE{V_b}-0}{2}+\dfrac{\pE{V_b}-\pC{V_a}}{\pC2}=0$ $\Rightarrow$ $3V_b-V_a=-2$}
+\stepbox{3. PLACE AT $V_a$, $\times2$}{$\dfrac{\pA{V_a}-\pB{14}}{\pB2}+\dfrac{\pA{V_a}-0}{2}+\dfrac{\pA{V_a}-\pC{V_b}}{\pC2}=0$ $\Rightarrow$ $3V_a-V_b=14$}
 \stepdown
-\stepbox{4. SUBSTITUTE THE COEFFICIENT-1 VARIABLE}{$V_a=3V_b+2$ $\Rightarrow$ $3(3V_b+2)-V_b=14$ $\Rightarrow$ $V_b=\keyres{1}$ V, \; $V_a=\keyres{5}$ V}
+\stepbox{4. PLACE AT $V_b$, $\times2$}{$\dfrac{\pE{V_b}-(\pD{-2})}{\pD2}+\dfrac{\pE{V_b}-0}{2}+\dfrac{\pE{V_b}-\pC{V_a}}{\pC2}=0$ $\Rightarrow$ $3V_b-V_a=-2$}
 \stepdown
-\stepbox{5. CHECK}{$3(5)-1=14$ \checkmark \qquad $3(1)-5=-2$ \checkmark}
+\stepbox{5. SUBSTITUTE THE COEFFICIENT-1 VARIABLE}{$V_a=3V_b+2$ $\Rightarrow$ $3(3V_b+2)-V_b=14$ $\Rightarrow$ $V_b=\keyres{1}$ V, \; $V_a=\keyres{5}$ V}
+\stepdown
+\stepbox{6. CHECK}{$3(5)-1=14$ \checkmark \qquad $3(1)-5=-2$ \checkmark}
 
-\warn{One node, one voltage}: every $R$ touching it goes in the same equation; the shared $R$ appears in both, flipped. \; \warn{Minus before parentheses flips every term}: $-(x-8)=-x+8$. \; \warn{Labeled $\pm V_x$}: $+$ end minus $-$ end.
+\warn{One node, one voltage}: every $R$ touching it goes in the same equation. The shared $R$ appears in both, flipped. \; \warn{Minus before parentheses flips every term}: $-(x-8)=-x+8$. \; \warn{Labeled $\pm V_x$}: $+$ end minus $-$ end.
 
 % ------------------------------------------------------------ 9
 \filbreak \subsection{9. series and parallel resistors \bk{2-3}}
@@ -1002,10 +1035,18 @@ missing $R$, parallel & $R=\dfrac{R_{eq}R_1}{R_1-R_{eq}}$ & $R\parallel12=4$: $\
 \stepdown
 \stepbox{2. TEMPLATES}{series: $\slot{pcA}{R}+\slot{pcA}{R}$ \qquad parallel: $\dfrac{\slot{pcB}{R}\cdot\slot{pcA}{R}}{\slot{pcB}{R}+\slot{pcA}{R}}$}
 \stepdown
-\stepbox{3. PLACE (INSIDE OUT)}{$\pA{2+6}=\pA{8}$; \quad $\dfrac{\pB{24}\cdot\pA{8}}{\pB{24}+\pA{8}}=6$; \quad $R_{ab}=\pC{4}+6=\keyres{10}\,\Omega$}
+\stepbox{3. PLACE (INSIDE OUT)}{$\pA{2+6}=\pA{8}$. \quad $\dfrac{\pB{24}\cdot\pA{8}}{\pB{24}+\pA{8}}=6$. \quad $R_{ab}=\pC{4}+6=\keyres{10}\,\Omega$}
+\stepdown
+\stepbox{4. CHECK}{parallel $6<8$, the smaller \checkmark \qquad series $10>4$ \checkmark}
 
 \wk{8}{reduce $R_{eq}=2+\big[12\parallel(4+6\parallel3)\big]$ $\Omega$, inside out}
-\stepbox{INNERMOST BRACKET FIRST}{$6\parallel3=2$ \; $\to$ \; $4+2=6$ \; $\to$ \; $12\parallel6=4$ \; $\to$ \; $R_{eq}=2+4=\keyres{6}\,\Omega$}
+\stepbox{1. PIECES (INNERMOST FIRST)}{\pA{$6\parallel3$}, \; then \pB{$4+(\cdot)$}, \; then \pC{$12\parallel(\cdot)$}, \; then \pD{$2+(\cdot)$}}
+\stepdown
+\stepbox{2. TEMPLATES}{series: $\slot{white}{$R$}+\slot{white}{$R$}$ \qquad parallel: $\dfrac{\slot{white}{$R$}\cdot\slot{white}{$R$}}{\slot{white}{$R$}+\slot{white}{$R$}}$}
+\stepdown
+\stepbox{3. PLACE}{\pA{$\frac{6\cdot3}{9}=2$} \; $\to$ \; \pB{$4+2=6$} \; $\to$ \; \pC{$\frac{12\cdot6}{18}=4$} \; $\to$ \; \pD{$2+4$} $=\keyres{6}\,\Omega$}
+\stepdown
+\stepbox{4. CHECK}{$12\parallel6=4$ is below $6$, the smaller \checkmark}
 
 % ------------------------------------------------------------ 10
 \filbreak \subsection{10. voltage and current dividers \bk{2-3}}
@@ -1014,7 +1055,7 @@ $v_1=\dfrac{R_1}{R_1+R_2}\,v_s$ & \term{voltage divider} (series): \keyres{own} 
 $v_k=\dfrac{R_k}{R_1+\cdots+R_N}\,v_s$ & $N$ series resistors \st\\
 $V_{\text{node}}=\dfrac{R_{\text{below}}}{R_T}\,v_s$ & node voltage (from ground): $R_{\text{below}}=$ sum of every $R$ between the node and ground \st\\
 $v_k=V_{\text{top}}-V_{\text{bottom}}$ & across one resistor $=$ difference of its two end nodes \\
-$p_k=(V_{\text{top}}-V_{\text{bottom}})\,I$ & series power; all $p_k$ add to $v_s I$ \\
+$p_k=(V_{\text{top}}-V_{\text{bottom}})\,I$ & series power. All $p_k$ add to $v_s I$ \\
 $R_2=\dfrac{R_1\,v_2}{v_s-v_2}$ & resistor for a target $v_2$ \st\\
 $i_1=\dfrac{R_2}{R_1+R_2}\,i_s=\dfrac{G_1}{G_{eq}}\,i_s$ & \term{current divider} (parallel): \keyres{other} $R$ on top, or own $G$ \st\\
 $i_k=\dfrac{R_{eq}}{R_k}\,i_s$ & any number of parallel branches \st\\
@@ -1041,7 +1082,9 @@ $R_2=\dfrac{R_1\,(i_s-i_2)}{i_2}$ & resistor for a target $i_2$ \st\\
 \stepdown
 \stepbox{2. TEMPLATE}{$v=\dfrac{\slot{pcA}{own $R$}}{\slot{pcB}{every series $R$}}\cdot\slot{pcC}{source}$}
 \stepdown
-\stepbox{3. PLACE}{$v_1=\dfrac{\pA{2}}{\pA{2}+\pB{4}}\cdot\pC{12}=\keyres{4}$ V; \; own $\to$ \pB{$R_2$}: $v_2=\dfrac{\pB4}{6}\cdot12=\keyres{8}$ V \why{$4+8=12$ \checkmark}}
+\stepbox{3. PLACE}{$v_1=\dfrac{\pA{2}}{\pA{2}+\pB{4}}\cdot\pC{12}=\keyres{4}$ V. \; Own $\to$ \pB{$R_2$}: $v_2=\dfrac{\pB4}{6}\cdot12=\keyres{8}$ V}
+\stepdown
+\stepbox{4. CHECK (KVL)}{$4+8=12$, the source \checkmark}
 
 \needspace{17\baselineskip}
 \noindent\hfil
@@ -1070,9 +1113,9 @@ $R_2=\dfrac{R_1\,(i_s-i_2)}{i_2}$ & resistor for a target $i_2$ \st\\
 \stepdown
 \stepbox{3. PLACE}{$V_{\pB{B}}=\dfrac{\pA{4+6}}{12}\cdot12=\keyres{10}$ V, \; $V_C=\dfrac{6}{12}\cdot12=\keyres{6}$ V, \; $v_2=V_B-V_C=\keyres{4}$ V \why{$=\frac4{12}\cdot12$ \checkmark}}
 \stepdown
-\stepbox{4. POWER: $p=(V_{\text{top}}-V_{\text{bottom}})\,I$}{$I=1$ A: \; $p_1=2$, $p_2=4$, $p_3=6$ W; \; sum $12=v_sI$ \checkmark}
+\stepbox{4. CHECK (POWER): $p=(V_{\text{top}}-V_{\text{bottom}})\,I$}{$I=1$ A: \; $p_1=2$, $p_2=4$, $p_3=6$ W. \; sum $12=v_sI$ \checkmark}
 
-\warn{Node voltage $=$ voltage across only when the other end is ground.} $V_B\neq v_2$; $V_C=v_3$.
+\warn{Node voltage $=$ voltage across only when the other end is ground.} $V_B\neq v_2$, but $V_C=v_3$.
 
 \needspace{17\baselineskip}
 \noindent\hfil
@@ -1094,7 +1137,9 @@ $R_2=\dfrac{R_1\,(i_s-i_2)}{i_2}$ & resistor for a target $i_2$ \st\\
 \stepdown
 \stepbox{2. TEMPLATE}{$i=\dfrac{\slot{pcB}{other $R$}}{\slot{white}{both $R$ added}}\cdot\slot{pcC}{$i_s$}$}
 \stepdown
-\stepbox{3. PLACE}{$i_1=\dfrac{\pB6}{\pA3+\pB6}\cdot\pC6=\keyres{4}$ A; \; $i_2=\dfrac{\pA3}{9}\cdot6=\keyres{2}$ A \why{sum $6$ \checkmark}}
+\stepbox{3. PLACE}{$i_1=\dfrac{\pB6}{\pA3+\pB6}\cdot\pC6=\keyres{4}$ A. \; $i_2=\dfrac{\pA3}{9}\cdot6=\keyres{2}$ A}
+\stepdown
+\stepbox{4. CHECK}{KCL: $4+2=6$ \checkmark \qquad same voltage: $4\cdot3=2\cdot6=12$ V \checkmark}
 
 \begin{qtab}
 $12$ V, $R_1=9$ k, want $v_2=3$ V & $R_2=\frac{9\cdot3}{12-3}=\keyres{3}$ k$\Omega$ \\
@@ -1129,7 +1174,9 @@ $10$ A, $R_1=4\,\Omega$, want $i_2=2$ A & $R_2=\frac{4(10-2)}{2}=\keyres{16}\,\O
 \stepdown
 \stepbox{2. TEMPLATE}{$v_{out}=\dfrac{\slot{pcA}{$R_2\parallel R_L$}}{\slot{pcB}{$R_1$}+\slot{pcA}{$R_2\parallel R_L$}}\cdot\slot{pcC}{$v_s$}$}
 \stepdown
-\stepbox{3. PLACE}{$\pA{10\parallel10=5}$; \; $v_{out}=\dfrac{\pA5}{\pB{10}+\pA5}\cdot\pC{12}=\keyres{4}$ V \why{unloaded: $6$ V; the load pulls it down}}
+\stepbox{3. PLACE}{$\pA{10\parallel10=5}$, \; $v_{out}=\dfrac{\pA5}{\pB{10}+\pA5}\cdot\pC{12}=\keyres{4}$ V \why{unloaded: $6$ V. The load pulls it down}}
+\stepdown
+\stepbox{4. CHECK (OHM)}{$I=\frac{12}{15\text{ k}}=0.8$ mA, \; $0.8\text{ mA}\cdot5\text{ k}=4$ V \checkmark}
 
 % ------------------------------------------------------------ 11
 \filbreak \subsection{11. source transformation and combining sources \bk{2-3}}
@@ -1168,11 +1215,13 @@ $i_{eq}=i_1-i_2+i_3$ & current sources in parallel: add with directions \\
 \wk{8}{transform $12$ V in series with $4\,\Omega$ (left $\to$ right above)}
 \stepbox{1. PIECES}{\pC{$v_s=12$ V} ($+$ on top) \qquad \pA{$R_s=4\,\Omega$} in series}
 \stepdown
-\stepbox{2. TEMPLATE}{$\slot{pcB}{$i_s$}=\dfrac{\slot{pcC}{$v_s$}}{\slot{pcA}{$R_s$}}$; \; same \slot{pcA}{$R_s$}, now parallel; arrow toward $+$}
+\stepbox{2. TEMPLATE}{$\slot{pcB}{$i_s$}=\dfrac{\slot{pcC}{$v_s$}}{\slot{pcA}{$R_s$}}$. \; Same \slot{pcA}{$R_s$}, now parallel. The arrow points toward $+$}
 \stepdown
 \stepbox{3. PLACE}{$\pB{i_s}=\dfrac{\pC{12}}{\pA4}=\keyres{3}$ A, pointing up, $\parallel$ \pA{$4\,\Omega$}}
 \stepdown
 \stepbox{4. REVERSE (RIGHT $\to$ LEFT)}{\pB{$2$ A} $\parallel$ \pA{$5\,\Omega$}: $\pC{v_s}=\pB2\cdot\pA5=\keyres{10}$ V in series with \pA{$5\,\Omega$}}
+\stepdown
+\stepbox{5. CHECK (SAME TERMINALS)}{open a--b: left $12$ V, right $3\cdot4=12$ V \checkmark \qquad short a--b: left $\frac{12}{4}=3$ A, right $3$ A \checkmark}
 
 \begin{qtab}
 $9$ V and $3$ V in series, opposing & $\keyres{6}$ V \\
@@ -1215,18 +1264,22 @@ $R_Y=\dfrac{R_\Delta}{3}$, \; $R_\Delta=3R_Y$ & balanced (all equal) \st\\
 \end{ftab}
 
 \wk{8}{$\Delta\to Y$ with $R_a=10$, $R_b=20$, $R_c=30\,\Omega$ (left figure)}
-\stepbox{1. PIECES FOR ARM $R_1$}{sides touching node \pA{1}: \pA{$R_b=20$, $R_c=30$} \qquad all three: $\Sigma=60$}
+\stepbox{1. PIECES (ARM $R_1$ FIRST)}{sides touching node \pA{1}: \pA{$R_b=20$, $R_c=30$} \qquad all three: $\Sigma=60$}
 \stepdown
 \stepbox{2. TEMPLATE}{$R_{\text{arm}}=\dfrac{\slot{pcA}{side touching}\cdot\slot{pcA}{side touching}}{\slot{white}{all three added}}$}
 \stepdown
 \stepbox{3. PLACE}{$R_1=\dfrac{\pA{20}\cdot\pA{30}}{60}=\keyres{10}$\\ node 2 touches $R_a$, $R_c$: $R_2=\dfrac{10\cdot30}{60}=\keyres{5}$\\ node 3 touches $R_a$, $R_b$: $R_3=\dfrac{10\cdot20}{60}=\keyres{3.33}\,\Omega$}
+\stepdown
+\stepbox{4. CHECK (NODES 1--2, NODE 3 OPEN)}{$Y$: $R_1+R_2=15$ \qquad $\Delta$: $R_c\parallel(R_a+R_b)=30\parallel30=15$ \checkmark}
 
 \wk{8}{$Y\to\Delta$, reversing the example (right figure)}
-\stepbox{1. PIECES FOR SIDE $R_a$}{arm at the opposite node (1): \pB{$R_1=10$} \qquad $N=50+16.7+33.3=100$}
+\stepbox{1. PIECES (SIDE $R_a$ FIRST)}{arm at the opposite node (1): \pB{$R_1=10$} \qquad $N=50+16.7+33.3=100$}
 \stepdown
 \stepbox{2. TEMPLATE}{$R_{\text{side}}=\dfrac{\slot{white}{$N$}}{\slot{pcB}{arm at the opposite node}}$}
 \stepdown
-\stepbox{3. PLACE}{$\pB{R_a}=\dfrac{100}{\pB{10}}=\keyres{10}$, \; $R_b=\dfrac{100}{5}=\keyres{20}$, \; $R_c=\dfrac{100}{3.33}=\keyres{30}\,\Omega$ \why{matches the start \checkmark}}
+\stepbox{3. PLACE}{$\pB{R_a}=\dfrac{100}{\pB{10}}=\keyres{10}$, \; $R_b=\dfrac{100}{5}=\keyres{20}$, \; $R_c=\dfrac{100}{3.33}=\keyres{30}\,\Omega$}
+\stepdown
+\stepbox{4. CHECK}{$10$, $20$, $30$: the $\Delta$ we started from \checkmark}
 
 \begin{qtab}
 balanced $\Delta$, each $30\,\Omega$ & $R_Y=\keyres{10}\,\Omega$ \\
@@ -1270,17 +1323,21 @@ $\dfrac{\Delta R}{R}=\dfrac{4V_{out}}{V_0}$ & (relative change) from the reading
 \stepbox{2. TEMPLATE (BALANCED: SAME RATIO EACH SIDE)}{$\dfrac{\slot{pcA}{left top}}{\slot{pcB}{left bottom}}=\dfrac{\slot{pcA}{right top}}{\slot{pcB}{right bottom}}$}
 \stepdown
 \stepbox{3. PLACE}{$\dfrac{\pA{100}}{\pB{150}}=\dfrac{\pA{200}}{\pB{R_x}}$ $\Rightarrow$ $R_x=\dfrac{200\cdot150}{100}=\keyres{300}\,\Omega$}
+\stepdown
+\stepbox{4. CHECK ($V_1=V_2$)}{$V_1=\frac{150}{250}V_0=0.6V_0$ \qquad $V_2=\frac{300}{500}V_0=0.6V_0$ \checkmark}
 
 \wk{8}{sensor bridge: $V_0=5$ V, $\Delta R/R=0.01$}
 \stepbox{1. PIECES}{source \pC{$5$ V} \qquad the changed arm: \pA{$\Delta R/R=0.01$}}
 \stepdown
 \stepbox{2. TEMPLATE}{$V_{out}\approx\dfrac{\slot{pcC}{$V_0$}}{4}\cdot\slot{pcA}{$\Delta R/R$}$}
 \stepdown
-\stepbox{3. PLACE}{$\dfrac{\pC5}{4}\cdot\pA{0.01}=\keyres{12.5}$ mV \; (exact: $12.4$ mV)}
+\stepbox{3. PLACE}{$V_{out}\approx\dfrac{\pC5}{4}\cdot\pA{0.01}=\keyres{12.5}$ mV}
+\stepdown
+\stepbox{4. CHECK (EXACT FORMULA)}{$\dfrac{V_0\,\Delta R}{4R+2\Delta R}=\dfrac{5(0.01)}{4.02}=12.4$ mV, close \checkmark \why{$\Delta R\ll R$}}
 
 \term{Piezoresistor} (pressure sensor):
 \begin{ftab}
-$R=R_0(1+\alpha P)$, \; $\Delta R=R_0\alpha P$ & $P$ in N/m$^2$; $P>0$ stretch, $P<0$ squeeze \\
+$R=R_0(1+\alpha P)$, \; $\Delta R=R_0\alpha P$ & $P$ in N/m$^2$. $P>0$ stretch, $P<0$ squeeze \\
 $P=\dfrac{F}{A}$ & (pressure) $=$ (force) $\div$ (area) \st\\
 $P=\dfrac{F\,L}{W\,H^2}$ & cantilever: force $F$ at the tip, length $L$, width $W$, thickness $H$ \st\\
 $V_{out}=\dfrac{V_0}{4}\,\alpha P=\dfrac{V_0}{4}\,\alpha\,\dfrac{FL}{WH^2}$ & bridge output for a piezoresistor \st\\
@@ -1305,7 +1362,7 @@ $I=\dfrac{V_s-V_F}{R}$ & forward diode in series with $R$ \st\\
 $R=\dfrac{V_s-V_F}{I}$ & resistor to set an LED current \st\\
 $R_D\approx\dfrac{\Delta V_D}{\Delta I}$ & slope of the curve above $V_F$ \st\\
 \end{ftab}
-\term{Diode procedure}: (1) assume forward bias, (2) compute $I$, (3) if $I>0$, done; if not, the diode is off and $I=0$. For a square or triangle source, do each half of the cycle separately.
+\term{Diode procedure}: (1) assume forward bias, (2) compute $I$, (3) if $I>0$, done. If not, the diode is off and $I=0$. For a square or triangle source, do each half of the cycle separately.
 \begin{qtab}
 $5$ V, $1$ k$\Omega$, Si diode forward & $I=\frac{5-0.7}{1000}=\keyres{4.3}$ mA $>0$ \checkmark \\
 same source reversed ($-5$ V) & $\frac{-5-0.7}{1000}<0$ $\Rightarrow$ off, $I=\keyres{0}$ \\
@@ -1341,17 +1398,17 @@ Reduce, find the source current, then expand back out with Ohm's law, KVL, and K
 \end{tikzpicture}
 
 \wk{8}{find every current, voltage, and power}
-\stepbox{1. PIECES}{\pB{$6$, $3\,\Omega$} parallel (share b, c) \qquad \pA{$R_1$} series \qquad \pC{$12$ V}}
+\stepbox{1. PIECES}{\pB{$6$, $3\,\Omega$} parallel (share b, c) \qquad \pA{$R_1=2\,\Omega$} series \qquad \pC{$12$ V}}
 \stepdown
-\stepbox{2. COMBINE (\S9)}{$\dfrac{\pB{6}\cdot\pB{3}}{\pB6+\pB3}=\pB{2}\,\Omega$; \; $R_{eq}=\pA{2}+\pB{2}=4\,\Omega$}
+\stepbox{2. TEMPLATE (REDUCE, THEN EXPAND)}{$R_{eq}=\slot{pcA}{$R_1$}+\slot{pcB}{$6\parallel3$}$ \qquad $i=\dfrac{\slot{pcC}{$v_s$}}{R_{eq}}$ \qquad then $v=iR$, KVL, $i=\frac vR$}
 \stepdown
-\stepbox{3. SOURCE CURRENT: $i=v_s/R_{eq}$}{$i=\dfrac{\pC{12}}{4}=\keyres{3}$ A}
+\stepbox{3. PLACE (COMBINE, \S9)}{$\pB{6\parallel3}=\dfrac{18}{9}=2\,\Omega$, \; $R_{eq}=\pA{2}+\pB{2}=4\,\Omega$, \; $i=\dfrac{\pC{12}}{4}=\keyres{3}$ A}
 \stepdown
-\stepbox{4. DROPS: $v=iR$, THEN KVL}{$v_1=3\cdot\pA2=\keyres{6}$ V; \; $v_{bc}=12-6=\keyres{6}$ V \why{or $3\cdot\pB2$}}
+\stepbox{4. DROPS: $v=iR$, THEN KVL}{$v_1=3\cdot\pA2=\keyres{6}$ V, \; $v_{bc}=12-6=\keyres{6}$ V \why{or $3\cdot\pB2$}}
 \stepdown
-\stepbox{5. BRANCH CURRENTS: $i=v_{bc}/R$}{$i_2=\frac{6}{\pB6}=\keyres{1}$ A, \; $i_3=\frac{6}{\pB3}=\keyres{2}$ A \; \why{KCL: $1+2=3$ \checkmark}}
+\stepbox{5. BRANCH CURRENTS: $i=v_{bc}/R$}{$i_2=\frac{6}{\pB6}=\keyres{1}$ A, \; $i_3=\frac{6}{\pB3}=\keyres{2}$ A \why{KCL: $1+2=3$}}
 \stepdown
-\stepbox{6. POWER}{$p_1=18$, $p_2=6$, $p_3=12$ W. \; Total $36$ W $=12\cdot3$ from the source \checkmark}
+\stepbox{6. CHECK (POWER)}{$p_1=18$, $p_2=6$, $p_3=12$ W. \; Total $36$ W $=12\cdot3$ from the source \checkmark}
 
 \end{multicols}
 

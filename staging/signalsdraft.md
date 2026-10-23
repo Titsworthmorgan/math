@@ -14,6 +14,7 @@ header-includes: |
   \usepackage{multicol}
   \usepackage{enumitem}
   \usepackage{needspace}
+  \usepackage{array}
   \usepackage{pgfplots}
   \pgfplotsset{compat=1.18}
   \usepgfplotslibrary{fillbetween}
@@ -124,17 +125,29 @@ sig/.style={-{Latex[length=1.6mm]}, white!80}}
 \newcommand{\why}[1]{\emph{\scriptsize(#1)}}
 \newcommand{\wk}[2]{\needspace{#1\baselineskip}\subsubsection{Worked: #2}}
 \newcommand{\st}{\rule[-7pt]{0pt}{19pt}}
+% formula table: symbols | words
+\newenvironment{ftab}{\par\vspace{2pt}\noindent\small\renewcommand{\arraystretch}{1.3}%
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.44\linewidth}>{\raggedright\arraybackslash}p{0.515\linewidth}@{}}\term{Formula} & \term{In words} \\\hline}%
+{\end{tabular}\par\vspace{3pt}}
+% quick-example table: given | work and answer
+\newenvironment{qtab}{\par\vspace{2pt}\noindent\small\renewcommand{\arraystretch}{1.3}%
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.36\linewidth}>{\raggedright\arraybackslash}p{0.595\linewidth}@{}}\term{Quick example} & \term{Work $\to$ answer} \\\hline}%
+{\end{tabular}\par\vspace{3pt}}
+% plain two-column lookup table
+\newenvironment{ltab}[2]{\par\vspace{2pt}\noindent\small\renewcommand{\arraystretch}{1.2}%
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.40\linewidth}>{\raggedright\arraybackslash}p{0.555\linewidth}@{}}\term{#1} & \term{#2} \\\hline}%
+{\end{tabular}\par\vspace{3pt}}
 % ---- puzzle-piece format: a colored piece in the diagram goes in the same-colored slot ----
 \definecolor{pcA}{HTML}{F0955F}
 \definecolor{pcB}{HTML}{5CCB96}
 \definecolor{pcC}{HTML}{B3A6F5}
 \definecolor{pcD}{HTML}{66B8F0}
 \definecolor{pcE}{HTML}{E8C95A}
-\newcommand{\pA}[1]{{\syntaxonfalse\color{pcA}#1}}
-\newcommand{\pB}[1]{{\syntaxonfalse\color{pcB}#1}}
-\newcommand{\pC}[1]{{\syntaxonfalse\color{pcC}#1}}
-\newcommand{\pD}[1]{{\syntaxonfalse\color{pcD}#1}}
-\newcommand{\pE}[1]{{\syntaxonfalse\color{pcE}#1}}
+\newcommand{\pA}[1]{\leavevmode{\syntaxonfalse\color{pcA}#1}}
+\newcommand{\pB}[1]{\leavevmode{\syntaxonfalse\color{pcB}#1}}
+\newcommand{\pC}[1]{\leavevmode{\syntaxonfalse\color{pcC}#1}}
+\newcommand{\pD}[1]{\leavevmode{\syntaxonfalse\color{pcD}#1}}
+\newcommand{\pE}[1]{\leavevmode{\syntaxonfalse\color{pcE}#1}}
 % empty slot in a template: \slot{color}{what goes here}
 \newcommand{\slot}[2]{{\setlength{\fboxsep}{1.2pt}\fcolorbox{#1}{black}{\syntaxonfalse\color{#1}\footnotesize #2}}}
 % ground symbol at a coordinate
@@ -148,7 +161,7 @@ sig/.style={-{Latex[length=1.6mm]}, white!80}}
 \filbreak \subsection{the big picture}
 Everything in this course is one of two things:
 \begin{itemize}
-\item a \term{signal}: a quantity that changes over time, like a voltage or a sound;
+\item a \term{signal}: a quantity that changes over time, like a voltage or a sound.
 \item a \term{system}: a machine that takes a signal in and puts a signal out.
 \end{itemize}
 The topics build on each other in this order:
@@ -157,6 +170,7 @@ The topics build on each other in this order:
 \item \term{Building blocks.} The button $\delta$, the switch $u$, and the ramp $r$ (10).
 \item \term{Machines.} Systems, block diagrams, difference equations (11).
 \item \term{Describing machines.} Memory, causality, stability, linearity, time invariance (12).
+\item \term{One echo describes the machine.} The impulse response $h$ and the convolution sum $y=x*h$ (13).
 \end{enumerate}
 \keyres{The link from 1 to 4}: BIBO stability asks if a \emph{bounded} input gives a \emph{bounded} output. That is a question about signal size.
 
@@ -167,15 +181,17 @@ The topics build on each other in this order:
 $\delta[n]$, $\delta(t)$ & \term{the button}: pressed once at time $0$, then released \\
 $u[n]$, $u(t)$ & \term{the switch}: flipped on at time $0$ and left on \\
 $r[n]$, $r(t)$ & \term{the ramp}: the running total of the switch, $0,1,2,3,\ldots$ \\
-$t$ & the time variable; it sweeps through every time, and is gone after you integrate \\
-$T$ & the half-width of a window $[-T,T]$; it is the thing that goes to $\infty$ \\
+$t$ & the time variable. It sweeps through every time, and is gone after you integrate \\
+$T$ & the half-width of a window $[-T,T]$. It is the thing that goes to $\infty$ \\
 $t_0$, $n_0$ & ``t-naught'': one fixed time, such as $3$ \\
 $N$ & DT window half-width ($2N+1$ samples), or a DT period \\
 $\varepsilon$ & ``epsilon'': a tiny number that we shrink toward $0$ \\
 $\int\ldots dt$ & add up area as $t$ sweeps (CT) \\
-$\sum$ & add up separate terms (DT); the DT twin of $\int$ \\
+$\sum$ & add up separate terms (DT), the DT twin of $\int$ \\
 $dt$ & an infinitely thin slice of time. \warn{Not $\Delta t$.} \\
 $B$ & a ceiling: the input never goes above $B$ in size \\
+$h[n]$ & \term{the echo} (impulse response): what an LTI machine puts out for one button press \\
+$x*h$ & ``$x$ convolved with $h$: add up one echo per input stem \\
 \end{tabular}}
 
 \filbreak \subsection{notation: CT and DT side by side}
@@ -266,7 +282,7 @@ time shift $\to$ phase & $\phi=-\omega t_0$ \\
 DT sinusoid & $x[n]=A\cos(\hat\omega n+\phi)$ \\
 CT $\to$ DT frequency & $\hat\omega=\omega T_s=\dfrac{2\pi f}{f_s}$ \st\\
 DT $\to$ CT frequency & $f=\dfrac{\hat\omega f_s}{2\pi}$ \st\\
-aliases & $\hat\omega+2\pi k$, \; $f+k f_s$ \\
+aliases & $\pm\hat\omega+2\pi k$, \; $\pm f+k f_s$ \\
 \end{tabular}}
 \par\vspace{3pt}
 \needspace{3\baselineskip}\term{4--5. Energy and power}\par
@@ -351,6 +367,20 @@ accumulator & $y[n]=y[n-1]+x[n]$ \\
 bounded input & $\lvert x[n]\rvert\leq B<\infty$ \\
 stable if & $\lvert y[n]\rvert\leq$ a finite number \\
 \end{tabular}}
+\par\vspace{3pt}
+\needspace{3\baselineskip}\term{13. Convolution}\par
+{\small\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}p{0.44\linewidth}p{0.514\linewidth}@{}}
+impulse response & $h[n]=$ output for $x=\delta$ \\
+convolution sum & $y[n]=\sum_kx[k]\,h[n-k]$ \\
+swap roles & $x*h=h*x$ \\
+button, delayed button & $x*\delta=x$, \; $x*\delta[n-n_0]=x[n-n_0]$ \\
+output range, length & $[a+c,\,b+d]$, \; $L_x+L_h-1$ \\
+sum check & $\sum y=\sum x\cdot\sum h$ \\
+causal, stable from $h$ & $h[n<0]=0$, \; $\sum\lvert h\rvert<\infty$ \\
+series, parallel & $h_1*h_2$, \; $h_1+h_2$ \\
+two exponentials & $\dfrac{a^{n+1}-b^{n+1}}{a-b}\,u[n]$ \st\\
+\end{tabular}}
 
 \filbreak \subsection{system property tests}
 {\small\renewcommand{\arraystretch}{1.15}
@@ -361,7 +391,7 @@ causal & Does $y$ avoid peeking at the future? & \keyres{yes} {$x[n-1]$} \; \war
 stable & Does a capped input give a capped output? & \keyres{yes} {$x^2$} \; \warn{no} {$\sum_{k\le n}x[k]$} \\[2pt]
 invertible & Can I undo it and get $x$ back? & \keyres{yes} {$2x$} \; \warn{no} {$x^2$} \\[2pt]
 time invariant & Does it ignore the clock? Delay in $=$ delay out & \keyres{yes} {$x[n-1]$} \; \warn{no} {$n\,x[n]$} \\[2pt]
-linear & Scale in $\to$ scale out; add in $\to$ add out? & \keyres{yes} {$n\,x[n]$} \; \warn{no} {$2x+3$} \\
+linear & Scale in $\to$ scale out, add in $\to$ add out? & \keyres{yes} {$n\,x[n]$} \; \warn{no} {$2x+3$} \\
 \end{tabular}}
 
 \filbreak \subsection{which tool? --- given $\to$ find}
@@ -387,7 +417,12 @@ graph with corners $\to$ formula & a ramp per corner \hfill (10) \\[1pt]
 blocks $\to$ one equation & substitute block by block \hfill (11) \\[1pt]
 equation $\leftrightarrow$ block diagram & one $D$ per shift \hfill (11) \\[1pt]
 system $\to$ properties & ask each question \hfill (12) \\[1pt]
-system $\to$ stable? & cap the input with $B$ \hfill (12) \\
+system $\to$ stable? & cap the input with $B$ \hfill (12) \\[1pt]
+equation $\to h$ & read coefficients, or run $x=\delta$ \hfill (13) \\[1pt]
+$h\to$ causal, stable & $h[n<0]=0$, \; $\sum\lvert h\rvert$ \hfill (13) \\[1pt]
+stems $x$, $h\to y$ & table: one row per stem \hfill (13) \\[1pt]
+pulse and formula $\to y$ & flip and slide, by regions \hfill (13) \\[1pt]
+two formulas $\to y$ & sum $k=0..n$, geometric \hfill (13) \\
 \end{tabular}}
 \par\vspace{2pt}
 The number in parentheses is the concept section.
@@ -400,7 +435,18 @@ The number in parentheses is the concept section.
 \begin{multicols}{2}
 \raggedcolumns
 
-\term{Puzzle pieces.} In every worked example, a \pA{colored piece} read off the formula or graph goes in the slot \slot{pcA}{of that color} in the template. Order: \textbf{pieces} $\to$ \textbf{template} $\to$ \textbf{place} $\to$ \textbf{check}. Sinusoid colors stay the same everywhere: \pA{amplitude}, \pB{frequency}, \pC{phase or shift}.
+\term{How to read a worked example.} Every example is a puzzle: colored pieces go into the slots of the same color.
+{\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}p{0.27\linewidth}p{0.684\linewidth}@{}}
+\term{Step} & \term{What it does} \\\hline
+1. PIECES & Read each value off the formula or graph. Give each one a color. Prep (sine to cosine, sorting terms) is named in this title. \\[1pt]
+2. TEMPLATE & The formula, with an empty slot \slot{pcA}{like this} for each piece, in the piece's color. \\[1pt]
+3. PLACE & Put each piece in its slot. Then do the arithmetic. \\[1pt]
+middle steps & One operation each, named by the operation: SOLVE, LCM, ALIAS. \\[1pt]
+last: CHECK & Test the answer at one point, with a shortcut, or against a known fact. \\
+\end{tabular}}
+\par\vspace{2pt}
+\term{Colors.} Sinusoid colors stay the same everywhere: \pA{amplitude}, \pB{frequency}, \pC{phase or shift}, \pD{sampling rate}. In other examples, step 1 sets the colors.
 
 % ------------------------------------------------------------ 1
 \filbreak \subsection{1. signals and sampling}
@@ -410,7 +456,7 @@ The number in parentheses is the concept section.
 \item \term{Continuous time} (CT): $x(t)$, round brackets, any real $t$. The movie.
 \item \term{Discrete time} (DT): $x[n]$, square brackets, $n$ an \keyres{integer only}. The stack of photos.
 \end{itemize}
-\trap{$x[2.5]$ does not exist. Between samples a DT signal is not zero; it is undefined.}
+\trap{$x[2.5]$ does not exist. Between samples a DT signal is not zero. It is undefined.}
 
 \term{Movie to photos}: photo $n$ is taken at $t=nT_s$, so $x[n]=x(nT_s)$. \; $T_s$ $=$ \term{sampling period} (s between photos), \; $f_s=\frac{1}{T_s}$ $=$ \term{sampling rate} (photos per s).
 
@@ -437,12 +483,16 @@ The curve is the movie (CT). The stems are the photos (DT).
 \stepdown
 \stepbox{3. PLACE}{$x[n]=\pA{(}n\cdot\pB{0.5}\pA{)^2}=\keyres{0.25n^2}$ \qquad $x[0..3]=0,\;0.25,\;1,\;2.25$}
 \stepdown
-\stepbox{4. CHECK}{$n=2$ is $t=1$ s; \; $x(1)=1$ \checkmark}
+\stepbox{4. CHECK}{$n=2$ is $t=1$ s, and $x(1)=1$ \checkmark}
 
-\wk{8}{(reverse) $x[n]=0.25n^2$ came from $T_s=0.5$ s; find $x(t)$}
-\stepbox{1. TEMPLATE}{$x(t)=x[n]$ with $n=\dfrac{t}{\slot{pcB}{$T_s$}}$}
+\wk{8}{(reverse) $x[n]=0.25n^2$ came from $T_s=0.5$ s. Find $x(t)$}
+\stepbox{1. PIECES}{the photos \pA{$x[n]=0.25n^2$} \qquad the spacing \pB{$T_s=0.5$}}
 \stepdown
-\stepbox{2. PLACE}{$n=\dfrac{t}{\pB{0.5}}=2t$ \; $\Rightarrow$ \; $x(t)=0.25(2t)^2=\keyres{t^2}$}
+\stepbox{2. TEMPLATE}{$x(t)=\slot{pcA}{$x[n]$}$ with $n=\dfrac{t}{\slot{pcB}{$T_s$}}$}
+\stepdown
+\stepbox{3. PLACE}{$n=\dfrac{t}{\pB{0.5}}=2t$ \; $\Rightarrow$ \; $x(t)=\pA{0.25(2t)^2}=\keyres{t^2}$}
+\stepdown
+\stepbox{4. CHECK}{$t=1$ is $n=2$: \; $0.25(2)^2=1=1^2$ \checkmark}
 
 % ------------------------------------------------------------ 2
 \filbreak \subsection{2. sinusoids}
@@ -450,7 +500,7 @@ The curve is the movie (CT). The stems are the photos (DT).
 
 $$x(t)=\slot{pcA}{$A$}\cos\big(\slot{pcB}{$\omega$}\,t+\slot{pcC}{$\phi$}\big)$$
 \begin{itemize}
-\item \pA{$A$}: \term{amplitude}, the peak; swings between $-A$ and $A$.
+\item \pA{$A$}: \term{amplitude}, the peak. It swings between $-A$ and $A$.
 \item \pB{$\omega$}: \term{angular frequency}, rad/s. \; $f=\frac{\omega}{2\pi}$ Hz (turns per s), \; $T=\frac{1}{f}=\frac{2\pi}{\omega}$ s per turn.
 \item \pC{$\phi$}: \term{phase}, rad. A head start or late start. \; As a \term{time shift}: $t_0=-\frac{\phi}{\omega}$, \; $A\cos\big(\omega(t-t_0)\big)$.
 \end{itemize}
@@ -475,21 +525,27 @@ $t_0\to\phi$ & $\phi=-\omega t_0$ \\
 \stepdown
 \stepbox{2. TEMPLATES}{$f=\dfrac{\slot{pcB}{$\omega$}}{2\pi}$ \qquad $T=\dfrac{2\pi}{\slot{pcB}{$\omega$}}$ \qquad $t_0=-\dfrac{\slot{pcC}{$\phi$}}{\slot{pcB}{$\omega$}}$}
 \stepdown
-\stepbox{3. PLACE}{$f=\dfrac{\pB{4\pi}}{2\pi}=\keyres{2}$ Hz \quad $T=\keyres{0.5}$ s \quad $t_0=-\dfrac{\pC{-\pi/3}}{\pB{4\pi}}=\keyres{\frac{1}{12}}$ s \why{delayed}}
+\stepbox{3. PLACE}{$f=\dfrac{\pB{4\pi}}{2\pi}=\keyres{2}$ Hz \quad $T=\dfrac{2\pi}{\pB{4\pi}}=\keyres{0.5}$ s \quad $t_0=-\dfrac{\pC{-\pi/3}}{\pB{4\pi}}=\keyres{\frac{1}{12}}$ s \why{delayed}}
 \stepdown
 \stepbox{4. CHECK}{$3\cos\big(4\pi(t-\frac1{12})\big)$: \; $4\pi\cdot\frac{1}{12}=\frac{\pi}{3}$ \checkmark}
 
 \wk{8}{(sine first) read the parts of $x(t)=4\sin(10t)$}
-\stepbox{1. PREP}{$\sin\theta=\cos(\theta-\frac{\pi}{2})$ \; $\Rightarrow$ \; $4\cos\big(10t-\frac{\pi}{2}\big)$}
+\stepbox{1. PIECES (SINE TO COSINE FIRST)}{$\sin\theta=\cos(\theta-\frac{\pi}{2})$ \; $\Rightarrow$ \; $4\cos\big(10t-\frac{\pi}{2}\big)$ \qquad \pA{$A=4$}, \; \pB{$\omega=10$}, \; \pC{$\phi=-\frac{\pi}{2}$}}
 \stepdown
-\stepbox{2. PIECES, PLACE}{\pA{$A=4$}, \pB{$\omega=10$}, \pC{$\phi=-\frac{\pi}{2}$} \quad $f=\frac{\pB{10}}{2\pi}=1.59$ Hz, \; $T=\frac{2\pi}{\pB{10}}=0.628$ s}
+\stepbox{2. TEMPLATES}{$f=\dfrac{\slot{pcB}{$\omega$}}{2\pi}$ \qquad $T=\dfrac{2\pi}{\slot{pcB}{$\omega$}}$}
+\stepdown
+\stepbox{3. PLACE}{$f=\dfrac{\pB{10}}{2\pi}=\keyres{1.59}$ Hz \qquad $T=\dfrac{2\pi}{\pB{10}}=\keyres{0.628}$ s}
+\stepdown
+\stepbox{4. CHECK}{$fT=1.59\times0.628=1$ \checkmark \qquad at $t=0$: $4\sin0=0=4\cos(-\frac{\pi}{2})$ \checkmark}
 
 \wk{8}{(reverse) build $x(t)$: $A=2$, $T=0.4$ s, first peak at $t=0.1$ s}
 \stepbox{1. PIECES}{\pA{$A=2$} \qquad period $0.4$ $\to$ \pB{$\omega=\frac{2\pi}{0.4}=5\pi$} \qquad first peak $=$ shift: \pC{$t_0=0.1$} $\to$ \pC{$\phi=-5\pi(0.1)=-\frac{\pi}{2}$}}
 \stepdown
-\stepbox{2. PLACE IN $\slot{pcA}{$A$}\cos(\slot{pcB}{$\omega$}t+\slot{pcC}{$\phi$})$}{$x(t)=\keyres{\pA{2}\cos\big(\pB{5\pi}t\pC{-\frac{\pi}{2}}\big)}$}
+\stepbox{2. TEMPLATE}{$x(t)=\slot{pcA}{$A$}\cos\big(\slot{pcB}{$\omega$}\,t+\slot{pcC}{$\phi$}\big)$}
 \stepdown
-\stepbox{3. CHECK}{angle at $t=0.1$: $\frac{\pi}{2}-\frac{\pi}{2}=0$ $\Rightarrow$ $2\cos0=2$, the peak \checkmark}
+\stepbox{3. PLACE}{$x(t)=\keyres{\pA{2}\cos\big(\pB{5\pi}t\pC{-\frac{\pi}{2}}\big)}$}
+\stepdown
+\stepbox{4. CHECK}{angle at $t=0.1$: $\frac{\pi}{2}-\frac{\pi}{2}=0$ $\Rightarrow$ $2\cos0=2$, the peak \checkmark}
 
 % ------------------------------------------------------------ 3
 \filbreak \subsection{3. DT sinusoids and DT frequency}
@@ -497,7 +553,7 @@ $t_0\to\phi$ & $\phi=-\omega t_0$ \\
 
 $$x[n]=A\cos(\hat\omega n+\phi), \qquad \hat\omega=\slot{pcB}{$\omega$}\,T_s=\frac{2\pi\,\slot{pcB}{$f$}}{\slot{pcD}{$f_s$}}$$
 
-\term{Aliasing} is the wagon-wheel effect: a turn of $\frac{\pi}{4}$ per photo looks identical to $\frac{\pi}{4}+2\pi$. So $\hat\omega$ and $\hat\omega+2\pi$ give the \keyres{same photos}; $f$ and $f+f_s$ give the same samples.
+\term{Aliasing} is the wagon-wheel effect. A turn of $\frac{\pi}{4}$ per photo looks the same as $\frac{\pi}{4}+2\pi$. So $\hat\omega$ and $\hat\omega+2\pi$ give the \keyres{same photos}, and $f$ and $f+f_s$ give the same samples. A cosine is even, so $-\hat\omega$ also gives the same photos: $f_s-f$ aliases to $f$ too.
 
 \filbreak \subsubsection{Which way? --- CT frequency or DT frequency}
 {\small\renewcommand{\arraystretch}{1.2}
@@ -508,7 +564,7 @@ $\omega$, $T_s\to\hat\omega$ & $\hat\omega=\omega T_s$ \\
 $\hat\omega$, $f_s\to f$ & $f=\dfrac{\hat\omega f_s}{2\pi}$ \; (the lowest answer) \st\\
 \end{tabular}}
 \par\vspace{2pt}
-\trap{DT to CT has more than one answer. Any alias $f+kf_s$ fits the same photos.}
+\trap{DT to CT has more than one answer. Any alias $\pm f+kf_s$ fits the same photos.}
 
 \wk{8}{sample $x(t)=\cos(200\pi t)$ at $f_s=800$ Hz}
 \stepbox{1. PIECES}{\pB{$\omega=200\pi$} ($f=100$ Hz) \qquad \pD{$f_s=800$}}
@@ -516,17 +572,23 @@ $\hat\omega$, $f_s\to f$ & $f=\dfrac{\hat\omega f_s}{2\pi}$ \; (the lowest answe
 \stepbox{2. TEMPLATE}{$\hat\omega=\dfrac{\slot{pcB}{$\omega$}}{\slot{pcD}{$f_s$}}$ \why{same as $\omega T_s$}}
 \stepdown
 \stepbox{3. PLACE}{$\hat\omega=\dfrac{\pB{200\pi}}{\pD{800}}=\keyres{\frac{\pi}{4}}$ rad/sample \; $\Rightarrow$ \; $x[n]=\keyres{\cos\big(\frac{\pi}{4}n\big)}$}
+\stepdown
+\stepbox{4. CHECK}{$\frac{\pi/4}{2\pi}=\frac18$ turn per photo, so $8$ photos per turn $=\frac{800}{100}$ \checkmark}
 
-\wk{8}{(reverse and alias) $\hat\omega=\frac{\pi}{4}$, $f_s=800$; and does $900$ Hz match?}
-\stepbox{1. TEMPLATE}{$f=\dfrac{\slot{white}{$\hat\omega$}\cdot\slot{pcD}{$f_s$}}{2\pi}$}
+\wk{8}{(reverse and alias) $\hat\omega=\frac{\pi}{4}$, $f_s=800$. Find $f$. Do $900$ Hz and $700$ Hz match?}
+\stepbox{1. PIECES}{\pB{$\hat\omega=\frac{\pi}{4}$} \qquad \pD{$f_s=800$}}
 \stepdown
-\stepbox{2. PLACE}{$f=\dfrac{(\pi/4)\cdot\pD{800}}{2\pi}=\keyres{100}$ Hz}
+\stepbox{2. TEMPLATE}{$f=\dfrac{\slot{pcB}{$\hat\omega$}\cdot\slot{pcD}{$f_s$}}{2\pi}$}
 \stepdown
-\stepbox{3. ALIAS}{$900$ Hz: $\hat\omega=\frac{2\pi\cdot900}{800}=\frac{9\pi}{4}$; \; $-2\pi$ $\to$ $\frac{\pi}{4}$ \; $\Rightarrow$ \warn{same samples} \why{$900=100+f_s$}}
+\stepbox{3. PLACE}{$f=\dfrac{(\pB{\pi/4})\cdot\pD{800}}{2\pi}=\keyres{100}$ Hz}
+\stepdown
+\stepbox{4. ALIAS}{$900$ Hz: $\hat\omega=\frac{9\pi}{4}$, \; $-2\pi$ $\to$ $\frac{\pi}{4}$ \warn{same samples} \why{$100+f_s$} \\ $700$ Hz: $\hat\omega=\frac{7\pi}{4}$, \; $-2\pi$ $\to$ $-\frac{\pi}{4}$, and $\cos$ is even \warn{same samples} \why{$f_s-100$}}
+\stepdown
+\stepbox{5. CHECK}{$n=1$: $\cos\frac{\pi}{4}=\cos\frac{9\pi}{4}=\cos\frac{7\pi}{4}=0.707$ \checkmark}
 
 % ------------------------------------------------------------ 4
 \filbreak \subsection{4. energy and power}
-\idea{Think of $\lvert x\rvert^2$ as \term{money spent per day}, forever. \term{Energy} is your \keyres{total} spending; \term{power} is your \keyres{average} per day. Spend \$100 once: total finite, average $0$. Spend \$5 every day: total $\infty$, average \$5.}
+\idea{Think of $\lvert x\rvert^2$ as \term{money spent per day}, forever. \term{Energy} is your \keyres{total} spending. \term{Power} is your \keyres{average} per day. Spend \$100 once: total finite, average $0$. Spend \$5 every day: total $\infty$, average \$5.}
 
 \term{Why square?} Picture $x$ as a voltage on a $1\,\Omega$ resistor: $P=V^2/R=x^2$. Squaring also makes negatives count: $(-0.5)^2=0.25$. Without it, $\cos t$ would average to $0$.
 
@@ -536,7 +598,7 @@ $$E_\infty=\int_{-\infty}^{\infty}\lvert x(t)\rvert^2\,dt \qquad E_\infty=\sum_{
 $$P_\infty=\lim_{T\to\infty}\frac{1}{2T}\int_{-T}^{T}\lvert x(t)\rvert^2\,dt \qquad P_\infty=\lim_{N\to\infty}\frac{1}{2N+1}\sum_{n=-N}^{N}\lvert x[n]\rvert^2$$
 \term{Periodic shortcut}: one period tells the story, $P=\frac{1}{T}\int_{\text{period}}\lvert x\rvert^2\,dt$.
 
-\term{Puzzle template for energy}: \; $E=\displaystyle\int_{\slot{pcA}{on at}}^{\slot{pcB}{off at}}\slot{pcC}{$\lvert x\rvert^2$}\,dt$ \; (DT: $\sum$). Where $x=0$ it adds nothing, so the limits shrink to where the signal is on; a switch $u$ tells you the \pA{on} time.
+\term{Puzzle template for energy}: \; $E=\displaystyle\int_{\slot{pcA}{on at}}^{\slot{pcB}{off at}}\slot{pcC}{$\lvert x\rvert^2$}\,dt$ \; (DT: $\sum$). Where $x=0$ it adds nothing, so the limits shrink to where the signal is on. A switch $u$ tells you the \pA{on} time.
 
 \filbreak \subsubsection{Classify by shape first}
 {\small
@@ -551,42 +613,54 @@ Energy signal: a fixed total $E$ over a growing window, $\frac{E}{2T}\to0$. \; C
 
 \filbreak \subsubsection{Traps from practice}
 \trap{\textbf{Square first}, then add. $E_\infty=0$ only if $x=0$ everywhere.}
-\trap{``$16$ forever'' is the \textbf{power}; the energy is $\infty$.}
-\trap{$t$ disappears when you integrate; $T$ is what goes to $\infty$. \; $\frac{c}{T}\to0$, not $c$. \; Write $dt$, not $\Delta t$.}
+\trap{``$16$ forever'' is the \textbf{power}. The energy is $\infty$.}
+\trap{$t$ disappears when you integrate. $T$ is what goes to $\infty$. \; $\frac{c}{T}\to0$, not $c$. \; Write $dt$, not $\Delta t$.}
 \trap{\textbf{Write the label}: energy signal, power signal, or neither.}
 
 \wk{8}{pulse: $x(t)=2$ for $0\leq t\leq3$, else $0$}
-\stepbox{1. PIECES}{on at \pA{$0$}, off at \pB{$3$}, \; \pC{$\lvert x\rvert^2=4$}}
+\stepbox{1. PIECES}{on at \pA{$0$}, \; off at \pB{$3$}, \; \pC{$\lvert x\rvert^2=4$}}
 \stepdown
-\stepbox{2. PLACE, SOLVE}{$E=\displaystyle\int_{\pA{0}}^{\pB{3}}\pC{4}\,dt=\keyres{12}$ \why{check $A^2D=4\cdot3$} \qquad $P=\lim\limits_{T\to\infty}\frac{12}{2T}=0$ $\Rightarrow$ energy signal}
+\stepbox{2. TEMPLATE}{$E=\displaystyle\int_{\slot{pcA}{on}}^{\slot{pcB}{off}}\slot{pcC}{$\lvert x\rvert^2$}\,dt$}
+\stepdown
+\stepbox{3. PLACE}{$E=\displaystyle\int_{\pA{0}}^{\pB{3}}\pC{4}\,dt=\keyres{12}$ \qquad $P=\lim\limits_{T\to\infty}\frac{12}{2T}=0$ $\Rightarrow$ \keyres{energy signal}}
+\stepdown
+\stepbox{4. CHECK (SHORTCUT $A^2D$)}{$2^2\cdot3=12$ \checkmark}
 
 \wk{8}{decaying exponential: $x(t)=3e^{-2t}u(t)$}
-\stepbox{1. PIECES}{switch $u(t)$ $\Rightarrow$ on at \pA{$0$}; never off: \pB{$\infty$}; \; \pC{$\lvert x\rvert^2=9e^{-4t}$} \why{square: double the exponent}}
+\stepbox{1. PIECES}{switch $u(t)$ $\Rightarrow$ on at \pA{$0$}, \; never off: \pB{$\infty$}, \; \pC{$\lvert x\rvert^2=9e^{-4t}$} \why{square: double the exponent}}
 \stepdown
-\stepbox{2. PLACE}{$E=\displaystyle\int_{\pA{0}}^{\pB{\infty}}\pC{9e^{-4t}}\,dt$}
+\stepbox{2. TEMPLATE}{$E=\displaystyle\int_{\slot{pcA}{on}}^{\slot{pcB}{off}}\slot{pcC}{$\lvert x\rvert^2$}\,dt$}
 \stepdown
-\stepbox{3. SOLVE (SHORTCUT $\int_0^\infty e^{-at}dt=\frac1a$)}{$E=9\cdot\frac14=\keyres{2.25}$ $\Rightarrow$ energy signal}
+\stepbox{3. PLACE}{$E=\displaystyle\int_{\pA{0}}^{\pB{\infty}}\pC{9e^{-4t}}\,dt=9\cdot\frac14=\keyres{2.25}$ \why{$\int_0^\infty e^{-at}dt=\frac1a$} \; $\Rightarrow$ \keyres{energy signal}}
+\stepdown
+\stepbox{4. CHECK}{antiderivative $-\frac94e^{-4t}$: \; $0-\big(-\frac94\big)=2.25$ \checkmark}
 
 \wk{8}{DT geometric: $x[n]=\big(\frac12\big)^nu[n]$}
-\stepbox{1. PIECES}{on at \pA{$0$}, off \pB{never}; \; \pC{$\lvert x\rvert^2=\big(\frac12\big)^{2n}=\big(\frac14\big)^n$}}
+\stepbox{1. PIECES}{on at \pA{$0$}, off \pB{never}, \; \pC{$\lvert x\rvert^2=\big(\frac12\big)^{2n}=\big(\frac14\big)^n$}}
 \stepdown
-\stepbox{2. PLACE}{$E=\displaystyle\sum_{\pA{0}}^{\pB{\infty}}\pC{\big(\tfrac14\big)^n}$ \why{geometric, $r=\frac14$}}
+\stepbox{2. TEMPLATE}{$E=\displaystyle\sum_{\slot{pcA}{on}}^{\slot{pcB}{off}}\slot{pcC}{$\lvert x\rvert^2$}$}
 \stepdown
-\stepbox{3. SOLVE, CHECK}{$\dfrac{1}{1-r}=\keyres{\frac43}$ \qquad $1+0.25+0.0625+\ldots\approx1.33$ \checkmark}
+\stepbox{3. PLACE}{$E=\displaystyle\sum_{\pA{0}}^{\pB{\infty}}\pC{\big(\tfrac14\big)^n}=\dfrac{1}{1-\frac14}=\keyres{\frac43}$ \why{geometric, $r=\frac14$}}
+\stepdown
+\stepbox{4. CHECK}{$1+0.25+0.0625+\ldots\approx1.33$ \checkmark}
 
 \wk{8}{sinusoid: $x(t)=4\cos(3t)$}
 \stepbox{1. PIECES}{\pA{$A=4$} \qquad \pC{$\lvert x\rvert^2=16\cos^2(3t)=8+8\cos(6t)$} \why{$\cos^2\theta=\frac{1+\cos2\theta}{2}$}}
 \stepdown
-\stepbox{2. AVERAGE EACH TERM}{$8$ averages to $8$; \; $8\cos(6t)$ averages to $0$ \; $\Rightarrow$ $P=\keyres{8}$}
+\stepbox{2. TEMPLATE}{$P=$ average of \slot{pcC}{$\lvert x\rvert^2$} \why{periodic: one period is enough}}
 \stepdown
-\stepbox{3. CHECK (SHORTCUT $\frac{\slot{pcA}{$A$}^2}{2}$)}{$\frac{\pA{4}^2}{2}=8$ \checkmark \; $E=\infty$ $\Rightarrow$ power signal}
+\stepbox{3. PLACE}{average of $\pC{8+8\cos(6t)}$: \; $8$ averages to $8$, \; $8\cos(6t)$ averages to $0$ \; $\Rightarrow$ $P=\keyres{8}$ \qquad $E=\infty$: \keyres{power signal}}
+\stepdown
+\stepbox{4. CHECK (SHORTCUT $\frac{A^2}{2}$)}{$\frac{\pA{4}^2}{2}=8$ \checkmark}
 
-\wk{8}{constant $x(t)=3$; and DT $x[n]=(-1)^n$}
-\stepbox{1. WINDOW TOTAL}{$\int_{-T}^{T}9\,dt=18T$ \why{minus a negative: $9T-(-9T)$}}
+\wk{8}{constant $x(t)=3$, and DT $x[n]=(-1)^n$}
+\stepbox{1. PIECES}{\pC{$\lvert x\rvert^2=9$} for all $t$ \qquad DT: \pC{$\lvert(-1)^n\rvert^2=1$} for all $n$}
 \stepdown
-\stepbox{2. ENERGY vs POWER}{$E=\lim\limits_{T\to\infty}18T=\infty$; \quad $P=\lim\limits_{T\to\infty}\dfrac{18T}{2T}=\keyres{9}$ \why{$T$ cancels; $=c^2$} $\Rightarrow$ power signal}
+\stepbox{2. TEMPLATE}{$P=\lim\limits_{T\to\infty}\dfrac{1}{2T}\displaystyle\int_{-T}^{T}\slot{pcC}{$\lvert x\rvert^2$}\,dt$ \qquad $P=\lim\limits_{N\to\infty}\dfrac{1}{2N+1}\displaystyle\sum_{-N}^{N}\slot{pcC}{$\lvert x\rvert^2$}$}
 \stepdown
-\stepbox{3. DT}{$\lvert(-1)^n\rvert^2=1$; \; $2N+1$ terms $\Rightarrow$ $P=\dfrac{2N+1}{2N+1}=\keyres{1}$}
+\stepbox{3. PLACE}{$\int_{-T}^{T}\pC9\,dt=18T$ \why{$9T-(-9T)$} \; $\Rightarrow$ $P=\dfrac{18T}{2T}=\keyres{9}$ \why{$T$ cancels} \qquad $E=\lim 18T=\infty$ \\ DT: $2N+1$ terms of $\pC1$ \; $\Rightarrow$ $P=\dfrac{2N+1}{2N+1}=\keyres{1}$}
+\stepdown
+\stepbox{4. CHECK}{a constant $c$ has $P=c^2$: \; $3^2=9$ \checkmark \qquad both are \keyres{power signals}}
 
 % ------------------------------------------------------------ 5
 \filbreak \subsection{5. energy from a graph}
@@ -602,7 +676,7 @@ line from $A$ to $B$ & $\dfrac{D}{3}\big(A^2+AB+B^2\big)$ \st\\
 DT stem of height $h$ & $h^2$ \\
 \end{tabular}}
 \par\vspace{2pt}
-Line through $(t_1,x_1)$, slope $m$: $x=x_1+m(t-t_1)$. Use a shortcut to check an integral, and vice versa.
+Line through $(t_1,x_1)$, slope $m$: $x=x_1+m(t-t_1)$. Use a shortcut to check an integral, and the reverse.
 
 \trap{Negative parts count positive: $(-2)^2=4$.}
 \trap{A squared ramp is a curve, not a triangle: $\frac{A^2D}{3}$, not $\frac{A^2D}{2}$.}
@@ -637,6 +711,8 @@ width=4.9cm, height=3.4cm]
 \stepbox{2. TEMPLATE}{$E=\slot{pcA}{$A^2D$}+\slot{pcB}{$A^2D$}$}
 \stepdown
 \stepbox{3. PLACE}{$E=\pA{2^2(1)}+\pB{(-1)^2(2)}=4+2=\keyres{6}$}
+\stepdown
+\stepbox{4. CHECK BY INTEGRAL}{$\int_0^14\,dt+\int_1^31\,dt=4+2=6$ \checkmark}
 
 \wk{8}{a triangle (right graph)}
 \stepbox{1. PIECES}{\pA{ramp $0\to2$, $D=1$} \qquad \pB{ramp $2\to0$, $D=1$}}
@@ -645,14 +721,16 @@ width=4.9cm, height=3.4cm]
 \stepdown
 \stepbox{3. PLACE}{$E=\dfrac{\pA{2}^2(\pA1)}{3}+\dfrac{\pB{2}^2(\pB1)}{3}=\keyres{\frac83}$}
 \stepdown
-\stepbox{4. CHECK BY INTEGRAL}{rise $x=2t$: $\int_0^1 4t^2\,dt=\frac43$; the fall is its mirror, $\frac43$ \checkmark}
+\stepbox{4. CHECK BY INTEGRAL}{rise $x=2t$: $\int_0^1 4t^2\,dt=\frac43$. The fall is its mirror, $\frac43$ \checkmark}
 
 \wk{8}{a line from $1$ to $3$ over $[0,2]$}
 \stepbox{1. PIECES}{\pA{$A=1$} \qquad \pB{$B=3$} \qquad \pC{$D=2$}}
 \stepdown
-\stepbox{2. PLACE IN $\frac{\slot{pcC}{$D$}}{3}\big(\slot{pcA}{$A$}^2+\slot{pcA}{$A$}\slot{pcB}{$B$}+\slot{pcB}{$B$}^2\big)$}{$\dfrac{\pC2}{3}\big(\pA1+\pA1\cdot\pB3+\pB9\big)=\keyres{\frac{26}{3}}$}
+\stepbox{2. TEMPLATE}{$E=\dfrac{\slot{pcC}{$D$}}{3}\big(\slot{pcA}{$A$}^2+\slot{pcA}{$A$}\slot{pcB}{$B$}+\slot{pcB}{$B$}^2\big)$}
 \stepdown
-\stepbox{3. CHECK BY INTEGRAL}{$x=1+t$: $\int_0^2(1+2t+t^2)\,dt=2+4+\frac83=\frac{26}{3}$ \checkmark}
+\stepbox{3. PLACE}{$E=\dfrac{\pC2}{3}\big(\pA1+\pA1\cdot\pB3+\pB9\big)=\keyres{\frac{26}{3}}$}
+\stepdown
+\stepbox{4. CHECK BY INTEGRAL}{$x=1+t$: $\int_0^2(1+2t+t^2)\,dt=2+4+\frac83=\frac{26}{3}$ \checkmark}
 
 \needspace{16\baselineskip}
 \noindent
@@ -676,24 +754,30 @@ width=4.9cm, height=3.6cm]
 \end{tikzpicture}
 
 \wk{8}{a DT stem plot (left graph)}
-\stepbox{1. PIECES (EVERY STEM)}{heights $1$, $2$, $-2$, $1$ at $n=-1,0,1,2$}
+\stepbox{1. PIECES (EVERY STEM)}{heights \pC{$1$, $2$, $-2$, $1$} at $n=-1,0,1,2$}
 \stepdown
-\stepbox{2. PLACE IN $\sum\slot{white}{$h$}^2$}{$E=1+4+4+1=\keyres{10}$ \why{no integral in DT} \qquad $P=\lim\limits_{N\to\infty}\frac{10}{2N+1}=0$ $\Rightarrow$ energy signal}
+\stepbox{2. TEMPLATE}{$E=\sum\slot{pcC}{$h$}^2$ \why{no integral in DT}}
+\stepdown
+\stepbox{3. PLACE}{$E=\pC1^2+\pC2^2+(\pC{-2})^2+\pC1^2=1+4+4+1=\keyres{10}$ \qquad $P=\lim\limits_{N\to\infty}\frac{10}{2N+1}=0$ $\Rightarrow$ \keyres{energy signal}}
+\stepdown
+\stepbox{4. CHECK}{$4$ stems, each counted once, negatives squared positive \checkmark}
 
 \wk{8}{a periodic graph (right graph): power, not energy}
 \stepbox{1. PIECES (ONE PERIOD, $T=2$)}{\pA{flat at $2$, $D=1$} \qquad \pB{flat at $0$, $D=1$}}
 \stepdown
 \stepbox{2. TEMPLATE}{$P=\dfrac{\slot{pcA}{$A^2D$}+\slot{pcB}{$A^2D$}}{T}$}
 \stepdown
-\stepbox{3. PLACE}{$P=\dfrac{\pA{4}+\pB{0}}{2}=\keyres{2}$ \qquad repeats forever: $E=\infty$ $\Rightarrow$ power signal}
+\stepbox{3. PLACE}{$P=\dfrac{\pA{4}+\pB{0}}{2}=\keyres{2}$ \qquad repeats forever: $E=\infty$ $\Rightarrow$ \keyres{power signal}}
+\stepdown
+\stepbox{4. CHECK}{on half the time at $x^2=4$: average $\frac{4}{2}=2$ \checkmark}
 
 % ------------------------------------------------------------ 6
 \filbreak \subsection{6. transformations of the time variable}
-\idea{You are not changing the shape, only \emph{when} things happen. Ask one question of every corner of the graph: \term{where did this point move to?} It keeps its height and just lands at a new time.}
+\idea{You are not changing the shape, only \emph{when} things happen. Ask one question of every corner of the graph: \term{where did this point move to?} It keeps its height and lands at a new time.}
 \begin{itemize}
-\item \term{Shift} $x(t-t_0)$: $t_0>0$ moves \keyres{right} (a \term{delay}); $t_0<0$ moves left (an \term{advance}).
+\item \term{Shift} $x(t-t_0)$: $t_0>0$ moves \keyres{right} (a \term{delay}). $t_0<0$ moves left (an \term{advance}).
 \item \term{Reversal} $x(-t)$: play the tape backwards, mirror about $t=0$.
-\item \term{Scaling} $x(at)$: fast-forward (compress) if $\lvert a\rvert>1$; slow motion (stretch) if $\lvert a\rvert<1$.
+\item \term{Scaling} $x(at)$: fast-forward (compress) if $\lvert a\rvert>1$. Slow motion (stretch) if $\lvert a\rvert<1$.
 \end{itemize}
 \term{Point map} for $x(at+b)$ --- the template, one step, no order of operations:
 $$t_{\text{new}}=\frac{\slot{white}{$t_{\text{old}}$}-b}{a}$$
@@ -737,15 +821,22 @@ width=4.9cm, height=3.2cm]
 \stepbox{4. CHECK}{$t=0$: $x(2\cdot0+1)=x(1)=1$ \checkmark \; (the \pD{blue dot})}
 
 \wk{8}{(reversal) sketch $x(-t+2)$ from the same $x(t)$}
-\stepbox{1. TEMPLATE}{$a=-1$, $b=2$: \; $t_{\text{new}}=\dfrac{t_{\text{old}}-2}{-1}=2-t_{\text{old}}$}
+\stepbox{1. PIECES}{breakpoints \pA{$0$}, \pD{$1$}, \pE{$2$} \qquad $a=-1$, $b=2$}
 \stepdown
-\stepbox{2. PLACE EACH DOT}{\pA{$0\to2$} \qquad \pD{$1\to1$} \qquad \pE{$2\to0$} \; $\Rightarrow$ flat $1$ on $[0,1]$, ramp $1\to0$ on $[1,2]$ (mirrored)}
+\stepbox{2. TEMPLATE}{$t_{\text{new}}=\dfrac{\slot{white}{$t_{\text{old}}$}-2}{-1}=2-\slot{white}{$t_{\text{old}}$}$}
 \stepdown
-\stepbox{3. CHECK}{$t=1.5$: $x(0.5)=0.5$, on the ramp \checkmark}
+\stepbox{3. PLACE EACH DOT}{\pA{$0\to2$} \qquad \pD{$1\to1$} \qquad \pE{$2\to0$} \; $\Rightarrow$ flat $1$ on $[0,1]$, ramp $1\to0$ on $[1,2]$ (mirrored)}
+\stepdown
+\stepbox{4. CHECK}{$t=1.5$: $x(-1.5+2)=x(0.5)=0.5$, on the ramp \checkmark}
 
-\wk{8}{DT: $x[0]=1$, $x[1]=2$, $x[2]=3$, else $0$}
-\stepbox{1. PLACE EACH SAMPLE WITH $n_{\text{new}}=\frac{n_{\text{old}}-b}{a}$}{delay $x[n-2]$: \; $0,1,2\to2,3,4$ \qquad reverse $x[-n]$: \; $0,1,2\to0,-1,-2$\\
-compress $x[2n]$: \; $0\to0$, \; $2\to1$, \; \warn{$1\to\frac12$: not an integer, lost}}
+\wk{8}{DT: $x[0]=1$, $x[1]=2$, $x[2]=3$, else $0$. Find $x[n-2]$, $x[-n]$, $x[2n]$}
+\stepbox{1. PIECES}{samples at \pA{$0$}, \pD{$1$}, \pE{$2$} \qquad delay: $a=1$, $b=-2$ \quad reverse: $a=-1$, $b=0$ \quad compress: $a=2$, $b=0$}
+\stepdown
+\stepbox{2. TEMPLATE}{$n_{\text{new}}=\dfrac{\slot{white}{$n_{\text{old}}$}-b}{a}$, \; and it must be an \keyres{integer}}
+\stepdown
+\stepbox{3. PLACE EACH SAMPLE}{$x[n-2]$: \; \pA{$0\to2$}, \pD{$1\to3$}, \pE{$2\to4$} \qquad $x[-n]$: \; \pA{$0\to0$}, \pD{$1\to-1$}, \pE{$2\to-2$} \\ $x[2n]$: \; \pA{$0\to0$}, \pE{$2\to1$}, \; \warn{\pD{$1\to\frac12$}: not an integer, lost}}
+\stepdown
+\stepbox{4. CHECK}{$x[2n]$ at $n=1$ is $x[2]=3$ \checkmark \qquad $x[-n]$ at $n=-1$ is $x[1]=2$ \checkmark}
 
 \filbreak \subsubsection{Which way? --- undo a transformation}
 {\small
@@ -757,15 +848,19 @@ $y(t)=x(at+b)\to x(t)$ & $x(t)=y\big(\frac{t-b}{a}\big)$ \\
 \par\vspace{2pt}
 \trap{$x[2n]$ cannot be undone. The odd-index photos were thrown away.}
 
-\wk{8}{(reverse) $y(t)=x(2t+1)$; find $x(t)$}
-\stepbox{1. PIECES, TEMPLATE}{\pB{$a=2$}, \pC{$b=1$} \quad $x(t)=y\Big(\dfrac{t-\slot{pcC}{$b$}}{\slot{pcB}{$a$}}\Big)$}
+\wk{8}{(reverse) $y(t)=x(2t+1)$. Find $x(t)$}
+\stepbox{1. PIECES}{\pB{$a=2$} \qquad \pC{$b=1$}}
 \stepdown
-\stepbox{2. PLACE, CHECK}{$x(t)=\keyres{y\big(\frac{t-\pC1}{\pB2}\big)}$ \qquad $x\big(2\cdot\frac{t-1}{2}+1\big)=x(t)$ \checkmark}
+\stepbox{2. TEMPLATE}{$x(t)=y\Big(\dfrac{t-\slot{pcC}{$b$}}{\slot{pcB}{$a$}}\Big)$}
+\stepdown
+\stepbox{3. PLACE}{$x(t)=\keyres{y\Big(\dfrac{t-\pC1}{\pB2}\Big)}$}
+\stepdown
+\stepbox{4. CHECK}{$y(t)=x(2t+1)$ gives $y\big(\frac{t-1}{2}\big)=x\big(2\cdot\frac{t-1}{2}+1\big)=x(t)$ \checkmark}
 
 \filbreak \subsubsection{Which way? --- find $y=A\,x(at+b)$ from two graphs}
 $$y(t)=\slot{pcA}{$A$}\,x\big(\slot{pcB}{$a$}\,t+\slot{pcC}{$b$}\big)$$
 \begin{enumerate}
-\item \pA{$A$} $=\frac{\text{height of }y}{\text{height of }x}$; upside down means $A<0$.
+\item \pA{$A$} $=\frac{\text{height of }y}{\text{height of }x}$. Upside down means $A<0$.
 \item Mirrored? Then \pB{$a$}$\,<0$.
 \item Two matching points: $x$ at $t_1$, $t_2$ moved to $\tau_1$, $\tau_2$. Solve $a\tau_1+b=t_1$, \; $a\tau_2+b=t_2$ \why{$y$ at $\tau$ is $x$ at $a\tau+b$}.
 \item Check a third point.
@@ -774,19 +869,33 @@ $$y(t)=\slot{pcA}{$A$}\,x\big(\slot{pcB}{$a$}\,t+\slot{pcC}{$b$}\big)$$
 \wk{8}{$x$: ramp $0\to1$ on $[0,4]$. \; $y$: same ramp, height $3$, on $[-1,1]$}
 \stepbox{1. PIECES}{\pA{$A=\frac31=3$} \qquad not mirrored \qquad start $0\to-1$, \; end $4\to1$}
 \stepdown
-\stepbox{2. SOLVE FOR \pB{$a$}, \pC{$b$}}{$-a+b=0$, \; $a+b=4$ \; $\Rightarrow$ add: \pC{$b=2$}, \pB{$a=2$}}
+\stepbox{2. TEMPLATE}{$\slot{pcB}{$a$}\,\tau+\slot{pcC}{$b$}=t$ for each matching pair}
 \stepdown
-\stepbox{3. PLACE, CHECK}{$y(t)=\keyres{\pA{3}\,x(\pB{2}t+\pC{2})}$ \qquad $t=0$: $3x(2)=1.5$, half of $3$ \checkmark}
+\stepbox{3. PLACE, SOLVE}{start: $\pB a(-1)+\pC b=0$ \qquad end: $\pB a(1)+\pC b=4$ \qquad add: \pC{$b=2$}, then \pB{$a=2$}}
+\stepdown
+\stepbox{4. ANSWER}{$y(t)=\keyres{\pA{3}\,x(\pB{2}t+\pC{2})}$}
+\stepdown
+\stepbox{5. CHECK}{$t=0$: $3x(2)=3(0.5)=1.5$, half of $3$ \checkmark}
 
-\wk{8}{(mirrored) same $x$; $y$ falls $3\to0$ on $[-1,1]$}
+\wk{8}{(mirrored) same $x$, and $y$ falls $3\to0$ on $[-1,1]$}
 \stepbox{1. PIECES}{\pA{$A=3$} \qquad mirrored \qquad start $0\to1$, \; end $4\to-1$}
 \stepdown
-\stepbox{2. SOLVE, PLACE}{$a+b=0$, \; $-a+b=4$ \; $\Rightarrow$ \pB{$a=-2$}, \pC{$b=2$} \qquad $y=\keyres{3\,x(-2t+2)}$}
-
-\wk{8}{(DT) $x[0..2]=1,2,3$; \; $y[-1]=3$, $y[0]=2$, $y[1]=1$}
-\stepbox{1. PIECES}{mirrored $\Rightarrow$ $y[n]=x[-n+\slot{pcC}{$b$}]$ \qquad one match: $y[-1]=3=x[2]$}
+\stepbox{2. TEMPLATE}{$\slot{pcB}{$a$}\,\tau+\slot{pcC}{$b$}=t$ for each matching pair}
 \stepdown
-\stepbox{2. SOLVE, CHECK}{$1+b=2$ $\Rightarrow$ \pC{$b=1$}: \; $y[n]=\keyres{x[-n+1]}$ \qquad $n=0$: $x[1]=2$ \checkmark}
+\stepbox{3. PLACE, SOLVE}{start: $\pB a(1)+\pC b=0$ \qquad end: $\pB a(-1)+\pC b=4$ \qquad \pB{$a=-2$}, \pC{$b=2$}}
+\stepdown
+\stepbox{4. ANSWER}{$y=\keyres{\pA3\,x(\pB{-2}t+\pC2)}$}
+\stepdown
+\stepbox{5. CHECK}{$t=-1$: $3x(4)=3$, the top \checkmark \qquad $a<0$, as a mirror needs \checkmark}
+
+\wk{8}{(DT) $x[0..2]=1,2,3$, and $y[-1]=3$, $y[0]=2$, $y[1]=1$}
+\stepbox{1. PIECES}{same heights, mirrored: \pA{$A=1$}, \pB{$a=-1$} \qquad one match: $y[-1]=3=x[2]$}
+\stepdown
+\stepbox{2. TEMPLATE}{$y[n]=x[\slot{pcB}{$a$}\,n+\slot{pcC}{$b$}]$}
+\stepdown
+\stepbox{3. PLACE, SOLVE}{$x[\pB{-1}(-1)+\pC b]=x[2]$ $\Rightarrow$ $1+b=2$, \; \pC{$b=1$}: \; $y[n]=\keyres{x[-n+1]}$}
+\stepdown
+\stepbox{4. CHECK}{$n=0$: $x[1]=2$ \checkmark \qquad $n=1$: $x[0]=1$ \checkmark}
 
 % ------------------------------------------------------------ 7
 \filbreak \subsection{7. periodic signals}
@@ -794,7 +903,7 @@ $$y(t)=\slot{pcA}{$A$}\,x\big(\slot{pcB}{$a$}\,t+\slot{pcC}{$b$}\big)$$
 $$x(t)=x(t+T) \qquad x[n]=x[n+N], \; N\text{ an \keyres{integer}}$$
 \begin{itemize}
 \item \term{CT sinusoid}: always periodic, \; $T=\dfrac{2\pi}{\slot{pcB}{$\omega$}}$.
-\item \term{DT sinusoid}: periodic only if a whole number of photos holds a whole number of turns: \; $\dfrac{\slot{pcB}{$\hat\omega$}}{2\pi}=\dfrac{m}{\slot{pcA}{$N$}}$ in lowest terms.
+\item \term{DT sinusoid}: periodic only if a whole number of photos holds a whole number of turns: \; $\dfrac{\slot{pcB}{$\hat\omega$}}{2\pi}=\dfrac{m}{\slot{pcD}{$N$}}$ in lowest terms.
 \item \term{Sum of two}: the loops realign after $\mathrm{lcm}(T_1,T_2)$.
 \end{itemize}
 \trap{$\cos(n)$ is not periodic ($\frac{1}{2\pi}$ is irrational), though $\cos(t)$ is. Sampling can destroy periodicity.}
@@ -802,56 +911,70 @@ $$x(t)=x(t+T) \qquad x[n]=x[n+N], \; N\text{ an \keyres{integer}}$$
 \wk{8}{period of $\cos\big(\frac{2\pi}{3}t\big)+\sin\big(\frac{\pi}{2}t\big)$}
 \stepbox{1. PIECES}{\pB{$\omega_1=\frac{2\pi}{3}$} \qquad \pD{$\omega_2=\frac{\pi}{2}$}}
 \stepdown
-\stepbox{2. PLACE IN $\frac{2\pi}{\slot{white}{$\omega$}}$}{$T_1=\dfrac{2\pi}{\pB{2\pi/3}}=3$ \qquad $T_2=\dfrac{2\pi}{\pD{\pi/2}}=4$}
+\stepbox{2. TEMPLATE}{$T_1=\dfrac{2\pi}{\slot{pcB}{$\omega_1$}}$, \quad $T_2=\dfrac{2\pi}{\slot{pcD}{$\omega_2$}}$, \quad $T=\mathrm{lcm}(T_1,T_2)$}
 \stepdown
-\stepbox{3. LCM, CHECK}{$\mathrm{lcm}(3,4)=\keyres{12}$ s \qquad holds $4$ and $3$ whole cycles \checkmark}
+\stepbox{3. PLACE}{$T_1=\dfrac{2\pi}{\pB{2\pi/3}}=3$ \qquad $T_2=\dfrac{2\pi}{\pD{\pi/2}}=4$ \qquad $\mathrm{lcm}(3,4)=\keyres{12}$ s}
+\stepdown
+\stepbox{4. CHECK}{$12$ s holds $4$ whole cycles of the first and $3$ of the second \checkmark}
 
-\wk{8}{DT period: three cases}
-\stepbox{1. TEMPLATE}{$\dfrac{\slot{pcB}{$\hat\omega$}}{2\pi}=\dfrac{m}{\slot{pcA}{$N$}}$, reduced}
+\wk{8}{DT period: $\cos\big(\frac{3\pi}{8}n\big)$, \; $\cos\big(\frac{4\pi}{6}n\big)$, \; $\cos(n)$}
+\stepbox{1. PIECES}{\pB{$\hat\omega=\frac{3\pi}{8}$}, \; \pB{$\frac{4\pi}{6}$}, \; \pB{$1$}}
 \stepdown
-\stepbox{2. PLACE}{$\cos\big(\pB{\frac{3\pi}{8}}n\big)$: $\frac{3}{16}$ $\Rightarrow$ \pA{$N=\keyres{16}$} \why{$\frac{3\pi}{8}\cdot16=3$ turns \checkmark}\\
-$\cos\big(\pB{\frac{4\pi}{6}}n\big)$: $\frac{4}{12}=\frac13$ $\Rightarrow$ \pA{$N=\keyres{3}$} \warn{not $12$: reduce first}\\
-$\cos(\pB{1}\,n)$: $\frac{1}{2\pi}$, not a fraction of integers $\Rightarrow$ \keyres{not periodic}}
+\stepbox{2. TEMPLATE}{$\dfrac{\slot{pcB}{$\hat\omega$}}{2\pi}=\dfrac{m}{\slot{pcD}{$N$}}$, reduced}
+\stepdown
+\stepbox{3. PLACE}{$\frac{\pB{3\pi/8}}{2\pi}=\frac{3}{16}$ $\Rightarrow$ \pD{$N=\keyres{16}$} \qquad $\frac{\pB{4\pi/6}}{2\pi}=\frac{4}{12}=\frac13$ $\Rightarrow$ \pD{$N=\keyres{3}$} \warn{not $12$: reduce first} \\ $\frac{\pB1}{2\pi}$: not a fraction of integers $\Rightarrow$ \keyres{not periodic}}
+\stepdown
+\stepbox{4. CHECK}{$\frac{3\pi}{8}\cdot16=6\pi$: $3$ whole turns \checkmark \qquad $\frac{4\pi}{6}\cdot3=2\pi$: $1$ turn \checkmark}
 
 % ------------------------------------------------------------ 8
 \filbreak \subsection{8. even and odd signals}
-\idea{\term{Even}: a mirror on the vertical axis; the left half reflects the right. \term{Odd}: spin the graph half a turn about the origin and it lands on itself.}
+\idea{\term{Even}: a mirror on the vertical axis. The left half reflects the right. \term{Odd}: spin the graph half a turn about the origin and it lands on itself.}
 \begin{itemize}
 \item \pA{Even}: $x(-t)=x(t)$. \; $\cos$, $t^2$, constants.
 \item \pC{Odd}: $x(-t)=-x(t)$. \; $\sin$, $t$, $t^3$.
 \end{itemize}
 \term{Test}: replace $t$ with $-t$, simplify, compare. \; \term{Split}:
 $$\mathcal{E}v\{x\}=\frac{x(t)+x(-t)}{2} \qquad \mathcal{O}d\{x\}=\frac{x(t)-x(-t)}{2}$$
-\term{Shortcut for sums of terms}: sort each term into a \pA{even} or \pC{odd} pile; the piles \emph{are} the two parts. \; Products work like signs: even$\cdot$even $=$ odd$\cdot$odd $=$ even; even$\cdot$odd $=$ odd.
+\term{Shortcut for sums of terms}: sort each term into a \pA{even} or \pC{odd} pile. The piles \emph{are} the two parts. \; Products work like signs: even$\cdot$even $=$ odd$\cdot$odd $=$ even, and even$\cdot$odd $=$ odd.
 \trap{An odd signal is $0$ at the origin: $x(0)=-x(0)$.}
 
 \wk{8}{is $x(t)=t^3-2t$ even, odd, or neither?}
 \stepbox{1. PIECES (SORT TERMS)}{\pC{$t^3$} odd \qquad \pC{$-2t$} odd \qquad no even terms}
 \stepdown
-\stepbox{2. CHECK BY TEST}{$x(-t)=-t^3+2t=-(t^3-2t)=-x(t)$ $\Rightarrow$ \keyres{odd}}
+\stepbox{2. TEMPLATE}{$x(t)=\slot{pcA}{even pile}+\slot{pcC}{odd pile}$}
+\stepdown
+\stepbox{3. PLACE}{$x=\pA{0}+\pC{(t^3-2t)}$ $\Rightarrow$ \keyres{odd}}
+\stepdown
+\stepbox{4. CHECK BY TEST}{$x(-t)=-t^3+2t=-(t^3-2t)=-x(t)$ \checkmark}
 
 \wk{8}{$x(t)=t^2+t$: test, then split}
-\stepbox{1. PIECES (SORT TERMS)}{\pA{$t^2$} even \qquad \pC{$t$} odd \qquad both piles non-empty $\Rightarrow$ neither}
+\stepbox{1. PIECES (SORT TERMS)}{\pA{$t^2$} even \qquad \pC{$t$} odd}
 \stepdown
-\stepbox{2. PLACE}{$\mathcal{E}v=\keyres{\pA{t^2}}$ \qquad $\mathcal{O}d=\keyres{\pC{t}}$}
+\stepbox{2. TEMPLATE}{$\mathcal{E}v=\slot{pcA}{even pile}$, \qquad $\mathcal{O}d=\slot{pcC}{odd pile}$}
 \stepdown
-\stepbox{3. CHECK BY FORMULA}{$\dfrac{(t^2+t)+(t^2-t)}{2}=t^2$ \checkmark \quad $\dfrac{(t^2+t)-(t^2-t)}{2}=t$ \checkmark}
+\stepbox{3. PLACE}{$\mathcal{E}v=\keyres{\pA{t^2}}$ \qquad $\mathcal{O}d=\keyres{\pC{t}}$ \qquad both piles non-empty $\Rightarrow$ \keyres{neither}}
+\stepdown
+\stepbox{4. CHECK BY FORMULA}{$\dfrac{(t^2+t)+(t^2-t)}{2}=t^2$ \checkmark \quad $\dfrac{(t^2+t)-(t^2-t)}{2}=t$ \checkmark}
 
 \wk{8}{DT split: $x[0]=1$, $x[1]=2$, $x[2]=3$, else $0$}
-\stepbox{1. TABLE: FILL $x[-n]$ BY READING $x$ AT THE OPPOSITE INDEX}{{\renewcommand{\arraystretch}{1.15}
+\stepbox{1. PIECES}{$x[n]$ for $n=-2..2$: \; $0,0,1,2,3$ \qquad $x[-n]$: read $x$ at the opposite index: \; $3,2,1,0,0$}
+\stepdown
+\stepbox{2. TEMPLATE}{\pA{$\dfrac{x[n]+x[-n]}{2}$} \qquad \pC{$\dfrac{x[n]-x[-n]}{2}$}, one column per $n$}
+\stepdown
+\stepbox{3. PLACE}{{\renewcommand{\arraystretch}{1.15}
 \begin{tabular}{@{}c|ccccc@{}}
 $n$ & $-2$ & $-1$ & $0$ & $1$ & $2$ \\\hline
 $x[n]$ & $0$ & $0$ & $1$ & $2$ & $3$ \\
 $x[-n]$ & $3$ & $2$ & $1$ & $0$ & $0$ \\\hline
-\pA{$\frac{x[n]+x[-n]}{2}$} & $1.5$ & $1$ & $1$ & $1$ & $1.5$ \\
-\pC{$\frac{x[n]-x[-n]}{2}$} & $-1.5$ & $-1$ & $0$ & $1$ & $1.5$ \\
+\pA{even} & $1.5$ & $1$ & $1$ & $1$ & $1.5$ \\
+\pC{odd} & $-1.5$ & $-1$ & $0$ & $1$ & $1.5$ \\
 \end{tabular}}}
 \stepdown
-\stepbox{2. CHECK EACH COLUMN}{\pA{even} $+$ \pC{odd} $=x[n]$: \; $n=2$: $1.5+1.5=3$ \checkmark \; $n=-2$: $0$ \checkmark}
+\stepbox{4. CHECK EACH COLUMN}{\pA{even} $+$ \pC{odd} $=x[n]$: \; $n=2$: $1.5+1.5=3$ \checkmark \; $n=-2$: $0$ \checkmark \qquad odd part is $0$ at $n=0$ \checkmark}
 
 % ------------------------------------------------------------ 9
 \filbreak \subsection{9. complex exponentials}
-\idea{$e^{j\theta}$ is an arrow of length $1$ pointing at angle $\theta$. Let $\theta=\omega t$ and it spins; its shadow on the horizontal axis is a cosine. Multiply by $e^{\sigma t}$ and it also grows or shrinks: a spiral.}
+\idea{$e^{j\theta}$ is an arrow of length $1$ pointing at angle $\theta$. Let $\theta=\omega t$ and it spins. Its shadow on the horizontal axis is a cosine. Multiply by $e^{\sigma t}$ and it also grows or shrinks: a spiral.}
 
 \term{Euler}: $e^{j\theta}=\cos\theta+j\sin\theta$. \quad $\cos\theta=\dfrac{e^{j\theta}+e^{-j\theta}}{2}$, \; $\sin\theta=\dfrac{e^{j\theta}-e^{-j\theta}}{2j}$ \why{two arrows spinning opposite ways}.
 
@@ -860,14 +983,14 @@ $$\mathrm{Re}\{Ce^{at}\}=\slot{pcA}{$\lvert C\rvert$}\,e^{\slot{pcD}{$\sigma$}t}
 {\small
 \begin{tabular}{@{}p{0.34\linewidth}p{0.614\linewidth}@{}}
 \term{Case} & \term{Real part looks like} \\\hline
-$\omega=0$ & no spin: \term{real exponential}; grows if $\sigma>0$, decays if $\sigma<0$ \\[2pt]
+$\omega=0$ & no spin: \term{real exponential}. Grows if $\sigma>0$, decays if $\sigma<0$ \\[2pt]
 $\sigma=0$ & pure spin: \term{sinusoid}, $T=\frac{2\pi}{\lvert\omega\rvert}$ \\[2pt]
-both & spiral: \term{damped sinusoid}; envelope $\lvert C\rvert e^{\sigma t}$ \\
+both & spiral: \term{damped sinusoid}, envelope $\lvert C\rvert e^{\sigma t}$ \\
 \end{tabular}}
 \par\vspace{2pt}
-\term{DT form}: $x[n]=C\alpha^n$; each step multiplies by $\alpha$. $\lvert\alpha\rvert<1$ decays, $\lvert\alpha\rvert>1$ grows, $\alpha<0$ flips sign each step.
+\term{DT form}: $x[n]=C\alpha^n$. Each step multiplies by $\alpha$. $\lvert\alpha\rvert<1$ decays, $\lvert\alpha\rvert>1$ grows, $\alpha<0$ flips sign each step.
 
-\keyres{DT frequencies repeat every $2\pi$}: $e^{j(\hat\omega+2\pi)n}=e^{j\hat\omega n}$, since $e^{j2\pi n}=1$ for integer $n$.
+\keyres{DT frequencies repeat every $2\pi$}: $e^{j(\hat\omega+2\pi)n}=e^{j\hat\omega n}$, because $e^{j2\pi n}=1$ for integer $n$.
 
 {\small
 \begin{tabular}{@{}p{0.485\linewidth}|p{0.465\linewidth}@{}}
@@ -880,17 +1003,29 @@ larger $\omega$ $\Rightarrow$ faster & fastest at $\hat\omega=\pi$ ($+1,-1,\ldot
 \wk{8}{real part of $x(t)=2e^{j\pi/3}e^{(-1+j4)t}$}
 \stepbox{1. PIECES}{$C$: \pA{$\lvert C\rvert=2$}, \pC{$\phi=\frac{\pi}{3}$} \qquad $a$: \pD{$\sigma=-1$}, \pB{$\omega=4$}}
 \stepdown
-\stepbox{2. PLACE}{$\mathrm{Re}\{x\}=\keyres{\pA{2}\,e^{\pD{-1}t}\cos\big(\pB{4}t+\pC{\tfrac{\pi}{3}}\big)}$ \why{damped sinusoid, envelope $2e^{-t}$}}
+\stepbox{2. TEMPLATE}{$\mathrm{Re}\{x\}=\slot{pcA}{$\lvert C\rvert$}\,e^{\slot{pcD}{$\sigma$}t}\cos\big(\slot{pcB}{$\omega$}t+\slot{pcC}{$\phi$}\big)$}
+\stepdown
+\stepbox{3. PLACE}{$\mathrm{Re}\{x\}=\keyres{\pA{2}\,e^{\pD{-1}t}\cos\big(\pB{4}t+\pC{\tfrac{\pi}{3}}\big)}$ \why{damped sinusoid, envelope $2e^{-t}$}}
+\stepdown
+\stepbox{4. CHECK}{$t=0$: $\mathrm{Re}\{2e^{j\pi/3}\}=2\cos\frac{\pi}{3}=1$, and the answer gives $2\cdot1\cdot\frac12=1$ \checkmark}
 
 \wk{8}{(reverse) write $5e^{-2t}\cos\big(3t-\frac{\pi}{4}\big)$ as $\mathrm{Re}\{Ce^{at}\}$}
 \stepbox{1. PIECES (MATCH THE TEMPLATE)}{\pA{$\lvert C\rvert=5$} \qquad \pD{$\sigma=-2$} \qquad \pB{$\omega=3$} \qquad \pC{$\phi=-\frac{\pi}{4}$}}
 \stepdown
-\stepbox{2. PLACE}{$C=\pA{5}e^{j\pC{(-\pi/4)}}=\keyres{5e^{-j\pi/4}}$ \qquad $a=\pD{-2}+j\pB{3}=\keyres{-2+j3}$}
-
-\wk{8}{cosine to exponentials, and a DT alias}
-\stepbox{1. $6\cos(5t)$}{$6\cdot\dfrac{e^{j5t}+e^{-j5t}}{2}=\keyres{3e^{j5t}+3e^{-j5t}}$}
+\stepbox{2. TEMPLATE}{$C=\slot{pcA}{$\lvert C\rvert$}e^{j\slot{pcC}{$\phi$}}$ \qquad $a=\slot{pcD}{$\sigma$}+j\slot{pcB}{$\omega$}$}
 \stepdown
-\stepbox{2. $\cos\big(\frac{9\pi}{4}n\big)$}{remove a whole turn: $\frac{9\pi}{4}-2\pi=\frac{\pi}{4}$ $\Rightarrow$ $\keyres{\cos\big(\frac{\pi}{4}n\big)}$, \; $\frac{\pi/4}{2\pi}=\frac18$ $\Rightarrow$ $N=\keyres{8}$}
+\stepbox{3. PLACE}{$C=\pA{5}e^{j\pC{(-\pi/4)}}=\keyres{5e^{-j\pi/4}}$ \qquad $a=\pD{-2}+j\pB{3}=\keyres{-2+j3}$}
+\stepdown
+\stepbox{4. CHECK}{$\mathrm{Re}\{5e^{-j\pi/4}e^{(-2+j3)t}\}=5e^{-2t}\cos\big(3t-\frac{\pi}{4}\big)$ \checkmark}
+
+\wk{8}{cosine to exponentials: $6\cos(5t)$; and a DT alias: $\cos\big(\frac{9\pi}{4}n\big)$}
+\stepbox{1. PIECES}{\pA{$A=6$}, \pB{$\omega=5$} \qquad DT: \pB{$\hat\omega=\frac{9\pi}{4}$}}
+\stepdown
+\stepbox{2. TEMPLATES}{$\slot{pcA}{$A$}\cos(\slot{pcB}{$\omega$}t)=\slot{pcA}{$A$}\cdot\dfrac{e^{j\slot{pcB}{$\omega$}t}+e^{-j\slot{pcB}{$\omega$}t}}{2}$ \qquad $\slot{pcB}{$\hat\omega$}-2\pi k$ into $(-\pi,\pi]$}
+\stepdown
+\stepbox{3. PLACE}{$\pA6\cdot\dfrac{e^{j\pB5t}+e^{-j\pB5t}}{2}=\keyres{3e^{j5t}+3e^{-j5t}}$ \qquad $\pB{\frac{9\pi}{4}}-2\pi=\frac{\pi}{4}$ $\Rightarrow$ $\keyres{\cos\big(\frac{\pi}{4}n\big)}$, \; $N=\keyres{8}$}
+\stepdown
+\stepbox{4. CHECK}{$t=0$: $3+3=6=6\cos0$ \checkmark \qquad $\frac{\pi/4}{2\pi}=\frac18$ $\Rightarrow$ $N=8$ \checkmark}
 
 % ------------------------------------------------------------ 10
 \filbreak \subsection{10. the button, the switch, and the ramp}
@@ -928,9 +1063,9 @@ width=4.9cm, height=3cm]
 \term{Size}: the button is one stem of height $1$, $E_\infty=1$ (\keyres{energy signal}). The switch stays on forever: $E_\infty=\infty$, finite power (\keyres{power signal}).
 
 \filbreak \subsubsection{Running totals and where the button sits}
-\term{Switch $=$ running total of presses}: \; $u[n]=\sum_{k=-\infty}^{n}\delta[k]$ \why{no presses before $0$; one press at $0$; the total stays $1$}. \; \term{Back}: a switch on at $0$ minus a switch on at $1$ is on only at $0$: \; $\delta[n]=u[n]-u[n-1]$.
+\term{Switch $=$ running total of presses}: \; $u[n]=\sum_{k=-\infty}^{n}\delta[k]$ \why{no presses before $0$, one press at $0$, the total stays $1$}. \; \term{Back}: a switch on at $0$ minus a switch on at $1$ is on only at $0$: \; $\delta[n]=u[n]-u[n-1]$.
 
-\term{Where is it?} Set the inside to $0$ and solve. $\delta[n-k]$ sits at $n=k$; $u[n-k]$ turns on at $n=k$.
+\term{Where is it?} Set the inside to $0$ and solve. $\delta[n-k]$ sits at $n=k$. $u[n-k]$ turns on at $n=k$.
 
 {\small\renewcommand{\arraystretch}{1.2}
 \begin{tabular}{@{}p{0.15\linewidth}p{0.17\linewidth}p{0.15\linewidth}p{0.38\linewidth}@{}}
@@ -969,38 +1104,52 @@ width=5.6cm, height=3.6cm]
 \stepbox{2. TEMPLATE (ONE PER STEM)}{$\slot{white}{$h$}\,\delta[n-\slot{white}{$k$}]+\cdots$}
 \stepdown
 \stepbox{3. PLACE}{$x[n]=\keyres{\pA{2\delta[n+1]}\;\pB{-\delta[n]}\;\pC{+3\delta[n-1]}\;\pD{+\delta[n-3]}}$}
+\stepdown
+\stepbox{4. CHECK}{$n=1$: only $\delta[n-1]$ is on, so $x[1]=3$ \checkmark \qquad $n=2$: all off, $0$ \checkmark}
 
 \wk{8}{(reverse) read the stems of $x[n]=4\delta[n-2]-2\delta[n+3]$}
-\stepbox{1. PIECES}{coefficient $=$ height; \; inside $=0$ $\Rightarrow$ position}
+\stepbox{1. PIECES}{\pA{$4\delta[n-2]$} \qquad \pB{$-2\delta[n+3]$}}
 \stepdown
-\stepbox{2. PLACE, CHECK}{$n-2=0$: $x[2]=\keyres{4}$ \qquad $n+3=0$: $x[-3]=\keyres{-2}$ \qquad $n=2$: $4(1)-2(0)=4$ \checkmark}
+\stepbox{2. TEMPLATE}{coefficient $=$ height \qquad inside $=0$ $\Rightarrow$ position}
+\stepdown
+\stepbox{3. PLACE}{\pA{$n-2=0$}: $x[2]=\keyres{4}$ \qquad \pB{$n+3=0$}: $x[-3]=\keyres{-2}$}
+\stepdown
+\stepbox{4. CHECK}{$n=2$: $4(1)-2(0)=4$ \checkmark}
 
 \wk{8}{DT pulse $x[n]=u[n]-u[n-3]$}
-\stepbox{1. PIECES}{on at \pA{$a=0$}, off at \pB{$b=3$}}
+\stepbox{1. PIECES}{on at \pA{$a=0$}, \; off at \pB{$b=3$}}
 \stepdown
-\stepbox{2. PLACE IN $\slot{pcA}{$a$}\leq n\leq\slot{pcB}{$b$}-1$}{on for $0\leq n\leq2$ $\Rightarrow$ $\keyres{\delta[n]+\delta[n-1]+\delta[n-2]}$}
+\stepbox{2. TEMPLATE}{on for $\slot{pcA}{$a$}\leq n\leq\slot{pcB}{$b$}-1$}
 \stepdown
-\stepbox{3. FIRST DIFFERENCE}{a button at each switch: $x[n]-x[n-1]=\keyres{\delta[n]-\delta[n-3]}$}
+\stepbox{3. PLACE}{on for $\pA0\leq n\leq\pB3-1=2$ $\Rightarrow$ $x=\keyres{\delta[n]+\delta[n-1]+\delta[n-2]}$}
+\stepdown
+\stepbox{4. FIRST DIFFERENCE}{a button at each switch: $x[n]-x[n-1]=\keyres{\delta[n]-\delta[n-3]}$}
+\stepdown
+\stepbox{5. CHECK}{$n=3$: $u[3]-u[0]=1-1=0$, already off \checkmark}
 
 \filbreak \subsubsection{The CT button}
 A one-instant press does not exist in CT. Picture a rectangle of width $\varepsilon$, height $\frac{1}{\varepsilon}$: area $1$ always. Shrink $\varepsilon\to0$: infinitely tall, \keyres{area still $1$}. A hammer tap: instant, but a definite amount of hit.
-$$\int_{-\infty}^{\infty}\delta(t)\,dt=1 \qquad\text{(CT: \keyres{area} $1$; DT: \keyres{height} $1$)}$$
-\term{CT switch}: $u(t)=\int_{-\infty}^{t}\delta(\tau)\,d\tau$; back: $\delta(t)=\frac{du}{dt}$. A jump in a signal becomes a button in its derivative.
-\trap{$\delta$ is a function of $t$, not a variable. $\int\delta\,dt$ is not $\delta^2$; use its one fact, area $1$.}
+$$\int_{-\infty}^{\infty}\delta(t)\,dt=1 \qquad\text{(CT: \keyres{area} $1$, \; DT: \keyres{height} $1$)}$$
+\term{CT switch}: $u(t)=\int_{-\infty}^{t}\delta(\tau)\,d\tau$. Back: $\delta(t)=\frac{du}{dt}$. A jump in a signal becomes a button in its derivative.
+\trap{$\delta$ is a function of $t$, not a variable. $\int\delta\,dt$ is not $\delta^2$. Use its one fact, area $1$.}
 
 \filbreak \subsubsection{Sifting: the camera flash}
 Fire a flash at $t_0$ and see what value of $g$ it captures. The template:
 $$\int_{\slot{pcD}{lo}}^{\slot{pcD}{hi}}\slot{pcA}{$g(t)$}\,\delta\big(t-\slot{pcB}{$t_0$}\big)\,dt=\begin{cases}\slot{pcA}{$g$}(\slot{pcB}{$t_0$}) & \slot{pcB}{$t_0$}\text{ inside }[\slot{pcD}{lo},\slot{pcD}{hi}]\\0 & \text{outside}\end{cases}$$
 \term{Three questions}: (1) \pB{Where is the flash?} Set the inside of $\delta$ to $0$. (2) \pD{In the window?} If not, the answer is $0$. (3) \pA{What does it capture?} Plug $t_0$ into everything except the $\delta$. The answer has no $\delta$ left.
 
-\term{Sampling form}: $x(t)\,\delta(t-t_0)=x(t_0)\,\delta(t-t_0)$; DT the same with $n_0$.
+\term{Sampling form}: $x(t)\,\delta(t-t_0)=x(t_0)\,\delta(t-t_0)$. DT is the same with $n_0$.
 
 \wk{8}{five flashes}
-\stepbox{1. PLACE: \pB{FLASH} / \pD{WINDOW} / \pA{CAPTURE}}{$\int_{-2}^{6}(3t+1)\delta(t-4)\,dt$: \; \pB{$4$} / \pD{in $[-2,6]$} / \pA{$3(4)+1$} $=\keyres{13}$\\
-$\int_{1}^{3}5\,\delta(t)\,dt$: \; \pB{$0$} / \pD{outside $[1,3]$} $\Rightarrow$ $\keyres{0}$ \why{over all $t$ it would be $5$}\\
-$\int_{-\infty}^{\infty}(t^2+1)\delta(t-2)\,dt$: \; \pB{$2$} / \pD{in} / \pA{$2^2+1$} $=\keyres{5}$\\
-$\int_0^5 e^{t}\delta(t+1)\,dt$: \; \pB{$-1$} / \pD{outside $[0,5]$} $\Rightarrow$ $\keyres{0}$\\
-DT $\sum_n n^2\delta[n-3]$: \; \pB{$3$} / \pD{in} / \pA{$3^2$} $=\keyres{9}$}
+\stepbox{1. PIECES (\pB{FLASH} / \pD{WINDOW} / \pA{$g$})}{$\int_{-2}^{6}(3t+1)\delta(t-4)\,dt$: \; \pB{$4$} / \pD{$[-2,6]$} / \pA{$3t+1$} \qquad $\int_{1}^{3}5\,\delta(t)\,dt$: \; \pB{$0$} / \pD{$[1,3]$} / \pA{$5$} \\
+$\int_{-\infty}^{\infty}(t^2+1)\delta(t-2)\,dt$: \; \pB{$2$} / \pD{all} / \pA{$t^2+1$} \qquad $\int_0^5 e^{t}\delta(t+1)\,dt$: \; \pB{$-1$} / \pD{$[0,5]$} / \pA{$e^t$} \\
+DT $\sum_n n^2\delta[n-3]$: \; \pB{$3$} / \pD{all} / \pA{$n^2$}}
+\stepdown
+\stepbox{2. TEMPLATE}{\slot{pcB}{flash} in \slot{pcD}{window}? \; yes: $\slot{pcA}{$g$}(\slot{pcB}{flash})$ \qquad no: $0$}
+\stepdown
+\stepbox{3. PLACE}{$\pA{3(\pB4)+1}=\keyres{13}$ \qquad $\pB0\notin\pD{[1,3]}$: $\keyres{0}$ \why{over all $t$ it would be $5$} \qquad $\pA{\pB2^2+1}=\keyres{5}$ \\ $\pB{-1}\notin\pD{[0,5]}$: $\keyres{0}$ \qquad $\pA{\pB3^2}=\keyres{9}$}
+\stepdown
+\stepbox{4. CHECK}{no answer has a $\delta$ left in it \checkmark}
 
 \filbreak \subsubsection{Which way? --- switch or button}
 {\small\renewcommand{\arraystretch}{1.2}
@@ -1017,11 +1166,13 @@ $\delta\to u$ (DT) & running sum: $u[n]=\sum_{k=-\infty}^{n}\delta[k]$ \\
 \wk{8}{pulse of height $2$ on $[1,4)$ with switches, then down and back}
 \stepbox{1. PIECES}{jump \pA{up $2$ at $t=1$} \qquad jump \pB{down $2$ at $t=4$}}
 \stepdown
-\stepbox{2. TEMPLATE (ONE SWITCH PER JUMP)}{$\slot{white}{jump}\cdot u(t-\slot{white}{where})+\cdots$}
+\stepbox{2. TEMPLATE (ONE SWITCH PER JUMP)}{$\slot{pcA}{jump}\cdot u(t-\slot{pcA}{where})+\slot{pcB}{jump}\cdot u(t-\slot{pcB}{where})$}
 \stepdown
-\stepbox{3. PLACE, CHECK}{$x(t)=\keyres{\pA{2u(t-1)}\pB{-2u(t-4)}}$ \qquad $t=2$: $2$ \checkmark \; $t=5$: $0$ \checkmark}
+\stepbox{3. PLACE}{$x(t)=\keyres{\pA{2u(t-1)}\pB{-2u(t-4)}}$}
 \stepdown
-\stepbox{4. DOWN AND BACK}{$\dfrac{dx}{dt}=\keyres{2\delta(t-1)-2\delta(t-4)}$ \why{each switch becomes a button}; integrate to return \checkmark}
+\stepbox{4. DOWN AND BACK}{$\dfrac{dx}{dt}=\keyres{2\delta(t-1)-2\delta(t-4)}$ \why{each switch becomes a button}. Integrate to return.}
+\stepdown
+\stepbox{5. CHECK}{$t=2$: $2-0=2$ \checkmark \qquad $t=5$: $2-2=0$ \checkmark}
 
 \filbreak \subsubsection{The ramp: the running total of the switch}
 $$r(t)=t\,u(t)=\begin{cases}t & t\geq0\\0 & t<0\end{cases} \qquad r[n]=n\,u[n]$$
@@ -1061,13 +1212,17 @@ DT: sum of buttons & $r[n]=\sum_{k=0}^{\infty}k\,\delta[n-k]$ \\
 \par\vspace{2pt}
 \trap{The DT sum stops at $n-1$: $r[1]=1$ adds only $u[0]$. Stopping at $n$ gives $r[n+1]$.}
 
-\wk{8}{check the DT forms at a few $n$}
-\stepbox{1. RUNNING SUM $\sum_{k\leq n-1}u[k]$}{$n=0$: nothing $=0$ \checkmark \quad $n=1$: $u[0]=1$ \checkmark \quad $n=3$: $u[0]+u[1]+u[2]=3$ \checkmark}
+\wk{8}{check the DT forms of the ramp at a few $n$}
+\stepbox{1. PIECES}{\pA{$u[k]$}: $0$ for $k<0$, $1$ for $k\geq0$ \qquad target $r[n]=0,0,1,2,3$ for $n=-1..3$}
 \stepdown
-\stepbox{2. FIRST DIFFERENCE}{$r[0]-r[-1]=0$, \; $r[1]-r[0]=1$, \; $r[2]-r[1]=1$ $\Rightarrow$ $\keyres{u[n-1]}$}
+\stepbox{2. TEMPLATES}{$r[n]=\displaystyle\sum_{k\leq n-1}\slot{pcA}{$u[k]$}$ \qquad $r[n]-r[n-1]=\slot{pcA}{$u[n-1]$}$}
+\stepdown
+\stepbox{3. PLACE}{$n=0$: nothing, $0$ \quad $n=1$: $\pA{u[0]}=1$ \quad $n=3$: $\pA{u[0]+u[1]+u[2]}=3$ \\ differences: $r[0]-r[-1]=0=\pA{u[-1]}$, \; $r[1]-r[0]=1=\pA{u[0]}$}
+\stepdown
+\stepbox{4. CHECK}{both forms give $0,1,2,3$ at $n=0..3$, the ramp \checkmark}
 
 \filbreak \subsubsection{Graphs from ramps and switches}
-Walk left to right. At each \pA{corner}, add a ramp weighted by the \emph{change in slope}; at each \pD{jump}, a switch weighted by the jump:
+Walk left to right. At each \pA{corner}, add a ramp weighted by the \emph{change in slope}. At each \pD{jump}, add a switch weighted by the jump:
 $$x(t)=\sum\slot{pcA}{$\Delta$slope}\;r\big(t-\slot{pcA}{corner}\big)+\sum\slot{pcD}{jump}\;u\big(t-\slot{pcD}{where}\big)$$
 $A\,r(t-t_0)$ is $0$ before $t_0$, then climbs with slope $A$.
 
@@ -1098,17 +1253,29 @@ width=4.9cm, height=3.2cm]
 \wk{8}{rise $0\to2$ on $[0,2]$, then flat (left graph)}
 \stepbox{1. PIECES (SLOPE BEFORE $\to$ AFTER)}{\pA{$t=0$: $0\to1$, change $+1$} \qquad \pB{$t=2$: $1\to0$, change $-1$}}
 \stepdown
-\stepbox{2. PLACE, CHECK}{$x(t)=\keyres{\pA{r(t)}\pB{-r(t-2)}}$ \qquad $t=1$: $1$ \checkmark \; $t=5$: $5-3=2$ \checkmark}
+\stepbox{2. TEMPLATE}{$x(t)=\slot{pcA}{$\Delta$}\,r(t-\slot{pcA}{corner})+\slot{pcB}{$\Delta$}\,r(t-\slot{pcB}{corner})$}
+\stepdown
+\stepbox{3. PLACE}{$x(t)=\keyres{\pA{r(t)}\pB{-r(t-2)}}$}
+\stepdown
+\stepbox{4. CHECK}{$t=1$: $1$ \checkmark \qquad $t=5$: $5-3=2$, flat \checkmark}
 
 \wk{8}{a triangle (right graph)}
-\stepbox{1. PIECES}{\pA{$t=0$: $0\to1$, $+1$} \qquad \pB{$t=1$: $1\to-1$, $-2$} \qquad \pC{$t=2$: $-1\to0$, $+1$}}
+\stepbox{1. PIECES (SLOPE BEFORE $\to$ AFTER)}{\pA{$t=0$: $0\to1$, $+1$} \qquad \pB{$t=1$: $1\to-1$, $-2$} \qquad \pC{$t=2$: $-1\to0$, $+1$}}
 \stepdown
-\stepbox{2. PLACE, CHECK}{$x(t)=\keyres{\pA{r(t)}\pB{-2r(t-1)}\pC{+r(t-2)}}$ \qquad $t=3$: $3-4+1=0$ \checkmark \why{slope changes sum to $0$}}
+\stepbox{2. TEMPLATE}{$x(t)=\slot{pcA}{$\Delta$}\,r(t-\slot{pcA}{corner})+\slot{pcB}{$\Delta$}\,r(t-\slot{pcB}{corner})+\slot{pcC}{$\Delta$}\,r(t-\slot{pcC}{corner})$}
+\stepdown
+\stepbox{3. PLACE}{$x(t)=\keyres{\pA{r(t)}\pB{-2r(t-1)}\pC{+r(t-2)}}$}
+\stepdown
+\stepbox{4. CHECK}{$t=1$: $1$, the peak \checkmark \qquad $t=3$: $3-4+1=0$ \checkmark \why{slope changes sum to $0$}}
 
-\wk{8}{(reverse) sketch $2r(t-1)-2r(t-3)$; then a jump plus ramps}
-\stepbox{1. READ THE PIECES}{\pA{corner at $1$: slope $+2$} \qquad \pB{corner at $3$: slope back to $0$} $\Rightarrow$ $0$, then rises to $2(2)=4$, then flat at $\keyres{4}$}
+\wk{8}{(reverse) sketch $2r(t-1)-2r(t-3)$, then build a jump with ramps}
+\stepbox{1. PIECES}{\pA{corner at $1$: slope $+2$} \qquad \pB{corner at $3$: slope back to $0$} \\ second graph: \pD{jump $+3$ at $0$}, then slope $-1$ until it reaches $0$ at $t=3$}
 \stepdown
-\stepbox{2. JUMP OF $3$ AT $0$, THEN SLOPE $-1$ UNTIL $0$}{\pD{jump $+3$ at $0$}, \; \pA{corner at $0$: $-1$}, \; \pB{corner at $3$: $+1$} \why{$3-t=0$} \\ $x(t)=\keyres{\pD{3u(t)}\pA{-r(t)}\pB{+r(t-3)}}$}
+\stepbox{2. TEMPLATE}{$x(t)=\sum\slot{pcA}{$\Delta$slope}\,r(t-\slot{pcA}{corner})+\slot{pcD}{jump}\,u(t-\slot{pcD}{where})$}
+\stepdown
+\stepbox{3. PLACE}{first: $0$ until $1$, rises to $2(2)=4$ at $t=3$, then flat at $\keyres{4}$ \\ second: $x(t)=\keyres{\pD{3u(t)}\pA{-r(t)}\pB{+r(t-3)}}$ \why{corner at $0$: $-1$, corner at $3$: $+1$}}
+\stepdown
+\stepbox{4. CHECK}{first at $t=5$: $8-4=4$ \checkmark \qquad second at $t=1$: $3-1=2$ \checkmark, at $t=4$: $3-4+1=0$ \checkmark}
 
 % ------------------------------------------------------------ 11
 \filbreak \subsection{11. systems and interconnections}
@@ -1117,7 +1284,7 @@ width=4.9cm, height=3.2cm]
 Three hookups:
 \begin{itemize}
 \item \term{Series}: an assembly line. $S_1$'s output is $S_2$'s input: \; substitute $S_1$ into $S_2$'s input slot.
-\item \term{Parallel}: $x$ feeds both; outputs add: \; $y=\slot{pcA}{$y_1$}+\slot{pcB}{$y_2$}$.
+\item \term{Parallel}: $x$ feeds both, and the outputs add: \; $y=\slot{pcA}{$y_1$}+\slot{pcB}{$y_2$}$.
 \item \term{Feedback}: the output loops back through $S_2$ into the input. The machine hears its own past.
 \end{itemize}
 
@@ -1153,15 +1320,31 @@ Three hookups:
 \wk{8}{series: $S_1$: $w[n]=2x[n]$, then $S_2$: $y[n]=w[n]-w[n-1]$}
 \stepbox{1. PIECES}{\pA{$w[n]=2x[n]$}, so \pA{$w[n-1]=2x[n-1]$} \why{replace every $n$ with $n-1$}}
 \stepdown
-\stepbox{2. PLACE IN $y[n]=\slot{pcA}{$w[n]$}-\slot{pcA}{$w[n-1]$}$}{$y[n]=\keyres{\pA{2x[n]}-\pA{2x[n-1]}}$}
+\stepbox{2. TEMPLATE}{$y[n]=\slot{pcA}{$w[n]$}-\slot{pcA}{$w[n-1]$}$}
+\stepdown
+\stepbox{3. PLACE}{$y[n]=\keyres{\pA{2x[n]}-\pA{2x[n-1]}}$}
+\stepdown
+\stepbox{4. CHECK}{$x=\delta$: \; $w=2,0,\ldots$, then $y=2,-2,0,\ldots$ \; formula: $y[0]=2$, $y[1]=-2$ \checkmark}
 
 \wk{8}{parallel: $S_1$: $2x[n]$, \; $S_2$: $x[n-1]$}
-\stepbox{1. PLACE IN $\slot{pcA}{$y_1$}+\slot{pcB}{$y_2$}$}{$y[n]=\keyres{\pA{2x[n]}+\pB{x[n-1]}}$}
-
-\wk{8}{feedback: $y[n]=x[n]+0.5\,y[n-1]$; press the button $x=\delta$, $y[-1]=0$}
-\stepbox{1. RUN IT, ONE STEP AT A TIME}{$y[0]=1+0.5(0)=1$ \why{the press} \quad $y[1]=0+0.5(1)=0.5$ \why{only the echo} \quad $y[2]=0.25$ \quad $y[3]=0.125$}
+\stepbox{1. PIECES}{\pA{$y_1=2x[n]$} \qquad \pB{$y_2=x[n-1]$}}
 \stepdown
-\stepbox{2. PATTERN}{$y[n]=\keyres{(0.5)^n\,u[n]}$ \why{each echo is half the last}}
+\stepbox{2. TEMPLATE}{$y=\slot{pcA}{$y_1$}+\slot{pcB}{$y_2$}$}
+\stepdown
+\stepbox{3. PLACE}{$y[n]=\keyres{\pA{2x[n]}+\pB{x[n-1]}}$}
+\stepdown
+\stepbox{4. CHECK}{$x=\delta$: \; $y[0]=2$, \; $y[1]=1$, one stem from each branch \checkmark}
+
+\wk{8}{feedback: $y[n]=x[n]+0.5\,y[n-1]$. Press the button $x=\delta$, \; $y[-1]=0$}
+\stepbox{1. PIECES}{\pA{$x=\delta$}: $1$ at $n=0$, else $0$ \qquad \pB{$y[-1]=0$} \why{at rest}}
+\stepdown
+\stepbox{2. TEMPLATE (ONE STEP AT A TIME)}{$y[n]=\slot{pcA}{$x[n]$}+0.5\,\slot{pcB}{$y[n-1]$}$}
+\stepdown
+\stepbox{3. PLACE, RUN IT}{$y[0]=\pA1+0.5(\pB0)=1$ \why{the press} \quad $y[1]=\pA0+0.5(1)=0.5$ \why{only the echo} \quad $y[2]=0.25$ \quad $y[3]=0.125$}
+\stepdown
+\stepbox{4. PATTERN}{$y[n]=\keyres{(0.5)^n\,u[n]}$ \why{each echo is half the last}}
+\stepdown
+\stepbox{5. CHECK}{$n=3$: $(0.5)^3=0.125$ \checkmark}
 
 \filbreak \subsubsection{DT systems as difference equations}
 {\small\renewcommand{\arraystretch}{1.25}
@@ -1176,11 +1359,11 @@ accumulator, recursive & $y[n]=y[n-1]+x[n]$ & same total \\
 bank balance & $y[n]=1.01\,y[n-1]+x[n]$ & $1\%$ interest $+$ deposit \\
 \end{tabular}}
 \par\vspace{2pt}
-The accumulator is the running-total machine: button in, switch out; switch in, ramp out.
+The accumulator is the running-total machine: button in, switch out. Switch in, ramp out.
 
-\term{Nonrecursive} (FIR): inputs only. \term{Recursive} (IIR): also its own past outputs; needs a start value like $y[-1]=0$.
+\term{Nonrecursive} (FIR): inputs only. \term{Recursive} (IIR): also its own past outputs. It needs a start value like $y[-1]=0$.
 
-\term{Block diagram parts}: adder (circle) $=$ sum of inputs; \; gain (box $a$) $=a\cdot$input; \; unit delay (box $D$) $=$ one-step memory, $x[n]\to x[n-1]$; \; branch dot copies a signal.
+\term{Block diagram parts}: adder (circle) $=$ sum of inputs. \; Gain (box $a$) $=a\cdot$input. \; Unit delay (box $D$) $=$ one-step memory, $x[n]\to x[n-1]$. \; A branch dot copies a signal.
 
 \term{Diagram $\leftrightarrow$ equation}: each wire is a piece. One $D$ per shift, one gain per coefficient, one adder per sum.
 \trap{A $D$ that feeds $y[n]$ back into the adder means feedback: the equation has $y[n-1]$ (recursive).}
@@ -1214,6 +1397,8 @@ The accumulator is the running-total machine: button in, switch out; switch in, 
 \stepbox{2. TEMPLATE}{$y[n]=\slot{pcD}{gain}\big(\slot{pcA}{wire}+\slot{pcB}{wire}+\slot{pcC}{wire}\big)$}
 \stepdown
 \stepbox{3. PLACE}{$y[n]=\keyres{\pD{\tfrac13}\big(\pA{x[n]}+\pB{x[n-1]}+\pC{x[n-2]}\big)}$}
+\stepdown
+\stepbox{4. CHECK}{$2$ boxes $D$ $\to$ shifts up to $n-2$ \checkmark \qquad $1$ adder with $3$ wires $\to$ $3$ terms \checkmark}
 
 \needspace{12\baselineskip}
 \noindent\hfil
@@ -1235,15 +1420,29 @@ The accumulator is the running-total machine: button in, switch out; switch in, 
 \wk{8}{(equation to diagram) $y[n]=2x[n]-0.5\,y[n-1]$}
 \stepbox{1. PIECES (ONE BLOCK PER PIECE)}{input gain \pA{$2$} \qquad \pC{$y[n-1]$}: one $D$ on the output side (feedback) \qquad its gain \pB{$-0.5$}}
 \stepdown
-\stepbox{2. PLACE (ABOVE)}{$x\to$\pA{[2]}$\to(+)\to y$; \; from $y$: dot $\to$\pC{[$D$]}$\to$\pB{[$-0.5$]}$\to$ back into $(+)$}
+\stepbox{2. TEMPLATE}{$x\to$\slot{pcA}{gain}$\to(+)\to y$, \; and from $y$: dot $\to$\slot{pcC}{$D$}$\to$\slot{pcB}{gain}$\to$ back into $(+)$}
+\stepdown
+\stepbox{3. PLACE (DIAGRAM ABOVE)}{$x\to$\pA{[2]}$\to(+)\to y$, \; from $y$: dot $\to$\pC{[$D$]}$\to$\pB{[$-0.5$]}$\to(+)$}
+\stepdown
+\stepbox{4. CHECK}{read it back: $y[n]=\pA2x[n]+(\pB{-0.5})\,\pC{y[n-1]}$, the equation \checkmark}
 
 \wk{8}{run the moving average: $x[0..2]=3,6,9$, others $0$}
-\stepbox{1. SLIDE A 3-SAMPLE WINDOW, DIVIDE BY 3}{$y[0]=\frac{3}{3}=\keyres{1}$ \quad $y[1]=\frac{6+3}{3}=\keyres{3}$ \quad $y[2]=\frac{9+6+3}{3}=\keyres{6}$ \quad $y[3]=\frac{9+6}{3}=\keyres{5}$ \quad $y[4]=\keyres{3}$ \quad then $0$}
-
-\wk{8}{run the accumulator $y[n]=y[n-1]+x[n]$ with the switch, $y[-1]=0$}
-\stepbox{1. RUN IT}{$y[0]=0+1=1$ \quad $y[1]=1+1=2$ \quad $y[2]=3$ $\Rightarrow$ $(n+1)u[n]=\keyres{r[n+1]}$ \why{running total of a switch: a ramp}}
+\stepbox{1. PIECES}{\pA{$x[0]=3$}, \pB{$x[1]=6$}, \pC{$x[2]=9$}}
 \stepdown
-\stepbox{2. CHECK WITH THE SUM FORM}{$y[2]=u[0]+u[1]+u[2]=3$ \checkmark}
+\stepbox{2. TEMPLATE (A 3-SAMPLE WINDOW)}{$y[n]=\frac13\big(x[n]+x[n-1]+x[n-2]\big)$}
+\stepdown
+\stepbox{3. PLACE, SLIDE THE WINDOW}{$y[0]=\frac{\pA3}{3}=\keyres{1}$ \quad $y[1]=\frac{\pB6+\pA3}{3}=\keyres{3}$ \quad $y[2]=\frac{\pC9+\pB6+\pA3}{3}=\keyres{6}$ \quad $y[3]=\frac{\pC9+\pB6}{3}=\keyres{5}$ \quad $y[4]=\frac{\pC9}{3}=\keyres{3}$ \quad then $0$}
+\stepdown
+\stepbox{4. CHECK}{$\sum y=18=\sum x$ \why{each input counted $3$ times, divided by $3$} \checkmark}
+
+\wk{8}{run the accumulator $y[n]=y[n-1]+x[n]$ with the switch, \; $y[-1]=0$}
+\stepbox{1. PIECES}{\pA{$x=u[n]$}: $1$ for $n\geq0$ \qquad \pB{$y[-1]=0$}}
+\stepdown
+\stepbox{2. TEMPLATE}{$y[n]=\slot{pcB}{$y[n-1]$}+\slot{pcA}{$x[n]$}$}
+\stepdown
+\stepbox{3. PLACE, RUN IT}{$y[0]=\pB0+\pA1=1$ \quad $y[1]=1+1=2$ \quad $y[2]=3$ $\Rightarrow$ $(n+1)u[n]=\keyres{r[n+1]}$ \why{running total of a switch: a ramp}}
+\stepdown
+\stepbox{4. CHECK WITH THE SUM FORM}{$y[2]=u[0]+u[1]+u[2]=3$ \checkmark}
 
 % ------------------------------------------------------------ 12
 \filbreak \subsection{12. system properties}
@@ -1253,7 +1452,7 @@ The accumulator is the running-total machine: button in, switch out; switch in, 
 \begin{tabular}{@{}p{0.24\linewidth}p{0.714\linewidth}@{}}
 \term{Property} & \term{In plain English} \\\hline
 memoryless & It only looks at \emph{now}. \\
-causal & It cannot see the future; it may remember the past. \\
+causal & It cannot see the future. It may remember the past. \\
 stable (BIBO) & It does not blow up: input under a ceiling $\Rightarrow$ output under a ceiling. \\
 invertible & You can undo it: different inputs give different outputs. \\
 time invariant & It ignores the clock: delay in $\Rightarrow$ same output, delayed. \\
@@ -1261,7 +1460,7 @@ linear & Scale in $\to$ scale out, add in $\to$ add out: $ax_1+bx_2\to ay_1+by_2
 \end{tabular}}
 
 \filbreak \subsubsection{Quick red flags}
-\trap{\textbf{Linearity}: put in $x=0$; a linear machine gives $y=0$. The $+3$ in $2x+3$ fails.}
+\trap{\textbf{Linearity}: put in $x=0$. A linear machine gives $y=0$. The $+3$ in $2x+3$ fails.}
 \trap{\textbf{Time invariance}: an $n$ or $t$ \emph{outside} $x(\cdot)$ ($n\,x[n]$) reads the clock. Scaling or flipping inside ($x(2t)$, $x(-t)$) also fails.}
 \trap{\textbf{Causality}: an advance like $x[n+1]$. And $y(t)=x(-t)$: at $t=-1$ it needs $x(1)$.}
 \trap{\textbf{Stability}: an $n$ multiplying $x$, or a sum with no end, can blow up.}
@@ -1271,26 +1470,40 @@ Every $x[\cdot]$ on the right carries a time stamp. Color each one: \pA{now} ($n
 $$\text{memoryless}\iff\text{every stamp is }\slot{pcA}{now} \qquad \text{causal}\iff\text{no stamp is }\slot{pcC}{future}$$
 
 \wk{8}{memory, causality, invertibility}
-\stepbox{1. PLACE THE STAMPS}{$y[n]=\pA{x[n]}+\pB{x[n-1]}$: a \pB{past} stamp $\Rightarrow$ \warn{memory}, \keyres{causal}\\
-$y[n]=\pC{x[n+1]}$: a \pC{future} stamp $\Rightarrow$ \warn{not causal}}
+\stepbox{1. PIECES (COLOR THE STAMPS)}{$y[n]=\pA{x[n]}+\pB{x[n-1]}$ \qquad $y[n]=\pC{x[n+1]}$ \qquad $y=2x$, \; $y=x^2$}
 \stepdown
-\stepbox{2. INVERTIBLE? TRY TO SOLVE FOR $x$}{$y=2x$: $x=\frac{y}{2}$ \keyres{invertible} \qquad $y=x^2$: $\pm1\to1$ \warn{not invertible} \why{the sign is lost}}
+\stepbox{2. TEMPLATES}{memoryless: every stamp \slot{pcA}{now} \qquad causal: no \slot{pcC}{future} stamp \qquad invertible: solve for $x$, one answer}
+\stepdown
+\stepbox{3. PLACE}{$\pA{x[n]}+\pB{x[n-1]}$: a \pB{past} stamp $\Rightarrow$ \warn{memory}, \keyres{causal} \qquad $\pC{x[n+1]}$: a \pC{future} stamp $\Rightarrow$ \warn{not causal} \\ $y=2x$: $x=\frac{y}{2}$ \keyres{invertible} \qquad $y=x^2$: $x=\pm\sqrt y$ \warn{not invertible}}
+\stepdown
+\stepbox{4. CHECK}{$x^2$: inputs $1$ and $-1$ both give $1$, so the sign is lost \checkmark}
 
 \filbreak \subsubsection{Time invariance: two paths, then compare}
 \term{Path 1}: delay the input, then run the machine --- change only the \pA{inside of $x$}. \; \term{Path 2}: run the machine, then delay the output --- change \emph{every} $n$, including any \pC{lone $n$}. Same result $\Rightarrow$ time invariant.
 
-\wk{8}{three machines}
-\stepbox{1. PLACE: PATH 1 \quad vs \quad PATH 2}{$\pC{n}\,x[\pA{n}]$: \; $n\,x[n-n_0]$ \; vs \; $(n-n_0)\,x[n-n_0]$ $\Rightarrow$ \warn{time varying} \why{the lone $n$}\\
-$x(2t)$: \; $x(2t-t_0)$ \; vs \; $x(2t-2t_0)$ $\Rightarrow$ \warn{time varying}\\
-$x[n-1]$: \; $x[n-1-n_0]$ \; vs \; $x[n-n_0-1]$ $\Rightarrow$ \keyres{time invariant}}
+\wk{8}{time invariance of $n\,x[n]$, \; $x(2t)$, \; $x[n-1]$}
+\stepbox{1. PIECES}{lone $n$: \pC{$n$} in $\pC{n}\,x[\pA n]$ \qquad insides: \pA{$n$}, \pA{$2t$}, \pA{$n-1$}}
+\stepdown
+\stepbox{2. TEMPLATE}{Path 1: replace \slot{pcA}{the inside} \qquad Path 2: replace every $n$, \slot{pcC}{lone $n$} too \qquad equal?}
+\stepdown
+\stepbox{3. PLACE}{$\pC{n}\,x[\pA n]$: \; $n\,x[n-n_0]$ \; vs \; $(n-n_0)\,x[n-n_0]$ $\Rightarrow$ \warn{time varying} \why{the lone $n$} \\
+$x(\pA{2t})$: \; $x(2t-t_0)$ \; vs \; $x(2t-2t_0)$ $\Rightarrow$ \warn{time varying} \\
+$x[\pA{n-1}]$: \; $x[n-1-n_0]$ \; vs \; $x[n-n_0-1]$ $\Rightarrow$ \keyres{time invariant}}
+\stepdown
+\stepbox{4. CHECK}{the red flags agree: a lone $n$ and a scaled inside fail, a plain delay passes \checkmark}
 
 \filbreak \subsubsection{Linearity: combine first, or combine after?}
 \term{Path 1}: mix the inputs ($ax_1+bx_2$), then run. \; \term{Path 2}: run each, then mix the outputs. Linear means they agree.
 
-\wk{8}{$y=2x+3$ and $y=n\,x[n]$}
-\stepbox{1. $2x+3$}{quick test: $x=0\to3\neq0$. \; Path 1: $2ax_1+2bx_2+3$ \; vs \; Path 2: $2ax_1+2bx_2+3a+3b$ $\Rightarrow$ \warn{not linear} \why{incrementally linear}}
+\wk{8}{linearity of $y=2x+3$ and $y=n\,x[n]$}
+\stepbox{1. PIECES}{inputs \pA{$x_1$}, \pB{$x_2$}, weights $a$, $b$}
 \stepdown
-\stepbox{2. $n\,x[n]$}{Path 1: $a\,n\,x_1+b\,n\,x_2$ \; $=$ \; Path 2 $\Rightarrow$ \keyres{linear} \why{yet time varying: separate properties}}
+\stepbox{2. TEMPLATE}{Path 1: $S\{a\,\slot{pcA}{$x_1$}+b\,\slot{pcB}{$x_2$}\}$ \qquad Path 2: $a\,S\{\slot{pcA}{$x_1$}\}+b\,S\{\slot{pcB}{$x_2$}\}$}
+\stepdown
+\stepbox{3. PLACE}{$2x+3$: \; $2a\pA{x_1}+2b\pB{x_2}+3$ \; vs \; $2a\pA{x_1}+2b\pB{x_2}+3a+3b$ $\Rightarrow$ \warn{not linear} \why{incrementally linear} \\
+$n\,x[n]$: \; $a\,n\pA{x_1}+b\,n\pB{x_2}$ \; $=$ \; Path 2 $\Rightarrow$ \keyres{linear} \why{yet time varying: separate properties}}
+\stepdown
+\stepbox{4. CHECK (QUICK TEST $x=0$)}{$2(0)+3=3\neq0$ \checkmark \qquad $n\cdot0=0$ \checkmark}
 
 \filbreak \subsubsection{Stability with a ceiling $B$}
 \idea{\term{BIBO}: bounded in, bounded out. ``Bounded'' means a ceiling: $\lvert x[n]\rvert\leq B<\infty$. Stable means the output has a ceiling too. This is Lesson 1 again: is the signal's size finite?}
@@ -1299,15 +1512,18 @@ $$\lvert y\rvert\leq\slot{pcA}{$\lvert c_1\rvert$}B+\slot{pcB}{$\lvert c_2\rvert
 A \keyres{finite number} (no $n$, no endless sum) means stable. \; \term{To show unstable}: one capped input (like $x=1$ or $u[n]$) with an unbounded output.
 \trap{$\lvert n\,x[n]\rvert\leq\lvert n\rvert B$ grows with $n$. The accumulator adds another $B$ every step.}
 
-\wk{8}{five machines}
-\stepbox{1. PLACE THE COEFFICIENTS}{$\pA{2}x[n]+\pB{1}x[n-1]$: \; $\leq\pA{2}B+\pB{1}B=3B$ $\Rightarrow$ \keyres{stable}\\
-moving average: \; $\leq\frac13(B+B+B)=B$ $\Rightarrow$ \keyres{stable}\\
-$e^{x[n]}$: \; $-B\leq x\leq B$ $\Rightarrow$ $\lvert y\rvert\leq e^{B}$ $\Rightarrow$ \keyres{stable}}
+\wk{8}{stability of five machines}
+\stepbox{1. PIECES (COEFFICIENTS)}{$\pA{2}x[n]+\pB{1}x[n-1]$ \qquad moving average: \pA{$\frac13$} on each of $3$ terms \qquad $e^{x[n]}$ \qquad $n\,x[n]$ \qquad accumulator}
 \stepdown
-\stepbox{2. COUNTEREXAMPLES}{$n\,x[n]$ with $x=1$: $y=n$, unbounded $\Rightarrow$ \warn{not stable}\\
-accumulator with $u[n]$: $y=n+1$ $\Rightarrow$ \warn{not stable}}
+\stepbox{2. TEMPLATE}{$\lvert y\rvert\leq\slot{pcA}{$\lvert c_1\rvert$}B+\slot{pcB}{$\lvert c_2\rvert$}B+\cdots$, \; or one capped input with an unbounded output}
 \stepdown
-\stepbox{3. RECURSIVE $y=0.5\,y[n-1]+x$}{unroll: $y[n]=\sum_{k\geq0}(0.5)^k x[n-k]$ $\Rightarrow$ $\lvert y\rvert\leq B\cdot\frac{1}{1-0.5}=2B$ \keyres{stable} \why{with $1.01$ the echoes grow: unstable}}
+\stepbox{3. PLACE}{$\leq\pA{2}B+\pB{1}B=3B$ $\Rightarrow$ \keyres{stable} \qquad moving average: $\leq\pA{\frac13}(B+B+B)=B$ $\Rightarrow$ \keyres{stable} \\
+$e^{x[n]}$: $-B\leq x\leq B$ $\Rightarrow$ $\lvert y\rvert\leq e^{B}$ $\Rightarrow$ \keyres{stable} \\
+$n\,x[n]$ with $x=1$: $y=n$, unbounded $\Rightarrow$ \warn{not stable} \qquad accumulator with $u[n]$: $y=n+1$ $\Rightarrow$ \warn{not stable}}
+\stepdown
+\stepbox{4. RECURSIVE $y=0.5\,y[n-1]+x$}{unroll: $y[n]=\sum_{k\geq0}(0.5)^k x[n-k]$ $\Rightarrow$ $\lvert y\rvert\leq B\cdot\frac{1}{1-0.5}=2B$ \keyres{stable} \why{with $1.01$ the echoes grow: unstable}}
+\stepdown
+\stepbox{5. CHECK (SECTION 13)}{$\sum\lvert h\rvert$: \; $2+1=3$ \checkmark \quad accumulator $\sum u=\infty$ \checkmark \quad $\sum(0.5)^n=2$ \checkmark}
 
 \filbreak \subsubsection{Properties of common DT systems}
 {\small\renewcommand{\arraystretch}{1.15}
@@ -1326,9 +1542,183 @@ $x[-n]$ & \warn{no} & \warn{no} & \keyres{yes} & \warn{no} & \keyres{yes} \\
 $0.5\,y[n-1]+x[n]$ & \warn{no} & \keyres{yes} & \keyres{yes} & \keyres{yes} & \keyres{yes} \\
 \end{tabular}}
 \par\vspace{2pt}
-Mless $=$ memoryless; TI $=$ time invariant; the recursive system starts at rest.
+Mless $=$ memoryless, TI $=$ time invariant. The recursive system starts at rest.
 
-\trap{The properties are separate: linear but time varying ($n\,x[n]$); stable but not causal ($x[n+1]$).}
+\trap{The properties are separate: linear but time varying ($n\,x[n]$), stable but not causal ($x[n+1]$).}
+
+% ------------------------------------------------------------ 13
+\needspace{30\baselineskip}\subsection{13. the convolution sum}
+\idea{Section 10 showed that every DT input is a stack of buttons: $x[n]=\sum_k x[k]\,\delta[n-k]$. Press the button once and an LTI machine answers with its \term{impulse response} $h[n]$, its ``echo.'' Each button in the stack makes its own echo, \keyres{scaled} by its height and \keyres{shifted} to its time. The output is the sum of all the echoes. That sum is the \term{convolution sum}.}
+
+\term{Why LTI makes it work}, one property per line:
+{\small\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}p{0.40\linewidth}p{0.554\linewidth}@{}}
+\term{Input} & \term{Output} \\\hline
+$\delta[n]$ & $h[n]$ \why{definition of $h$} \\
+$\delta[n-k]$ & $h[n-k]$ \why{time invariant} \\
+$x[k]\,\delta[n-k]$ & $x[k]\,h[n-k]$ \why{linear: scale} \\
+$\sum_k x[k]\,\delta[n-k]=x[n]$ & $\sum_k x[k]\,h[n-k]=y[n]$ \why{linear: add} \\
+\end{tabular}}
+
+\begin{ftab}
+$y[n]=\displaystyle\sum_{k=-\infty}^{\infty}x[k]\,h[n-k]$ & (output at $n$) $=$ sum over every input time $k$ of (input at $k$)(echo, $n-k$ steps later) \\
+$y[n]=x[n]*h[n]$ & ``$x$ convolved with $h$'' \\
+$y[n]=\displaystyle\sum_{k}h[k]\,x[n-k]$ & same result, roles swapped: $x*h=h*x$ \\
+$h[n]=$ output for $x=\delta$, at rest & the \term{impulse response}: it describes the whole LTI system \\
+\end{ftab}
+\term{Colors in this section}: \pB{the impulse response $h$} is always green. The input stems are \pA{orange}, \pD{blue}, \pE{yellow}, one color per stem. \pC{Purple} is the output time $n$.
+
+\trap{$k$ is the dummy variable that sweeps. $n$ stays fixed during one sum. Each $n$ is a new sum.}
+\trap{$h[n-k]$, not $h[k-n]$. And $y[n]\neq x[n]\,h[n]$: convolution is not a product of the two signals.}
+\trap{Only for LTI systems that start at rest. $y=x^2$ or $y=n\,x[n]$ has no impulse-response formula.}
+
+\filbreak \subsubsection{The impulse response describes the system}
+\begin{ftab}
+causal $\iff h[n]=0$ for $n<0$ & no echo before the press \\
+BIBO stable $\iff\sum_n\lvert h[n]\rvert<\infty$ & the echoes add to a finite size \\
+memoryless $\iff h[n]=c\,\delta[n]$ & the echo is only at $n=0$ \\
+FIR: $h$ has finitely many stems & $y[n]=\sum_k h[k]\,x[n-k]$, a nonrecursive equation \\
+IIR: $h$ goes on forever & usually from a recursive (feedback) equation \\
+series $h_1$ then $h_2$ & one system with $h=h_1*h_2$ \\
+parallel $h_1$ and $h_2$ & one system with $h=h_1+h_2$ \\
+\end{ftab}
+\begin{qtab}
+unit delay $y=x[n-1]$ & $h=\keyres{\delta[n-1]}$ \\
+first difference & $h=\keyres{\delta[n]-\delta[n-1]}$ \\
+3-point moving average & $h=\keyres{\frac13\big(\delta[n]+\delta[n-1]+\delta[n-2]\big)}$ \\
+accumulator & $h=\keyres{u[n]}$: $\sum\lvert h\rvert=\infty$, \warn{not stable} \\
+$y=0.5\,y[n-1]+x$ & $h=\keyres{(0.5)^nu[n]}$ \why{section 11}: $\sum=2$, \keyres{stable} \\
+\end{qtab}
+
+\filbreak \subsubsection{Which way? --- system, impulse response, output}
+\begin{ltab}{Given $\to$ find}{Do this}
+nonrecursive equation $\to h$ & read the coefficients: $y=\sum b_kx[n-k]$ gives $h[k]=b_k$ \\
+recursive equation $\to h$ & put in $x=\delta$, start at rest, run it step by step \\
+$h\to$ equation & $y[n]=\sum_kh[k]\,x[n-k]$, one term per stem \\
+$h\to$ causal, stable, memoryless & the $h$ tests above \\
+$x$ and $h\to y$ & convolve: table, flip and slide, or formula \\
+output for $x=\delta\to h$ & that output \emph{is} $h$ \\
+\end{ltab}
+
+\wk{8}{find $h$ for $y[n]=x[n]+2x[n-1]-x[n-2]$, and for $y[n]=0.8\,y[n-1]+x[n]$}
+\stepbox{1. PIECES}{nonrecursive: coefficients \pB{$1$, $2$, $-1$} at delays \pC{$0$, $1$, $2$} \qquad recursive: put in $x=\delta$, \; $y[-1]=0$}
+\stepdown
+\stepbox{2. TEMPLATE}{$h[n]=\slot{pcB}{$b_0$}\,\delta[n-\slot{pcC}{$0$}]+\slot{pcB}{$b_1$}\,\delta[n-\slot{pcC}{$1$}]+\cdots$ \qquad $h[n]=0.8\,h[n-1]+\delta[n]$}
+\stepdown
+\stepbox{3. PLACE}{$h[n]=\keyres{\pB1\,\delta[n]+\pB2\,\delta[n-1]\pB{-1}\,\delta[n-2]}$ \qquad $h[0]=1$, $h[1]=0.8$, $h[2]=0.64$ $\Rightarrow$ $h=\keyres{(0.8)^nu[n]}$}
+\stepdown
+\stepbox{4. CHECK}{FIR: $x=\delta$ gives $y[1]=0+2(1)-0=2$ \checkmark \qquad IIR: $\sum0.8^n=\frac{1}{0.2}=5<\infty$: stable \checkmark}
+
+\wk{8}{(reverse) $h[0]=3$, $h[1]=-1$, else $0$. Write the system and its properties}
+\stepbox{1. PIECES}{\pB{$h[0]=3$}, \pB{$h[1]=-1$}}
+\stepdown
+\stepbox{2. TEMPLATE}{$y[n]=\slot{pcB}{$h[0]$}\,x[n]+\slot{pcB}{$h[1]$}\,x[n-1]$}
+\stepdown
+\stepbox{3. PLACE}{$y[n]=\keyres{\pB3\,x[n]\pB{-1}\,x[n-1]}$ \qquad causal \why{no stem before $0$} \quad stable \why{$\sum\lvert h\rvert=4$} \quad \warn{not memoryless} \why{stem at $1$}}
+\stepdown
+\stepbox{4. CHECK}{$x=\delta$: \; $y[0]=3$, \; $y[1]=-1$, the stems of $h$ \checkmark}
+
+\filbreak \subsubsection{Method 1: the table (one shifted echo per input stem)}
+\idea{Each input stem \pA{$x[k]$} launches its own copy of $h$, scaled by $x[k]$ and starting at $n=k$. Write one row per stem, then add each column. It is long multiplication without carrying.}
+\begin{ftab}
+row for stem $k$ & $x[k]\cdot h$, shifted to start at $n=k$ \\
+$y[n]$ & sum of column $n$ \\
+$x$ on $[a,b]$, $h$ on $[c,d]$ & $y$ on $[a+c,\,b+d]$ \\
+length of $y$ & $L_x+L_h-1$ \\
+$\sum_ny[n]=\Big(\sum_nx[n]\Big)\Big(\sum_nh[n]\Big)$ & quick check of the whole answer \\
+\end{ftab}
+
+\wk{8}{$x[-1]=2$, $x[0]=-1$, $x[1]=3$ \; and \; $h[0]=1$, $h[1]=2$}
+\stepbox{1. PIECES}{input stems \pA{$2$ at $-1$}, \pD{$-1$ at $0$}, \pE{$3$ at $1$} \qquad echo \pB{$h=1,\,2$} from $0$ \\ range: $[-1+0,\;1+1]=[-1,2]$, length $3+2-1=4$}
+\stepdown
+\stepbox{2. TEMPLATE (ONE ROW PER STEM)}{row $k$: \; $\slot{pcA}{$x[k]$}\cdot\big(\slot{pcB}{$1$},\,\slot{pcB}{$2$}\big)$, starting at column $n=k$}
+\stepdown
+\stepbox{3. PLACE}{{\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}l|cccc@{}}
+$n$ & $-1$ & $0$ & $1$ & $2$ \\\hline
+\pA{$2\cdot h$} & \pA{$2$} & \pA{$4$} & & \\
+\pD{$-1\cdot h$} & & \pD{$-1$} & \pD{$-2$} & \\
+\pE{$3\cdot h$} & & & \pE{$3$} & \pE{$6$} \\\hline
+$y[n]$ & \keyres{$2$} & \keyres{$3$} & \keyres{$1$} & \keyres{$6$} \\
+\end{tabular}}}
+\stepdown
+\stepbox{4. CHECK}{$\sum y=12$ \qquad $\big(\sum x\big)\big(\sum h\big)=(4)(3)=12$ \checkmark \qquad $4$ stems on $[-1,2]$ \checkmark}
+
+\filbreak \subsubsection{Method 2: flip and slide (one output time at a time)}
+\idea{Fix one output time $n$. Draw $x[k]$. Flip $h$ to get $h[-k]$, then slide it right by $n$ to get $h[n-k]$. Multiply the two stem by stem where they overlap and add. Then move to the next $n$.}
+\begin{enumerate}
+\item Draw \pA{$x[k]$} on a $k$ axis.
+\item Flip: $h[k]\to h[-k]$. Slide: $h[-k]\to h[\pC{n}-k]$. Its first stem sits at $k=\pC{n}$, the rest trail to the \emph{left}.
+\item Multiply where both are nonzero. Add. That is $y[\pC n]$.
+\item Split $n$ into regions: no overlap ($y=0$), partial overlap, full overlap. Each region gets one formula.
+\end{enumerate}
+\trap{After the flip, $h[n-k]$ is \emph{backwards}: $h[0]$ sits at $k=n$, and $h[1]$ sits at $k=n-1$.}
+
+\needspace{14\baselineskip}
+\noindent\hfil
+\begin{tikzpicture}
+\begin{axis}[sigax,
+xmin=-2.6, xmax=6.4, ymin=-0.2, ymax=1.35,
+xtick={-2,-1,1,2,3,4,5}, ytick={0.5,1},
+xlabel={$k$}, ylabel={},
+width=8.4cm, height=3.6cm]
+\addplot[pcA, ycomb, very thick, mark=*, mark size=1.6pt] coordinates {(0,1)(1,1)(2,1)};
+\addplot[pcB, ycomb, thick, mark=o, mark size=2pt] coordinates {(-2,0.0156)(-1,0.03125)(0,0.0625)(1,0.125)(2,0.25)(3,0.5)(4,1)};
+\node[text=pcA, font=\scriptsize] at (axis cs:1,1.22) {$x[k]$};
+\node[text=pcB, font=\scriptsize] at (axis cs:5.2,0.9) {$h[4-k]$};
+\draw[pcC, dashed] (axis cs:4,0) -- (axis cs:4,1.15) node[above, font=\scriptsize] {$k=n=4$};
+\end{axis}
+\end{tikzpicture}
+
+The picture is the next example at $n=4$: the pulse \pA{$x[k]$} and the flipped echo \pB{$h[4-k]$}. The overlap is $k=0,1,2$.
+
+\wk{8}{$x[n]=u[n]-u[n-3]$ (on at $0,1,2$) \; and \; $h[n]=(0.5)^nu[n]$}
+\stepbox{1. PIECES}{\pA{$x[k]=1$ for $k=0,1,2$} \qquad \pB{$h[n-k]=(0.5)^{n-k}$ for $k\leq n$} \qquad regions in \pC{$n$}: \pC{$n<0$}, \pC{$0\leq n\leq2$}, \pC{$n\geq3$}}
+\stepdown
+\stepbox{2. TEMPLATE}{$y[\slot{pcC}{$n$}]=\displaystyle\sum_{k\,\in\,\text{overlap}}\slot{pcA}{$x[k]$}\;\slot{pcB}{$h[n-k]$}$}
+\stepdown
+\stepbox{3. PLACE: NO OVERLAP, $n<0$}{the flipped echo is all left of $0$ \; $\Rightarrow$ \; $y[n]=\keyres{0}$}
+\stepdown
+\stepbox{4. PLACE: PARTIAL, $0\leq n\leq2$ (OVERLAP $k=0..n$)}{$y[n]=\displaystyle\sum_{k=0}^{n}\pA1\cdot\pB{(0.5)^{n-k}}=\sum_{m=0}^{n}(0.5)^m=\keyres{2\big(1-(0.5)^{n+1}\big)}$ \why{finite geometric sum, $m=n-k$}}
+\stepdown
+\stepbox{5. PLACE: FULL, $n\geq3$ (OVERLAP $k=0,1,2$)}{$y[n]=\pB{(0.5)^n}+\pB{(0.5)^{n-1}}+\pB{(0.5)^{n-2}}=(0.5)^n(1+2+4)=\keyres{7(0.5)^n}$}
+\stepdown
+\stepbox{6. CHECK}{the regions meet: $n=2$ gives $2(1-0.125)=1.75$ and $7(0.25)=1.75$ \checkmark \\ $y[0]=x[0]h[0]=1$ \checkmark \qquad $n=4$ (picture): $0.0625+0.125+0.25=0.4375=7(0.5)^4$ \checkmark}
+
+\needspace{18\baselineskip}\subsubsection{Method 3: formula (infinite signals)}
+\idea{When both signals are formulas, put them in the sum. The switches $u[k]$ and $u[n-k]$ cut the sum down to $0\leq k\leq n$. Then use the geometric sum.}
+\begin{ftab}
+$u[k]\,u[n-k]$ & $1$ for $0\leq k\leq n$, else $0$: the sum runs $k=0..n$, and $y=0$ for $n<0$ \\
+$\displaystyle\sum_{k=0}^{n}r^k=\frac{1-r^{n+1}}{1-r}$ & finite geometric sum, $r\neq1$ \\
+$a^nu[n]*b^nu[n]=\dfrac{a^{n+1}-b^{n+1}}{a-b}\,u[n]$ & two exponentials, $a\neq b$ \st\\
+$a^nu[n]*a^nu[n]=(n+1)\,a^nu[n]$ & same base \\
+\end{ftab}
+\begin{qtab}
+$x*\delta$ & $\keyres{x}$: the button changes nothing \\
+$x*\delta[n-3]$ & $\keyres{x[n-3]}$: a delay by $3$ \\
+$\delta[n-1]*\delta[n-4]$ & $\keyres{\delta[n-5]}$: delays add \\
+$u*u$ & $\sum_{k=0}^{n}1=\keyres{(n+1)u[n]}=r[n+1]$ \why{the accumulator of a switch, section 11} \\
+$u[n]*(0.5)^nu[n]$ & $\sum_{k=0}^n(0.5)^k=\keyres{2\big(1-(0.5)^{n+1}\big)u[n]}$ \\
+\end{qtab}
+
+\wk{8}{$x[n]=(0.5)^nu[n]$ \; and \; $h[n]=(0.25)^nu[n]$}
+\stepbox{1. PIECES}{\pA{$x[k]=(0.5)^ku[k]$} \qquad \pB{$h[n-k]=(0.25)^{n-k}u[n-k]$} \qquad switches: $0\leq k\leq\pC{n}$}
+\stepdown
+\stepbox{2. TEMPLATE}{$y[\slot{pcC}{$n$}]=\displaystyle\sum_{k=0}^{\slot{pcC}{$n$}}\slot{pcA}{$x[k]$}\;\slot{pcB}{$h[n-k]$}$}
+\stepdown
+\stepbox{3. PLACE}{$y[n]=\displaystyle\sum_{k=0}^{n}\pA{(0.5)^k}\,\pB{(0.25)^{n-k}}=(0.25)^n\sum_{k=0}^{n}2^k$ \why{$\frac{0.5}{0.25}=2$, pull out $(0.25)^n$}}
+\stepdown
+\stepbox{4. GEOMETRIC SUM}{$\sum_{k=0}^{n}2^k=2^{n+1}-1$ \; $\Rightarrow$ \; $y=(0.25)^n\big(2^{n+1}-1\big)=\keyres{\big(2(0.5)^n-(0.25)^n\big)u[n]}$}
+\stepdown
+\stepbox{5. CHECK}{$y[0]=x[0]h[0]=1$: \; $2-1=1$ \checkmark \qquad $y[1]=0.25+0.5=0.75$: \; $1-0.25=0.75$ \checkmark \\ formula row: $\frac{0.5^{n+1}-0.25^{n+1}}{0.25}$ gives the same \checkmark}
+
+\filbreak \subsubsection{Which method?}
+\begin{ltab}{If the signals are \ldots}{Use}
+both short lists of stems & the table (Method 1) \\
+one short pulse, one long formula & flip and slide, by regions (Method 2) \\
+both formulas with switches & the formula (Method 3) \\
+one of them is $\delta[n-n_0]$ & shift the other by $n_0$ \\
+\end{ltab}
 
 \end{multicols}
 
