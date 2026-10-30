@@ -165,6 +165,8 @@ linear (L3) & the left side is one derivative, $(\mu y)'$ \\
 separable (L4) & all $y$ is with $dy$, all $x$ is with $dx$ \\
 Bernoulli (L6) & it is linear in $v=y^{1-n}$. Then L3 \\
 homogeneous (L6) & it is separable in $v=y/x$. Then L4 \\
+exact (L7) & the left side is one differential, $dF$ \\
+autonomous (L8) & no solving: read the phase line \\
 \end{ltab}
 
 \filbreak \subsection{which method? --- the sorter}
@@ -173,16 +175,12 @@ Test in this order. Stop at the first yes.
 fits $y'+p(x)\,y=q(x)$ after you divide & linear, seven lines \hfill (L3) \\[1pt]
 factors as $y'=g(x)\,h(y)$ & separable \hfill (L4) \\[1pt]
 fits $y'+p\,y=q\,y^n$, \; $n\neq0,1$ & Bernoulli, $v=y^{1-n}$ \hfill (L6) \\[1pt]
-has a right side in $\frac yx$ only & homogeneous, $v=\frac yx$ \hfill (L6) \\
+has a right side in $\frac yx$ only & homogeneous, $v=\frac yx$ \hfill (L6) \\[1pt]
+is $M\,dx+N\,dy=0$ with $M_y=N_x$ & exact, build $F$ \hfill (L7) \\[1pt]
+has $M_y\neq N_x$ & integrating factor $\mu(x)$ or $\mu(y)$ \hfill (L7) \\
 \end{ltab}
 \trap{Some equations fit two rows. $y'+3y=6$ is linear and separable. Either method works.}
 \trap{Bernoulli with $n=0$ or $n=1$ is already linear. Do not substitute.}
-
-\filbreak \subsection{two meanings of ``homogeneous''}
-\begin{ltab}{Where}{Means}
-Lesson 1 (Trench 2.1) & the right side of $y'+py=q$ is the zero function: $q=0$ \\
-Lesson 6 & the right side is a function of $\frac yx$ only: $y'=F(y/x)$ \\
-\end{ltab}
 
 \filbreak \subsection{which tool? --- given $\to$ find}
 \begin{ltab}{Given $\to$ find}{Do this}
@@ -200,7 +198,15 @@ separable $\to$ lost solutions & roots of $h(y)=0$ \hfill (L4) \\[1pt]
 linear IVP $\to$ interval & bad $x$ of $p$ and $q$ \hfill (L5) \\[1pt]
 nonlinear IVP $\to$ unique or not & Test 1, Test 2 \hfill (L5) \\[1pt]
 Bernoulli $\to$ solution & $v=y^{1-n}$, then L3 \hfill (L6) \\[1pt]
-$F(y/x)\to$ solution & $v=y/x$, then L4 \hfill (L6) \\
+$F(y/x)\to$ solution & $v=y/x$, then L4 \hfill (L6) \\[1pt]
+$M\,dx+N\,dy\to$ exact or not & $M_y=N_x$ \hfill (L7) \\[1pt]
+exact $\to$ solution & build $F$, answer $F=C$ \hfill (L7) \\[1pt]
+not exact $\to$ multiplier & one-letter ratio test \hfill (L7) \\[1pt]
+$y'=f(y)\to$ equilibria, stability & phase line \hfill (L8) \\[1pt]
+$y'=f(y)$, $y_0\to$ limit & follow the arrow \hfill (L8) \\[1pt]
+words $\to$ a DE & the translation table \hfill (L9) \\[1pt]
+a second reading $\to$ $k$ & plug in, take $\ln$ \hfill (L9) \\[1pt]
+tank $\to$ $Q(t)$ & in $-$ out, linear \hfill (L9) \\
 \end{ltab}
 
 \filbreak \subsection{which way? --- differentiate or integrate}
@@ -562,10 +568,24 @@ $y'-\frac yx=y^2$ & \pA{$-\frac1x$}, \pB{$1$}, \pE{$2$}: \; $v=y^{-1}$. \; new \
 \stepbox{4. REPLACE}{$y^{-n}y'\to\dfrac{v'}{1-n}$, \; $y^{1-n}\to v$: \quad $\dfrac{v'}{1-\slot{pcE}{$n$}}+\slot{pcA}{$p$}\,v=\slot{pcB}{$q$}$}
 \stepdown
 \stepbox{5. MULTIPLY BY $(1-n)$, READ NEW PIECES}{$v'+\underbrace{(1-\slot{pcE}{$n$})\slot{pcA}{$p$}}_{\text{new }p}\,v=\underbrace{(1-\slot{pcE}{$n$})\slot{pcB}{$q$}}_{\text{new }q}$}
+\subsubsection{Step 6 --- the seven lines on $v$}
+\stepbox{LINE 1 --- STANDARD FORM IN $v$}{$v'+\slot{pcA}{new $p$}\,v=\slot{pcB}{new $q$}$ \qquad \why{from step 5}}
 \stepdown
-\stepbox{6. LESSON 3 ON $v$}{The seven lines, with the new \pA{$p$} and new \pB{$q$}. \pC{$\mu$} comes from the new \pA{$p$}.}
+\stepbox{LINE 2 --- BUILD $\mu$}{$\slot{pcC}{$\mu$}=e^{\int \slot{pcA}{new $p$}\,dx}$ \quad Simplify. No $+C$.}
 \stepdown
-\stepbox{7. BACK-SUBSTITUTE}{$y=v^{1/(1-\slot{pcE}{$n$})}$}
+\stepbox{LINE 3 --- CHECK $\mu$}{Differentiate: $\slot{pcC}{$\mu$}'=\ldots$ \quad Separately: $\slot{pcA}{new $p$}\,\slot{pcC}{$\mu$}=\ldots$ \\ \keyres{They must be equal.}}
+\stepdown
+\stepbox{LINE 4 --- \slot{pcC}{$\mu$}LTIPLY EVERY TERM}{$\slot{pcC}{$\mu$}\,v'+\slot{pcC}{$\mu$}\,\slot{pcA}{new $p$}\,v=\slot{pcC}{$\mu$}\,\slot{pcB}{new $q$}$}
+\stepdown
+\stepbox{LINE 5 --- COLLAPSE THE LEFT SIDE}{$\big(\slot{pcC}{$\mu$}\,v\big)'=\slot{pcC}{$\mu$}\,\slot{pcB}{new $q$}$}
+\stepdown
+\stepbox{LINE 6 --- INTEGRATE BOTH SIDES}{$\slot{pcC}{$\mu$}\,v=\displaystyle\int \slot{pcC}{$\mu$}\,\slot{pcB}{new $q$}\,dx+C$ \quad \why{$\mu$ times $v$, not $y$}}
+\stepdown
+\stepbox{LINE 7 --- DIVIDE BY $\mu$}{$v=\dfrac{1}{\slot{pcC}{$\mu$}}\Big(\displaystyle\int \slot{pcC}{$\mu$}\,\slot{pcB}{new $q$}\,dx+C\Big)$ \quad \why{$C$ becomes $C/\mu$}}
+\stepdown
+\stepbox{7. BACK-SUBSTITUTE}{$y=v^{1/(1-\slot{pcE}{$n$})}$ \quad \why{raise the whole line 7 answer, $C$ included}}
+\stepdown
+\stepbox{8. IC (IF GIVEN)}{Plug \pD{$x_0$}, \pD{$y_0$} into the $y$ answer. Solve for $C$.}
 \end{rcol}
 
 \subsection{Homogeneous: $y'=F(y/x)$}
@@ -582,7 +602,11 @@ $y'=\dfrac{x^2+y^2}{xy}$ & $\div x^2$: \; \pA{$F=\frac{1+v^2}{v}$} \st\\
 $y'=\dfrac yx+\dfrac xy$ & \pA{$F=v+\frac1v$} \st\\
 \end{qtab}
 \trap{$y'$ is not $v'$. \; $y'=v+xv'$.}
-\trap{Here ``homogeneous'' means $F(y/x)$, not a zero right side.}
+\subsubsection{Two meanings of ``homogeneous''}
+\begin{ltab}{Where}{Means}
+Lesson 1 (Trench 2.1) & the right side of $y'+py=q$ is the zero function: $q=0$ \\
+Lesson 6 & the right side is a function of $\frac yx$ only: $y'=F(y/x)$ \\
+\end{ltab}
 \end{lcol}
 \begin{rcol}
 \stepbox{1. REWRITE}{$y'=\slot{pcA}{$F$}\big(\tfrac yx\big)$}
@@ -596,6 +620,279 @@ $y'=\dfrac yx+\dfrac xy$ & \pA{$F=v+\frac1v$} \st\\
 \stepbox{5. INTEGRATE}{Both sides. One $+C$. \; $\int\frac{dx}{x}=\ln\lvert x\rvert$.}
 \stepdown
 \stepbox{6. BACK-SUBSTITUTE}{Replace $v$ with $\frac yx$. Free $y$ if you can.}
+\end{rcol}
+
+% ============================================================ LESSON 7
+\lesson{Lesson 7 --- exact equations}
+\idea{Find one function $F(x,y)$ whose partial derivatives are \pA{$M$} and \pB{$N$}. Then the whole equation says $dF=0$, so the answer is $F=C$.}
+
+\subsection{Exact: build $F$}
+\begin{lcol}
+\subsubsection{Pieces}
+\begin{ltab}{Piece}{Where to find it}
+\pA{$M(x,y)$} & whatever multiplies $dx$ \\
+\pB{$N(x,y)$} & whatever multiplies $dy$ \\
+\pC{$g(y)$} & the ``constant'' of the $x$-integral: an unknown function of $y$ \\
+\pE{$F(x,y)$} & you build it: $F_x=M$, \; $F_y=N$ \\
+\end{ltab}
+
+\subsubsection{Read the pieces}
+\begin{qtab}
+$(2xy+1)\,dx+(x^2+3y^2)\,dy=0$ & \pA{$M=2xy+1$}, \; \pB{$N=x^2+3y^2$} \\
+$y'=-\dfrac xy$ & $y\,dy=-x\,dx$ $\to$ $x\,dx+y\,dy=0$: \; \pA{$M=x$}, \; \pB{$N=y$} \st\\
+\end{qtab}
+
+\subsubsection{Equivalences}
+\begin{ltab}{This}{is the same as}
+\pA{$M$} & $F_x$ \\
+\pB{$N$} & $F_y$ \\
+the test $M_y=N_x$ & mixed partials agree: $F_{xy}=F_{yx}$ \\
+\end{ltab}
+
+\trap{Integrate \pA{$M$} in $x$: $y$ is a constant. The ``$+C$'' is \pC{$g(y)$}, not a number.}
+\trap{In step 5, every $x$ term must cancel. If one is left, a step above is wrong.}
+\trap{The answer is $F=C$, not $F=0$. Implicit is fine.}
+\end{lcol}
+\begin{rcol}
+\stepbox{1. FORM, READ THE PIECES}{$\slot{pcA}{$M$}\,dx+\slot{pcB}{$N$}\,dy=0$}
+\stepdown
+\stepbox{2. TEST}{$\dfrac{\partial\slot{pcA}{$M$}}{\partial y}\overset{?}{=}\dfrac{\partial\slot{pcB}{$N$}}{\partial x}$ \quad Equal $\to$ exact. Not equal $\to$ stop, or find $\mu$ (below).}
+\stepdown
+\stepbox{3. INTEGRATE $M$ IN $x$}{$\slot{pcE}{$F$}=\displaystyle\int\slot{pcA}{$M$}\,dx+\slot{pcC}{$g(y)$}$ \quad \why{$y$ held constant}}
+\stepdown
+\stepbox{4. DIFFERENTIATE $F$ IN $y$}{$\dfrac{\partial\slot{pcE}{$F$}}{\partial y}=\ldots+\slot{pcC}{$g'(y)$}$}
+\stepdown
+\stepbox{5. SET EQUAL TO $N$, SOLVE FOR $g'$}{$\ldots+\slot{pcC}{$g'(y)$}=\slot{pcB}{$N$}$ \quad \why{all $x$ terms cancel}}
+\stepdown
+\stepbox{6. INTEGRATE $g'$}{$\slot{pcC}{$g(y)$}=\displaystyle\int\slot{pcC}{$g'(y)$}\,dy$ \quad Put it back into step 3.}
+\stepdown
+\stepbox{7. ANSWER}{$\slot{pcE}{$F(x,y)$}=C$ \quad IC given: plug in $x_0$, $y_0$ for $C$.}
+\end{rcol}
+
+\subsection{Not exact: find an integrating factor $\mu$}
+\begin{lcol}
+\subsubsection{Pieces}
+\begin{ltab}{Piece}{Where to find it}
+\pA{$M$}, \pB{$N$} & as above \\
+\pA{$M_y$}, \pB{$N_x$} & from the failed test \\
+\pD{$\mu$} & you make it: $\mu(y)$ or $\mu(x)$, one letter only \\
+\end{ltab}
+\term{Definition}: \pD{$\mu$} is an integrating factor if $\mu M\,dx+\mu N\,dy=0$ is exact.
+
+\subsubsection{Which $\mu$?}
+\begin{ltab}{If this has only one letter}{then}
+$\dfrac{\pB{N_x}-\pA{M_y}}{\pA{M}}$ has only $y$ & \pD{$\mu(y)$} $=e^{\int(\text{that})\,dy}$ \st\\
+$\dfrac{\pA{M_y}-\pB{N_x}}{\pB{N}}$ has only $x$ & \pD{$\mu(x)$} $=e^{\int(\text{that})\,dx}$ \st\\
+\end{ltab}
+\trap{$\mu(y)$ has no $x$, so $\frac{\partial}{\partial x}(\mu N)=\mu N_x$. Only the $y$-side needs the product rule.}
+\trap{No $+C$ in $\mu$.}
+\end{lcol}
+\begin{rcol}
+\stepbox{1. MULTIPLY}{$\slot{pcD}{$\mu$}\slot{pcA}{$M$}\,dx+\slot{pcD}{$\mu$}\slot{pcB}{$N$}\,dy=0$}
+\stepdown
+\stepbox{2. REQUIRE EXACT}{$\dfrac{\partial(\slot{pcD}{$\mu$}\slot{pcA}{$M$})}{\partial y}=\dfrac{\partial(\slot{pcD}{$\mu$}\slot{pcB}{$N$})}{\partial x}$}
+\stepdown
+\stepbox{3. EXPAND, FOR $\mu=\mu(y)$}{$\slot{pcD}{$\mu$}'\slot{pcA}{$M$}+\slot{pcD}{$\mu$}\slot{pcA}{$M_y$}=\slot{pcD}{$\mu$}\slot{pcB}{$N_x$}$ \quad \why{product rule on the left only}}
+\stepdown
+\stepbox{4. SEPARATE (LESSON 4)}{$\dfrac{\slot{pcD}{$\mu$}'}{\slot{pcD}{$\mu$}}=\dfrac{\slot{pcB}{$N_x$}-\slot{pcA}{$M_y$}}{\slot{pcA}{$M$}}$ \quad Must have only $y$. \\ $\slot{pcD}{$\mu$}=e^{\int(\ldots)\,dy}$}
+\stepdown
+\stepbox{5. NEW PIECES, REDO}{new \pA{$M$} $=\mu M$, \; new \pB{$N$} $=\mu N$. \; Do exact steps 2--7.}
+\end{rcol}
+
+% ============================================================ LESSON 8
+\lesson{Lesson 8 --- autonomous equations}
+\begin{lcol}
+\idea{$\frac{dy}{dt}=f(y)$ has no $t$ on the right. This is the Lesson 2 ``no $x$'' case. You read the long-term behavior off a phase line, without solving.}
+
+\subsubsection{Pieces}
+\begin{ltab}{Piece}{Where to find it}
+\pA{$f(y)$} & the right side. No $t$ in it \\
+\pB{equilibria} & the roots of $f(y)=0$: constant solutions \\
+\pD{$y_0$} & the IC $y(0)=y_0$ \\
+\end{ltab}
+
+\subsubsection{Classify an equilibrium}
+\begin{ltab}{Arrows}{Type}
+both point \keyres{toward} it & stable (asymptotically stable, sink) \\
+both point \warn{away} & unstable (source) \\
+one toward, one away & semistable \\
+\end{ltab}
+\begin{center}
+\begin{tikzpicture}[>=Stealth, line width=0.7pt]
+\foreach \x/\a/\b/\lab in {0/1/1/stable, 2.2/0/0/unstable, 4.4/1/0/semistable}{
+  \draw[termHi] (\x,-1) -- (\x,1);
+  \fill[titleHi] (\x,0) circle (2.2pt);
+  \ifnum\a=1 \draw[->,keyHi] (\x,0.9) -- (\x,0.25); \else \draw[->,warnHi] (\x,0.25) -- (\x,0.9); \fi
+  \ifnum\b=1 \draw[->,keyHi] (\x,-0.9) -- (\x,-0.25); \else \draw[->,warnHi] (\x,-0.25) -- (\x,-0.9); \fi
+  \node[white,below] at (\x,-1) {\scriptsize \lab};
+}
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Sign $\to$ arrow}
+\begin{ltab}{Sign of $f$}{Arrow}
+$f>0$ & up ($y$ increases) \\
+$f<0$ & down ($y$ decreases) \\
+\end{ltab}
+
+\trap{Never divide $f=0$ by $y$. You lose the equilibrium $y=0$.}
+\trap{Test one $y$ \keyres{inside} each region, not at an equilibrium.}
+\trap{A solution never crosses an equilibrium.}
+\end{lcol}
+\begin{rcol}
+\stepbox{1. EQUILIBRIA}{Solve $\slot{pcA}{$f(y)$}=0$. Factor, set each factor to $0$. \\ List the \pB{equilibria} in order on a vertical line.}
+\stepdown
+\stepbox{2. SIGN CHART}{In each region between \pB{equilibria}, pick one $y$. Find the sign of $\slot{pcA}{$f$}(y)$.}
+\stepdown
+\stepbox{3. PHASE LINE}{Draw an arrow in each region: $+$ up, \; $-$ down.}
+\stepdown
+\stepbox{4. CLASSIFY}{Look at the arrows on both sides of each \pB{equilibrium}. Use the table on the left.}
+\stepdown
+\stepbox{5. LIMIT (NO SOLVING)}{Find the region of \pD{$y_0$}. Follow its arrow to the nearest \pB{equilibrium} in that direction. That is $\lim\limits_{t\to\infty}y(t)$. \\ No equilibrium in that direction: $\pm\infty$. \; \pD{$y_0$} on an equilibrium: it stays.}
+\end{rcol}
+
+% ============================================================ LESSON 9
+\lesson{Lesson 9 --- applications}
+\idea{Every application is the same chain: words $\to$ a DE $\to$ separable or linear $\to$ solve $\to$ fit the constants. Usually two constants: $C$ from the IC, and a rate constant $k$ from a second data point.}
+
+\subsection{The recipe}
+\begin{lcol}
+\subsubsection{Words $\to$ math}
+\begin{ltab}{Words}{Math}
+``rate of change of $Q$'' & $\dfrac{dQ}{dt}$ \st\\
+``proportional to'' & $k\,\cdot$ \\
+``at a rate equal to $25\%$ of'' & $0.25\,\cdot$ \\
+``decreases'', ``decays'', ``loses'' & a minus sign \\
+``initially'' & $t=0$ \\
+``6 months ago'' & pick $t=0$ as now or as then. Stay consistent \\
+``of the remaining'' & of the current amount $Q$ \\
+\end{ltab}
+\trap{Write the units of $t$ down once. Every rate uses them.}
+\end{lcol}
+\begin{rcol}
+\stepbox{1. TRANSLATE}{Words $\to$ a DE. Use the table on the left.}
+\stepdown
+\stepbox{2. CLASSIFY}{Separable (L4) or linear (L3)?}
+\stepdown
+\stepbox{3. SOLVE}{General solution with $C$ (and $k$).}
+\stepdown
+\stepbox{4. $C$ FROM THE IC}{Plug in $t=0$.}
+\stepdown
+\stepbox{5. $k$ FROM A SECOND DATA POINT}{Plug in $(t_1,\text{value}_1)$. Solve for $k$: usually a $\ln$.}
+\stepdown
+\stepbox{6. ANSWER THE QUESTION}{A value at a time: plug in $t$. \; A time: solve for $t$ with $\ln$.}
+\end{rcol}
+
+\subsection{Newton's law of cooling}
+\begin{lcol}
+\subsubsection{Pieces}
+\begin{ltab}{Piece}{Where to find it}
+\pA{$T_m$} & the surrounding (room) temperature \\
+\pB{$T_0$} & the temperature at $t=0$ \\
+\pC{$k$} & the rate constant, $k>0$. Unknown \\
+\pD{$(t_1,T_1)$} & the second reading \\
+\end{ltab}
+\trap{Subtract \pA{$T_m$} first. The ratio is $\frac{T_1-T_m}{T_0-T_m}$, not $\frac{T_1}{T_0}$.}
+\trap{$T\to T_m$ as $t\to\infty$, from above or below.}
+\end{lcol}
+\begin{rcol}
+\stepbox{1. DE}{$\dfrac{dT}{dt}=-\slot{pcC}{$k$}\big(T-\slot{pcA}{$T_m$}\big)$ \quad \why{separable and linear}}
+\stepdown
+\stepbox{2. SHAPE}{$T=\slot{pcA}{$T_m$}+\big(\slot{pcB}{$T_0$}-\slot{pcA}{$T_m$}\big)e^{-\slot{pcC}{$k$}t}$}
+\stepdown
+\stepbox{3. $k$ FROM THE READING}{$e^{-\slot{pcC}{$k$}\slot{pcD}{$t_1$}}=\dfrac{\slot{pcD}{$T_1$}-\slot{pcA}{$T_m$}}{\slot{pcB}{$T_0$}-\slot{pcA}{$T_m$}}$ \;$\Rightarrow$\; $\slot{pcC}{$k$}=-\dfrac{1}{\slot{pcD}{$t_1$}}\ln(\text{that ratio})$}
+\stepdown
+\stepbox{4. ANSWER}{$T$ at a time: plug in $t$. \; Time to reach $T$: $t=-\dfrac1k\ln\dfrac{T-T_m}{T_0-T_m}$.}
+\end{rcol}
+
+\subsection{Exponential growth and decay}
+\begin{lcol}
+\subsubsection{Pieces}
+\begin{ltab}{Piece}{Where to find it}
+\pB{$M_0$} & the amount at $t=0$ \\
+\pC{$k$} & the rate. $k>0$ grows, $k<0$ decays \\
+\pD{data} & a second amount $(t_1,M_1)$, or a half-life $T$ \\
+\end{ltab}
+
+\subsubsection{Which $k$?}
+\begin{ltab}{Words}{\pC{$k$}}
+``decays at $25\%$ of the remaining mass per hour'' & $k=-0.25$ directly \\
+``loses $25\%$ each hour'' (the amount after $1$ h) & $e^{k}=0.75$, \; $k=\ln0.75$ \\
+amount $M_1$ at $t_1$ & $k=\dfrac{\ln(M_1/M_0)}{t_1}$ \st\\
+half-life $T$ & $\frac12=e^{kT}$, \; $k=-\dfrac{\ln2}{T}$ \st\\
+\end{ltab}
+\end{lcol}
+\begin{rcol}
+\stepbox{1. DE}{$\dfrac{dM}{dt}=\slot{pcC}{$k$}\,M$ \quad \why{separable}}
+\stepdown
+\stepbox{2. SHAPE}{$M=\slot{pcB}{$M_0$}\,e^{\slot{pcC}{$k$}t}$}
+\stepdown
+\stepbox{3. $k$ FROM THE DATA}{Use the ``Which $k$?'' table on the left.}
+\stepdown
+\stepbox{4. ANSWER}{$M$ at a time: plug in $t$. \; Time to reach $M$: $t=\dfrac{\ln(M/M_0)}{k}$.}
+\end{rcol}
+
+\subsection{Mixing (tank)}
+\begin{lcol}
+\subsubsection{Pieces}
+\begin{ltab}{Piece}{Where to find it}
+$Q(t)$ & the amount of salt. The unknown \\
+\pA{$c_{\text{in}}$} & the concentration coming in. Pure water: $0$ \\
+\pB{$r_{\text{in}}$}, \pC{$r_{\text{out}}$} & the flow in and the flow out (volume per time) \\
+\pD{$V_0$}, \pD{$Q_0$} & the starting volume and amount \\
+\pE{$\Delta$} & $r_{\text{in}}-r_{\text{out}}$, the change in volume per time \\
+\end{ltab}
+
+\subsubsection{Lesson 3 pieces}
+\begin{ltab}{Piece}{Value}
+$p(t)$ & $\dfrac{\pC{r_{\text{out}}}}{\pD{V_0}+\pE{\Delta}t}$ \st\\
+$q(t)$ & $\pA{c_{\text{in}}}\,\pB{r_{\text{in}}}$ \\
+$\mu$, \; $\pE{\Delta}=0$ & $e^{(\pC{r_{\text{out}}}/\pD{V_0})t}$ \\
+$\mu$, \; $\pE{\Delta}\neq0$ & $(\pD{V_0}+\pE{\Delta}t)^{\pC{r_{\text{out}}}/\pE{\Delta}}$ \; \why{a power of $V(t)$} \\
+\end{ltab}
+\trap{Rate out uses the tank concentration $\frac QV$, not $c_{\text{in}}$.}
+\trap{Concentration $=\frac QV$. If asked for concentration, divide at the end.}
+\trap{Units: (amount/volume)(volume/time) $=$ amount/time.}
+\end{lcol}
+\begin{rcol}
+\stepbox{1. VOLUME}{$V(t)=\slot{pcD}{$V_0$}+\big(\slot{pcB}{$r_{\text{in}}$}-\slot{pcC}{$r_{\text{out}}$}\big)t=\slot{pcD}{$V_0$}+\slot{pcE}{$\Delta$}t$}
+\stepdown
+\stepbox{2. DE: IN $-$ OUT}{$\dfrac{dQ}{dt}=\slot{pcA}{$c_{\text{in}}$}\,\slot{pcB}{$r_{\text{in}}$}-\dfrac{Q}{V(t)}\,\slot{pcC}{$r_{\text{out}}$}$}
+\stepdown
+\stepbox{3. STANDARD FORM (LINE 1)}{$Q'+\dfrac{\slot{pcC}{$r_{\text{out}}$}}{V(t)}\,Q=\slot{pcA}{$c_{\text{in}}$}\slot{pcB}{$r_{\text{in}}$}$ \quad Read $p$, $q$ (left table).}
+\stepdown
+\stepbox{4. BUILD AND CHECK $\mu$ (LINES 2--3)}{$\mu=e^{\int p\,dt}$. \; Use the left table. Check $\mu'=p\mu$.}
+\stepdown
+\stepbox{5. MULTIPLY, COLLAPSE (LINES 4--5)}{$(\mu Q)'=\mu\,\slot{pcA}{$c_{\text{in}}$}\slot{pcB}{$r_{\text{in}}$}$}
+\stepdown
+\stepbox{6. INTEGRATE (LINE 6)}{$\mu Q=\displaystyle\int\mu\,\slot{pcA}{$c_{\text{in}}$}\slot{pcB}{$r_{\text{in}}$}\,dt+C$}
+\stepdown
+\stepbox{7. DIVIDE (LINE 7)}{$Q=\dfrac1\mu\Big(\displaystyle\int\mu\,c_{\text{in}}r_{\text{in}}\,dt+C\Big)$}
+\stepdown
+\stepbox{8. $C$ FROM $Q_0$}{Plug in $t=0$, $Q=\slot{pcD}{$Q_0$}$.}
+\end{rcol}
+
+\subsection{Growth proportional to a power}
+\begin{lcol}
+\subsubsection{Pieces}
+\begin{ltab}{Piece}{Where to find it}
+\pA{$a$} & the power: ``proportional to $\sqrt W$'' gives $a=\frac12$ \\
+\pC{$k$} & the unknown constant \\
+\pD{two data points} & $(0,W_0)$ gives $C$, \; $(t_1,W_1)$ gives $k$ \\
+\end{ltab}
+\trap{$\int W^{-1/2}dW=2W^{1/2}$. Divide by $\frac12$.}
+\trap{Find $C$ first from $t=0$. Then $k$.}
+\end{lcol}
+\begin{rcol}
+\stepbox{1. DE}{$\dfrac{dW}{dt}=\slot{pcC}{$k$}\,W^{\slot{pcA}{$a$}}$ \quad \why{separable}}
+\stepdown
+\stepbox{2. SEPARATE}{$W^{-\slot{pcA}{$a$}}\,dW=\slot{pcC}{$k$}\,dt$}
+\stepdown
+\stepbox{3. INTEGRATE}{$\dfrac{W^{1-\slot{pcA}{$a$}}}{1-\slot{pcA}{$a$}}=\slot{pcC}{$k$}t+C$ \quad \why{$a=\frac12$: $2\sqrt W=kt+C$}}
+\stepdown
+\stepbox{4. $C$, THEN $k$}{Plug in \pD{$(0,W_0)$} for $C$. Then \pD{$(t_1,W_1)$} for $k$.}
+\stepdown
+\stepbox{5. FREE $W$}{$a=\frac12$: \; $W=\Big(\dfrac{kt+C}{2}\Big)^2$}
 \end{rcol}
 
 \makeatother
