@@ -308,6 +308,7 @@ $0.5\,y[n-1]+x[n]$ (at rest) & \warn{no} & \keyres{yes} & \keyres{yes} & \keyres
 $x(t)$, $T_s\to x[n]$ & put $t=nT_s$ \hfill (1) \\[1pt]
 $A\cos(\omega t+\phi)\to f$, $T$, $t_0$ & read, then divide \hfill (2) \\[1pt]
 $f$, $f_s\to\hat\omega$ & $\hat\omega=2\pi f/f_s$ \hfill (3) \\[1pt]
+$f$, $f_s\to$ aliased? & Nyquist: $f_s>2f$ \hfill (3) \\[1pt]
 dies out or finite length & energy $E_\infty$ \hfill (4) \\[1pt]
 periodic or constant & power $P_\infty$ \hfill (4) \\[1pt]
 a graph $\to$ energy & square each piece, add \hfill (5) \\[1pt]
@@ -325,6 +326,7 @@ blocks $\to$ one equation & substitute block by block \hfill (11) \\[1pt]
 equation $\leftrightarrow$ block diagram & one $D$ per shift \hfill (11) \\[1pt]
 system $\to$ properties & ask each question \hfill (12) \\[1pt]
 system $\to$ stable? & cap the input with $B$ \hfill (12) \\[1pt]
+system $\to$ inverse & solve for $x$, inverse table \hfill (12) \\[1pt]
 equation $\to h$ & read coefficients, or run $x=\delta$ \hfill (13) \\[1pt]
 $h\to$ causal, stable & $h[n<0]=0$, \; $\sum\lvert h\rvert$ \hfill (13) \\[1pt]
 stems $x$, $h\to y$ & table: one row per stem \hfill (13) \\[1pt]
@@ -404,6 +406,7 @@ $4\sin(10t)$ & $=4\cos(10t-\frac\pi2)$: \pA{$4$}, \pB{$10$}, \pC{$-\frac\pi2$} \
 \end{qtab}
 \trap{Negative $\phi$ means $t_0>0$: delayed, moves right.}
 \trap{The first peak is at $t=t_0$. That is the shift.}
+\trap{Keep $\phi$ in $(-\pi,\pi]$: add or subtract $2\pi$.}
 \end{lcol}
 \begin{rcol}
 \subsubsection{Steps --- read the parts}
@@ -441,6 +444,7 @@ $\omega$, $T_s\to\hat\omega$ & $\hat\omega=\omega T_s=\dfrac{\omega}{f_s}$ \st\\
 $\hat\omega$, $f_s\to f$ & $f=\dfrac{\hat\omega f_s}{2\pi}$ (the lowest answer) \st\\
 \end{ltab}
 \term{Aliasing}: $\hat\omega$, $\hat\omega+2\pi k$ and $-\hat\omega$ give the \keyres{same photos}. In Hz: $\pm f+kf_s$ all look the same.
+\term{Nyquist}: no aliasing if $f_s>2f_{\max}$. The frequency you see after sampling is in $[0,\frac{f_s}{2}]$.
 \trap{DT $\to$ CT has more than one answer. Any alias fits.}
 \trap{$\cos$ is even, so $f_s-f$ aliases to $f$ too.}
 \end{lcol}
@@ -463,6 +467,13 @@ $\hat\omega$, $f_s\to f$ & $f=\dfrac{\hat\omega f_s}{2\pi}$ (the lowest answer) 
 \stepbox{2. REMOVE WHOLE TURNS}{Subtract $2\pi$ until $\hat\omega$ is in $(-\pi,\pi]$.}
 \stepdown
 \stepbox{3. COMPARE}{Same $\lvert\hat\omega\rvert$ as $f'$ $\Rightarrow$ \warn{same photos} (aliases).}
+
+\subsubsection{Steps --- the frequency you actually see}
+\stepbox{1. NYQUIST}{$\slot{pcD}{$f_s$}>2\slot{pcB}{$f$}$? Yes $\Rightarrow$ you see $f$ itself. Stop.}
+\stepdown
+\stepbox{2. REMOVE WHOLE $f_s$}{Subtract $\slot{pcD}{$f_s$}$ from $\slot{pcB}{$f$}$ until it is in $(-\frac{f_s}{2},\frac{f_s}{2}]$.}
+\stepdown
+\stepbox{3. DROP THE SIGN}{The apparent frequency is $\lvert$that$\rvert$. \why{$\cos$ is even}}
 \end{rcol}
 
 % ============================================================ 4
@@ -490,6 +501,9 @@ sinusoid, amplitude $A$ & $P=\dfrac{A^2}{2}$ \st\\
 constant $c$ & $P=c^2$ \\
 $Ae^{-at}u(t)$, $a>0$ & $E=\dfrac{A^2}{2a}$ \st\\
 $a^nu[n]$, $\lvert a\rvert<1$ & $E=\dfrac{1}{1-a^2}$ \st\\
+switch $u(t)$ or $u[n]$ & $P=\frac12$ \why{on for half the window} \\
+$Ce^{j\omega t}$ & $P=\lvert C\rvert^2$ \\
+$c+\sum A_i\cos(\omega_it+\phi_i)$, different $\omega_i$ & $P=c^2+\sum\dfrac{A_i^2}{2}$ \st\\
 \end{ltab}
 \trap{Square first, then add. Negatives count positive.}
 \trap{``$16$ forever'' is the power. The energy is $\infty$.}
@@ -560,7 +574,7 @@ Line through $(t_1,x_1)$ with slope $m$: $x=x_1+m(t-t_1)$, if you want to check 
 \stepdown
 \stepbox{2. ENERGY OF ONE PERIOD}{Steps 2--4 above, over one period.}
 \stepdown
-\stepbox{3. DIVIDE}{$P=\dfrac{E_{\text{one period}}}{T_0}$ \quad $\Rightarrow$ \keyres{power signal}}
+\stepbox{3. DIVIDE}{$P=\dfrac{E_{\text{one period}}}{T_0}$ \why{DT: divide by $N$, the samples in one period} \quad $\Rightarrow$ \keyres{power signal}}
 \end{rcol}
 
 % ============================================================ 6
@@ -582,7 +596,7 @@ $x(-t)$ & mirror about $t=0$ \\
 $x(at)$, $\lvert a\rvert>1$ / $<1$ & compress / stretch \\
 \end{ltab}
 \trap{The sign inside is opposite to the direction: $x(t-3)$ moves right.}
-\trap{Scale-then-shift is wrong. The point map does it in one step.}
+\trap{In two moves: shift by $b$ first ($x(t+b)$), then scale by $a$. Scale-then-shift by $b$ is wrong. The point map avoids the order.}
 \trap{DT: $x[2n]$ keeps only the even samples. It cannot be undone.}
 \end{lcol}
 \begin{rcol}
@@ -652,7 +666,9 @@ $\cos(n)$ & $\frac{1}{2\pi}$ not rational: \warn{not periodic} \\
 \subsubsection{Steps --- CT period}
 \stepbox{1. EACH TERM}{$T_i=\dfrac{2\pi}{\slot{pcB}{$\omega_i$}}$}
 \stepdown
-\stepbox{2. COMBINE}{One term: $T=T_1$. \quad A sum: $T=\mathrm{lcm}(T_1,T_2,\ldots)$ \why{the first time all loops restart together}}
+\stepbox{2. RATIO (A SUM ONLY)}{$\dfrac{T_1}{T_2}=\dfrac{p}{q}$ in lowest terms. Not a fraction of integers $\Rightarrow$ \warn{not periodic}.}
+\stepdown
+\stepbox{3. COMBINE}{$T=q\,T_1=p\,T_2$ \why{$q$ loops of the first equal $p$ loops of the second}}
 
 \subsubsection{Steps --- DT period}
 \stepbox{1. DIVIDE BY $2\pi$}{$\dfrac{\slot{pcC}{$\hat\omega$}}{2\pi}$}
@@ -683,6 +699,7 @@ neither holds & neither \\
 \end{ltab}
 \term{Products work like signs}: even$\cdot$even $=$ odd$\cdot$odd $=$ even. \; even$\cdot$odd $=$ odd.
 \trap{An odd signal is $0$ at the origin.}
+\trap{$e^{t}$ and $u(t)$ fit neither pile. Use the formula steps.}
 \trap{DT: read $x[-n]$ from $x$ at the opposite index.}
 \end{lcol}
 \begin{rcol}
@@ -691,10 +708,19 @@ neither holds & neither \\
 \stepdown
 \stepbox{2. COMPARE}{Same as $x(t)$: \pA{even}. \; Same with every sign flipped: \pC{odd}. \; Else: neither.}
 
-\subsubsection{Steps --- split (formula)}
+\subsubsection{Steps --- split (sort the terms)}
 \stepbox{1. SORT THE TERMS}{Each term goes in the \pA{even pile} or the \pC{odd pile}.}
 \stepdown
 \stepbox{2. READ THE PARTS}{$\mathcal{E}v\{x\}=\slot{pcA}{even pile}$ \qquad $\mathcal{O}d\{x\}=\slot{pcC}{odd pile}$}
+
+\subsubsection{Steps --- split (any formula)}
+\stepbox{1. FLIP}{Write $x(-t)$.}
+\stepdown
+\stepbox{2. EVEN PART}{$\mathcal{E}v\{x\}=\dfrac{x(t)+x(-t)}{2}$}
+\stepdown
+\stepbox{3. ODD PART}{$\mathcal{O}d\{x\}=\dfrac{x(t)-x(-t)}{2}$}
+\stepdown
+\stepbox{4. CHECK}{$\mathcal{E}v+\mathcal{O}d=x(t)$}
 
 \subsubsection{Steps --- split (any signal, DT table)}
 \stepbox{1. TABLE}{Rows $n$, $x[n]$, $x[-n]$ for each $n$.}
@@ -724,11 +750,16 @@ $\sigma=0$ & sinusoid, $T=\frac{2\pi}{\lvert\omega\rvert}$ \\
 both & damped sinusoid, envelope $\lvert C\rvert e^{\sigma t}$ \\
 \end{ltab}
 \term{DT}: $x[n]=C\alpha^n$. $\lvert\alpha\rvert<1$ decays, $>1$ grows, $\alpha<0$ flips sign each step. \; $e^{j(\hat\omega+2\pi)n}=e^{j\hat\omega n}$.
+\begin{ltab}{$C=a+jb$ with}{Angle \pC{$\phi$}}
+$a>0$ & $\arctan\frac ba$ \\
+$a<0$ & $\arctan\frac ba+\pi$ \why{left half: add $\pi$} \\
+$a=0$ & $\frac\pi2$ if $b>0$, \; $-\frac\pi2$ if $b<0$ \\
+\end{ltab}
 \trap{$e^{j2\pi k}=1$ for every integer $k$. $\lvert e^{j\theta}\rvert=1$.}
 \end{lcol}
 \begin{rcol}
 \subsubsection{Steps --- $Ce^{at}\to$ real signal}
-\stepbox{1. POLAR $C$}{$C=\slot{pcA}{$\lvert C\rvert$}e^{j\slot{pcC}{$\phi$}}$}
+\stepbox{1. POLAR $C$}{$C=\slot{pcA}{$\lvert C\rvert$}e^{j\slot{pcC}{$\phi$}}$ \qquad $\lvert C\rvert=\sqrt{a^2+b^2}$, \; $\phi$ from the quadrant table}
 \stepdown
 \stepbox{2. SPLIT $a$}{$a=\slot{pcD}{$\sigma$}+j\slot{pcB}{$\omega$}$}
 \stepdown
@@ -792,6 +823,8 @@ $\delta\to u$ (CT) / (DT) & $\int_{-\infty}^{t}\delta$ \; / \; $\sum_{k\le n}\de
 \pA{$g(t)$} & everything multiplying $\delta$ \\
 \end{ltab}
 CT button: area $1$ (not height). \; $\int_{-\infty}^{\infty}\delta(t)\,dt=1$.
+
+\term{No integral (sampling form)}: $g(t)\,\delta(t-t_0)=g(t_0)\,\delta(t-t_0)$. The $\delta$ stays.
 \begin{qtab}
 $\int_0^5 e^t\delta(t+1)\,dt$ & flash \pB{$-1$}, outside $[0,5]$: $0$ \\
 $\sum_n n^2\delta[n-3]$ & flash \pB{$3$}, all $n$: $\pA{3^2}$ \\
@@ -839,6 +872,11 @@ DT running sum & $r[n]=\sum_{k=-\infty}^{n-1}u[k]$ \\
 \stepbox{2. EACH SWITCH IS A JUMP}{$\slot{pcD}{jump}\,u(t-\slot{pcD}{where})$}
 \stepdown
 \stepbox{3. DRAW}{Start flat at $0$. Add each change in time order.}
+
+\subsubsection{Steps --- derivative of a graph}
+\stepbox{1. EACH PIECE}{A piece with slope $m$ becomes a flat level $m$. \why{ramps become switches}}
+\stepdown
+\stepbox{2. EACH JUMP}{A jump becomes a button: $\slot{pcD}{jump}\,\delta(t-\slot{pcD}{where})$. \why{switches become buttons}}
 \end{rcol}
 
 % ============================================================ 11
@@ -881,6 +919,7 @@ DT running sum & $r[n]=\sum_{k=-\infty}^{n-1}u[k]$ \\
 \pC{start} & a recursive system's start value, $y[-1]=0$ at rest \\
 \end{ltab}
 \trap{Shifting $w[n]=2x[n]$ to $w[n-1]$ shifts every $n$: $2x[n-1]$.}
+\trap{Two LTI systems in series can swap order. Other systems cannot.}
 \end{lcol}
 \begin{rcol}
 \subsubsection{Steps --- series}
@@ -892,6 +931,11 @@ DT running sum & $r[n]=\sum_{k=-\infty}^{n-1}u[k]$ \\
 
 \subsubsection{Steps --- parallel}
 \stepbox{1. ADD THE BRANCHES}{$y=\slot{pcA}{$y_1$}+\slot{pcB}{$y_2$}$ \why{both get the same $x$}}
+
+\subsubsection{Steps --- run a nonrecursive system}
+\stepbox{1. LIST THE INPUT}{Write each nonzero $x[n]$. Every other $x$ is $0$.}
+\stepdown
+\stepbox{2. EACH OUTPUT TIME}{For each $n$, look up every $x[\cdot]$ the recipe needs, and combine. \why{$y$ is nonzero from (first input $+$ smallest delay) to (last input $+$ largest delay)}}
 
 \subsubsection{Steps --- run a recursive system}
 \stepbox{1. START AT REST}{$y[-1]=\slot{pcC}{$0$}$ (or the given start).}
@@ -948,8 +992,16 @@ $n$ (or $t$) & \pA{now} \\
 $n-1$, $n-2$, \ldots & \pB{past} \\
 $n+1$, \ldots, or $-n$, $2n$ & \pC{future} (for some $n$) \\
 \end{ltab}
+CT works the same with $t$: $x(t-1)$ is \pB{past}. $x(t+1)$, $x(2t)$, $x(-t)$ reach the \pC{future} for some $t$.
 \trap{$y(t)=x(-t)$: at $t=-1$ it needs $x(1)$, the future.}
 \trap{$y=x^2$ is not invertible: $1$ and $-1$ both give $1$.}
+\subsubsection{Common inverses}
+\begin{ltab}{System}{Inverse}
+$y=a\,x[n]$, \; $a\neq0$ & $x[n]=\frac1a\,y[n]$ \\
+$y=x[n-n_0]$ & $x[n]=y[n+n_0]$ \\
+accumulator & first difference: $x[n]=y[n]-y[n-1]$ \\
+$x^2$, \; $\lvert x\rvert$, \; $x[2n]$, \; $0\cdot x$ & \warn{none}: information is lost \\
+\end{ltab}
 \end{lcol}
 \begin{rcol}
 \stepbox{1. COLOR EACH STAMP}{\pA{now}, \pB{past}, or \pC{future}.}
@@ -1044,7 +1096,7 @@ numbers only outside: $3x[n]$, $x^2$ & \keyres{yes} \\
 \pA{$\lvert c_i\rvert$} & the size of each coefficient \\
 \pD{$B$} & the input ceiling: $\lvert x[n]\rvert\le B$ \\
 \end{ltab}
-\term{BIBO}: bounded in $\Rightarrow$ bounded out.
+\term{BIBO}: bounded in $\Rightarrow$ bounded out. \; \term{LTI shortcut}: stable $\iff\sum\lvert h[n]\rvert<\infty$ (topic 13).
 \begin{ltab}{Red flag}{Why}
 $n\,x[n]$ & $\lvert n\rvert B$ grows with $n$ \\
 accumulator & adds another $B$ every step \\
@@ -1141,18 +1193,20 @@ two formulas with switches & Method 3, formula \\
 \stepdown
 \stepbox{2. FLIP AND SLIDE $h$}{$h[k]\to h[-k]\to h[\slot{pcC}{$n$}-k]$. Its first stem sits at $k=n$, the rest trail left.}
 \stepdown
-\stepbox{3. REGIONS}{Split $n$: no overlap ($y=0$), partial overlap, full overlap.}
+\stepbox{3. OVERLAP LIMITS}{$x$ on $[a,b]$, $h$ on $[c,d]$: the sum runs \\ $k=\max(a,\;n-d)$ to $\min(b,\;n-c)$ \why{$h$ never ends: $d=\infty$, so the lower limit is $a$} \\ Lower limit $>$ upper limit $\Rightarrow$ no overlap, $y=0$.}
 \stepdown
-\stepbox{4. EACH REGION}{$y[\slot{pcC}{$n$}]=\displaystyle\sum_{k\in\text{overlap}}\slot{pcA}{$x[k]$}\,\slot{pcB}{$h[n-k]$}$}
+\stepbox{4. REGIONS}{A new region of $n$ starts each time a different bound wins the max or the min: none, partial, full, (partial, none).}
 \stepdown
-\stepbox{5. CHECK}{The region formulas agree where they meet.}
+\stepbox{5. EACH REGION}{$y[\slot{pcC}{$n$}]=\displaystyle\sum_{k\in\text{overlap}}\slot{pcA}{$x[k]$}\,\slot{pcB}{$h[n-k]$}$}
+\stepdown
+\stepbox{6. CHECK}{The region formulas agree where they meet.}
 
 \subsubsection{Method 3 --- formula}
 \stepbox{1. PLACE}{$y[n]=\displaystyle\sum_k\slot{pcA}{$x[k]$}\,\slot{pcB}{$h[n-k]$}$}
 \stepdown
 \stepbox{2. SWITCHES CUT THE SUM}{$u[k]\,u[n-k]$ $\Rightarrow$ $k=0..\slot{pcC}{$n$}$, and $y=0$ for $n<0$.}
 \stepdown
-\stepbox{3. PULL OUT, GEOMETRIC SUM}{Pull out what has no $k$. Then $\sum_{k=0}^{n}r^k=\dfrac{1-r^{n+1}}{1-r}$.}
+\stepbox{3. PULL OUT, GEOMETRIC SUM}{$a^k\,b^{n-k}=b^n\Big(\dfrac ab\Big)^k$: pull out $b^n$, ratio $r=\dfrac ab$. \\ $\displaystyle\sum_{k=0}^{n}r^k=\dfrac{1-r^{n+1}}{1-r}$ \why{$r=1$: the sum is $n+1$}}
 \stepdown
 \stepbox{4. CHECK}{$y[0]=x[0]\,h[0]$.}
 \end{rcol}
