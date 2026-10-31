@@ -189,6 +189,7 @@ iarrow/.style={-{Latex[length=1.6mm]}, uHi, thick}}
 \newenvironment{ltab}[2]{\par\vspace{2pt}\noindent\small\renewcommand{\arraystretch}{1.2}%
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.40\linewidth}>{\raggedright\arraybackslash}p{0.555\linewidth}@{}}\term{#1} & \term{#2} \\\hline}%
 {\end{tabular}\par\vspace{3pt}}
+\newcommand{\trap}[1]{\par\noindent\warn{\textbf{Trap:}} #1\par}
 \newcommand{\bk}[1]{{\scriptsize\textcolor{white!55}{[book #1]}}}
 % resistor color swatch
 \newcommand{\sw}[1]{\fcolorbox{white!60}{#1}{\rule{0pt}{5pt}\hspace{9pt}}}
@@ -420,6 +421,10 @@ red, red, gold, gold & $22\times0.1=\keyres{2.2\,\Omega}$, $\pm5\%$ \\
 \term{12. $\Delta\to Y$} & $R_1=\dfrac{R_bR_c}{R_a+R_b+R_c}$, \; $R_a=\dfrac{R_1R_2+R_2R_3+R_1R_3}{R_1}$ \st\\
 \term{13. bridge} & $R_x=\dfrac{R_2}{R_1}R_3$, \; $V_{out}\approx\dfrac{V_0}{4}\dfrac{\Delta R}{R}$, \; $R=R_0(1+\alpha P)$ \st\\
 \term{14. diode, LED} & forward: $I=\dfrac{V_s-V_F}{R}$, \; $V_F\approx0.7$ V (Si) \st\\
+\term{16. linearity} & sources $\times K$: $v,i\times K$, \; $p\times K^2$. \; unit output: $K=\dfrac{v_s}{v_s'}$ \st\\
+\term{17. mesh} & $(\sum R_k)I_k-\sum R_{kj}I_j=\sum v_{\text{rise}}$, \; $i_{\text{shared}}=I_a-I_b$, \; supermesh: $I_b-I_a=i_s$ \\
+\term{18. superposition} & $v=v_1+\cdots+v_n$. \; off: $v_s\to$ short, $i_s\to$ open. \; $p\neq\sum p_k$ \\
+\term{19. validation} & $\%\,\text{err}=\dfrac{\lvert\text{sim}-\text{hand}\rvert}{\lvert\text{hand}\rvert}100$ \st\\
 \end{tabular}}
 
 \filbreak \subsection{calculus and algebra tools}
@@ -487,7 +492,13 @@ mixed sources and resistors & source transformation \hfill (11) \\[1pt]
 not series, not parallel (a bridge) & $\Delta\leftrightarrow Y$ \hfill (12) \\[1pt]
 bridge balance / sensor output & Wheatstone \hfill (13) \\[1pt]
 force on a sensor $\to V_{out}$ & piezoresistor, cantilever \hfill (13) \\[1pt]
-diode or LED in a circuit & assume on, check $I>0$ \hfill (14) \\
+diode or LED in a circuit & assume on, check $I>0$ \hfill (14) \\[1pt]
+a known answer, new source value & scale by $K$, power by $K^2$ \hfill (16) \\[1pt]
+a ladder $\to$ output & unit output, then scale \hfill (16) \\[1pt]
+planar circuit, many loops & mesh currents, one KVL per mesh \hfill (17) \\[1pt]
+current source between two meshes & supermesh \hfill (17) \\[1pt]
+several independent sources & superposition, one at a time \hfill (18) \\[1pt]
+simulation vs hand answer & percent error, same ground and directions \hfill (19) \\
 \end{tabular}}
 
 \end{multicols}
@@ -1409,6 +1420,209 @@ Reduce, find the source current, then expand back out with Ohm's law, KVL, and K
 \stepbox{5. BRANCH CURRENTS: $i=v_{bc}/R$}{$i_2=\frac{6}{\pB6}=\keyres{1}$ A, \; $i_3=\frac{6}{\pB3}=\keyres{2}$ A \why{KCL: $1+2=3$}}
 \stepdown
 \stepbox{6. CHECK (POWER)}{$p_1=18$, $p_2=6$, $p_3=12$ W. \; Total $36$ W $=12\cdot3$ from the source \checkmark}
+
+
+% ------------------------------------------------------------ 16
+\filbreak \subsection{16. linear circuits \bk{3-1}}
+A \term{linear circuit} has only independent sources and linear elements. Its inputs are the independent sources. Its outputs are every $v$ and $i$ in the passive elements.
+\begin{ftab}
+$v=R(Ki)=K(Ri)$ & \term{homogeneity} (scaling): multiply the input by $K$, the output is multiplied by $K$ \\
+$v=R(i_1+i_2)=Ri_1+Ri_2$ & \term{additivity} (superposition): two inputs together give the sum of their separate outputs \\
+all sources $\times K$ & every $v$ and every $i$ in the circuit $\times K$ \\
+all sources $\times K$ & every power $\times K^2$ \why{$p=i^2R$ is not linear} \\
+\end{ftab}
+\begin{ltab}{Linear elements}{Not linear}
+resistor, capacitor, inductor & diode, LED, fuse (\S14) \\
+dependent source with gain $\times$ one $v$ or $i$ ($\alpha v_x$, $\beta i_x$) & a source that depends on $v_x^2$, or a product $v_xi_y$ \\
+\end{ltab}
+\trap{Power is not linear. Double the source and the power is $4\times$, not $2\times$.}
+\trap{A dependent source is not an input. Only independent sources are inputs.}
+
+\term{Unit-output method} (ladder circuits): assume the output is $1$ V (or $1$ A). Work backward to the source with Ohm's law, KCL and KVL. Then scale everything by $K=\dfrac{\text{real source}}{\text{source you found}}$.
+
+\wk{8}{scale a known answer (the \S15 circuit)}
+\stepbox{1. PIECES}{known: $\pC{12}$ V gives $i=\pA{3}$ A and $p_{\text{total}}=\pA{36}$ W. \qquad new source \pB{$18$} V}
+\stepdown
+\stepbox{2. TEMPLATE}{$K=\dfrac{\slot{pcB}{new}}{\slot{pcC}{old}}$ \qquad $i_{\text{new}}=K\,\slot{pcA}{$i$}$ \qquad $p_{\text{new}}=K^2\,\slot{pcA}{$p$}$}
+\stepdown
+\stepbox{3. PLACE}{$K=\dfrac{\pB{18}}{\pC{12}}=1.5$ \qquad $i=1.5(\pA3)=\keyres{4.5}$ A \qquad $p=2.25(\pA{36})=\keyres{81}$ W}
+\stepdown
+\stepbox{4. CHECK}{$p=v_si=18(4.5)=81$ W \checkmark}
+
+\needspace{14\baselineskip}
+\noindent\hfil
+\begin{tikzpicture}[font=\scriptsize]
+\node[src] (vs) at (0,1) {}; \node[font=\tiny] at (0,1.13) {$+$}; \node[font=\tiny] at (0,0.85) {$-$};
+\node[left=0.05cm of vs] {$v_s$};
+\node[res, draw=pcD] (ra) at (1.2,2) {}; \node[above=0.05cm of ra, text=pcD] {$3\,\Omega$};
+\node[vres, draw=pcC] (rb) at (2.4,1) {}; \node[right=0.08cm of rb, text=pcC] {$6\,\Omega$};
+\node[res, draw=pcB] (rc) at (3.6,2) {}; \node[above=0.05cm of rc, text=pcB] {$1\,\Omega$};
+\node[vres, draw=pcA] (rd) at (4.8,1) {}; \node[right=0.08cm of rd, text=pcA] {$2\,\Omega$};
+\draw[wire] (vs.north) -- (0,2) -- (ra.west); \draw[wire] (ra.east) -- (rc.west); \draw[wire] (rc.east) -- (4.8,2) -- (rd.north);
+\draw[wire] (2.4,2) -- (rb.north); \draw[wire] (rb.south) -- (2.4,0);
+\draw[wire] (rd.south) -- (4.8,0) -- (0,0) -- (vs.south);
+\fill[keyHi] (2.4,2) circle (1.6pt) node[above, text=keyHi] {a};
+\node[text=pcA] at (5.55,1.35) {$+$}; \node[text=pcA] at (5.55,0.65) {$-$}; \node[text=pcA] at (5.75,1) {$v_o$};
+\end{tikzpicture}
+
+\wk{8}{unit output: $v_o$ for $v_s=15$ V (ladder above)}
+\stepbox{1. PIECES}{\term{In words}: pretend $v_o=1$ V, walk back to the source, then scale. \\ \pA{$2\,\Omega$} (output) \qquad \pB{$1\,\Omega$} \qquad \pC{$6\,\Omega$} \qquad \pD{$3\,\Omega$} \qquad real $v_s=15$ V}
+\stepdown
+\stepbox{2. TEMPLATE}{$v_o=1$ $\to$ $i=\frac{v}{R}$ $\to$ KVL for the next node $\to$ KCL for the next current $\to$ $v_s'$ \qquad $K=\dfrac{15}{v_s'}$}
+\stepdown
+\stepbox{3. PLACE: WALK BACK}{$i_{\pA2}=\frac{1}{\pA2}=0.5$ A $=i_{\pB1}$ \why{series} \quad $v_a=1+0.5(\pB1)=1.5$ V \\ $i_{\pC6}=\frac{1.5}{\pC6}=0.25$ A \quad $i_{\pD3}=0.5+0.25=0.75$ A \why{KCL at a} \quad $v_s'=1.5+0.75(\pD3)=3.75$ V}
+\stepdown
+\stepbox{4. SCALE}{$K=\dfrac{15}{3.75}=4$ \qquad $v_o=4(1)=\keyres{4}$ V \why{every $v$ and $i$ above $\times4$}}
+\stepdown
+\stepbox{5. CHECK}{$v_a=6$ V, $i_{3\Omega}=3$ A: \; $6+3(3)=15$ V \checkmark}
+
+% ------------------------------------------------------------ 17
+\filbreak \subsection{17. mesh-current analysis \bk{3-3, 3-4}}
+A \term{mesh} is a loop with no other loop inside it. Each mesh gets one \term{mesh current}, drawn clockwise. Unknowns are mesh currents. Write one KVL per mesh. KCL is automatic, because every mesh current enters and leaves each node.
+\begin{ftab}
+$i_{\text{branch}}=I_{\text{this}}-I_{\text{other}}$ & a resistor shared by two meshes carries the difference \\
+$\sum_{R\text{ in mesh}}(I_{\text{this}}-I_{\text{other}})R=\sum v_{\text{rise}}$ & KVL clockwise: each $R$ drops $(I_{\text{this}}-I_{\text{neighbor}})R$. $I_{\text{other}}=0$ on the outer edge \\
+source rise & clockwise you enter its $-$ and leave its $+$: \keyres{$+v_s$} on the right side \\
+source drop & you enter its $+$: \warn{$-v_s$} on the right side \\
+\end{ftab}
+\term{By inspection} (independent voltage sources only): mesh $k$ reads
+$$\Big(\textstyle\sum R\text{ in mesh }k\Big)I_k-\sum_{j}\big(R\text{ shared with }j\big)I_j=\sum v_{\text{rise}}\text{ in mesh }k$$
+\begin{ltab}{Special case}{Do this}
+current source on the outer edge of one mesh & that mesh current is known: $I_k=\pm i_s$ (sign by direction). One fewer KVL \\
+current source shared by two meshes & \term{supermesh}: KVL around the outer loop of both (skip the source branch), plus $I_b-I_a=i_s$ \\
+dependent source & write its control $v_x$ or $i_x$ in mesh currents. Then move unknowns to the left \\
+\end{ltab}
+\term{Steps}: (1) mark each mesh, clockwise $I_1$, $I_2$, \ldots (2) handle current sources (known or supermesh). (3) KVL per remaining mesh. (4) solve (\S Solving simultaneous equations). (5) branch currents $=$ differences, then $v=iR$.
+\trap{The shared $R$ appears in both mesh equations with the other mesh current subtracted.}
+\trap{Never write KVL through a current source branch. Its voltage is unknown.}
+\trap{Mesh needs a planar circuit (drawn with no crossing wires).}
+
+\needspace{14\baselineskip}
+\noindent\hfil
+\begin{tikzpicture}[font=\scriptsize]
+\node[src, draw=pcD] (v1) at (0,1) {}; \node[font=\tiny, text=pcD] at (0,1.13) {$+$}; \node[font=\tiny, text=pcD] at (0,0.85) {$-$};
+\node[left=0.05cm of v1, text=pcD] {$10$ V};
+\node[res, draw=pcA] (r1) at (1.25,2) {}; \node[above=0.05cm of r1, text=pcA] {$1\,\Omega$};
+\node[vres, draw=pcC] (r3) at (2.5,1) {}; \node[right=0.08cm of r3, text=pcC] {$2\,\Omega$};
+\node[res, draw=pcB] (r2) at (3.75,2) {}; \node[above=0.05cm of r2, text=pcB] {$1\,\Omega$};
+\node[src, draw=pcE] (v2) at (5,1) {}; \node[font=\tiny, text=pcE] at (5,1.13) {$+$}; \node[font=\tiny, text=pcE] at (5,0.85) {$-$};
+\node[right=0.05cm of v2, text=pcE] {$5$ V};
+\draw[wire] (v1.north) -- (0,2) -- (r1.west); \draw[wire] (r1.east) -- (r2.west); \draw[wire] (r2.east) -- (5,2) -- (v2.north);
+\draw[wire] (2.5,2) -- (r3.north); \draw[wire] (r3.south) -- (2.5,0);
+\draw[wire] (v1.south) -- (0,0) -- (5,0) -- (v2.south);
+\draw[-{Latex[length=1.6mm]}, uHi, thick] ([shift={(150:0.32)}]1.25,1) arc[start angle=150, end angle=-150, radius=0.32];
+\node[uHi] at (1.25,1) {$I_1$};
+\draw[-{Latex[length=1.6mm]}, uHi, thick] ([shift={(150:0.32)}]3.75,1) arc[start angle=150, end angle=-150, radius=0.32];
+\node[uHi] at (3.75,1) {$I_2$};
+\end{tikzpicture}
+
+\wk{8}{two meshes (above)}
+\stepbox{1. PIECES}{mesh 1: \pA{$1\,\Omega$} own, \pC{$2\,\Omega$} shared, \pD{$10$ V} \why{clockwise enters $-$: rise, $+10$} \\ mesh 2: \pB{$1\,\Omega$} own, \pC{$2\,\Omega$} shared, \pE{$5$ V} \why{clockwise enters $+$: drop, $-5$}}
+\stepdown
+\stepbox{2. TEMPLATE (BY INSPECTION)}{$\big(\slot{pcA}{own}+\slot{pcC}{shared}\big)I_1-\slot{pcC}{shared}\,I_2=\slot{pcD}{rise}$ \\ $-\slot{pcC}{shared}\,I_1+\big(\slot{pcB}{own}+\slot{pcC}{shared}\big)I_2=\slot{pcE}{rise}$}
+\stepdown
+\stepbox{3. PLACE}{$3I_1-2I_2=\pD{10}$ \qquad $-2I_1+3I_2=\pE{-5}$ \qquad matrix $\begin{bmatrix}3&-2\\-2&3\end{bmatrix}$, symmetric \checkmark}
+\stepdown
+\stepbox{4. SOLVE (CRAMER)}{$D=9-4=5$ \quad $I_1=\dfrac{10(3)-(-5)(-2)}{5}=\keyres{4}$ A \quad $I_2=\dfrac{3(-5)-(-2)(10)}{5}=\keyres{1}$ A}
+\stepdown
+\stepbox{5. BRANCH CURRENT}{through \pC{$2\,\Omega$}: $I_1-I_2=\keyres{3}$ A, downward \why{$I_1$ goes down there}}
+\stepdown
+\stepbox{6. CHECK (KVL, LEFT LOOP)}{$4(1)+3(2)=10$ V \checkmark}
+
+\needspace{14\baselineskip}
+\noindent\hfil
+\begin{tikzpicture}[font=\scriptsize]
+\node[src, draw=pcD] (v1) at (0,1) {}; \node[font=\tiny, text=pcD] at (0,1.13) {$+$}; \node[font=\tiny, text=pcD] at (0,0.85) {$-$};
+\node[left=0.05cm of v1, text=pcD] {$20$ V};
+\node[res, draw=pcA] (r1) at (1.25,2) {}; \node[above=0.05cm of r1, text=pcA] {$2\,\Omega$};
+\node[src, draw=pcE] (is) at (2.5,1) {}; \draw[-{Latex[length=1.3mm]}, pcE, thick] (2.5,0.84) -- (2.5,1.17);
+\node[right=0.05cm of is, text=pcE] {$2$ A};
+\node[res, draw=pcB] (r2) at (3.75,2) {}; \node[above=0.05cm of r2, text=pcB] {$2\,\Omega$};
+\node[vres, draw=pcC] (r3) at (5,1) {}; \node[right=0.08cm of r3, text=pcC] {$4\,\Omega$};
+\draw[wire] (v1.north) -- (0,2) -- (r1.west); \draw[wire] (r1.east) -- (r2.west); \draw[wire] (r2.east) -- (5,2) -- (r3.north);
+\draw[wire] (2.5,2) -- (is.north); \draw[wire] (is.south) -- (2.5,0);
+\draw[wire] (v1.south) -- (0,0) -- (5,0) -- (r3.south);
+\draw[-{Latex[length=1.6mm]}, uHi, thick] ([shift={(150:0.32)}]1.25,1) arc[start angle=150, end angle=-150, radius=0.32];
+\node[uHi] at (1.25,1) {$I_1$};
+\draw[-{Latex[length=1.6mm]}, uHi, thick] ([shift={(150:0.32)}]3.75,1) arc[start angle=150, end angle=-150, radius=0.32];
+\node[uHi] at (3.75,1) {$I_2$};
+\end{tikzpicture}
+
+\wk{8}{supermesh: a shared current source (above)}
+\stepbox{1. PIECES}{\term{In words}: the $2$ A source sits between both meshes, so go around the outside, and let the source fix the difference. \\ \pE{$2$ A up} in the shared branch \qquad outer loop: \pD{$20$ V}, \pA{$2\,\Omega$}, \pB{$2\,\Omega$}, \pC{$4\,\Omega$}}
+\stepdown
+\stepbox{2. TEMPLATE}{constraint: $I_{\text{up}}-I_{\text{down}}=\slot{pcE}{$i_s$}$ \qquad outer KVL: $\slot{pcA}{$R$}I_1+\slot{pcB}{$R$}I_2+\slot{pcC}{$R$}I_2=\slot{pcD}{rise}$}
+\stepdown
+\stepbox{3. PLACE}{$I_2-I_1=\pE2$ \why{$I_2$ goes up through it, $I_1$ down} \qquad $\pA2I_1+\pB2I_2+\pC4I_2=\pD{20}$}
+\stepdown
+\stepbox{4. SUBSTITUTE}{$I_2=I_1+2$: \; $2I_1+6(I_1+2)=20$ $\Rightarrow$ $I_1=\keyres{1}$ A, \; $I_2=\keyres{3}$ A}
+\stepdown
+\stepbox{5. CHECK (TOP NODE BOTH WAYS)}{left: $20-1(2)=18$ V \qquad right: $3(2)+3(4)=18$ V \checkmark}
+
+\begin{qtab}
+current source on the outer edge, $3$ A against clockwise & $I_k=\keyres{-3}$ A. Skip that mesh's KVL \\
+CCVS $4i_x$, with $i_x=I_1-I_2$ & put $4(I_1-I_2)$ in the KVL, then move it to the left side \\
+\end{qtab}
+
+% ------------------------------------------------------------ 18
+\filbreak \subsection{18. source superposition \bk{3-5}}
+In a linear circuit with several independent sources, any $v$ or $i$ is the sum of the answers from each source acting alone.
+\begin{ftab}
+$v=v_1+v_2+\cdots+v_n$ & total $=$ sum of each source alone \\
+voltage source off & replace it with a \keyres{short} ($v=0$) \\
+current source off & replace it with an \keyres{open} ($i=0$) \\
+dependent source & \warn{never turn it off}. It stays in every sub-circuit \\
+$p\neq p_1+p_2$ & power does \warn{not} superpose. Add the currents first: $p=(i_1+i_2)^2R$ \\
+\end{ftab}
+\term{Steps}: (1) keep source 1, turn off the others. (2) find $v_1$ (or $i_1$) with any method: dividers, nodal, mesh. (3) repeat for each source. (4) add, with every part measured in the \keyres{same direction}.
+\trap{Use one reference direction for $i$ in every sub-circuit. A part that flows the other way enters the sum negative.}
+\trap{Short a voltage source, open a current source. Not the other way around.}
+\term{Why use it}: it shows how much each source contributes (sensitivity), and each sub-circuit is often a simple divider.
+
+\needspace{14\baselineskip}
+\noindent\hfil
+\begin{tikzpicture}[font=\scriptsize]
+\node[src, draw=pcD] (v1) at (0,1) {}; \node[font=\tiny, text=pcD] at (0,1.13) {$+$}; \node[font=\tiny, text=pcD] at (0,0.85) {$-$};
+\node[left=0.05cm of v1, text=pcD] {$12$ V};
+\node[res, draw=pcA] (r1) at (1.3,2) {}; \node[above=0.05cm of r1, text=pcA] {$4\,\Omega$};
+\node[vres, draw=pcB] (r2) at (2.6,1) {}; \node[left=0.08cm of r2, text=pcB] {$2\,\Omega$};
+\node[src, draw=pcE] (is) at (4,1) {}; \draw[-{Latex[length=1.3mm]}, pcE, thick] (4,0.84) -- (4,1.17);
+\node[right=0.05cm of is, text=pcE] {$3$ A};
+\draw[wire] (v1.north) -- (0,2) -- (r1.west); \draw[wire] (r1.east) -- (4,2) -- (is.north);
+\draw[wire] (2.6,2) -- (r2.north); \draw[wire] (r2.south) -- (2.6,0);
+\draw[wire] (v1.south) -- (0,0) -- (4,0) -- (is.south);
+\draw[iarrow] (2.9,1.45) -- (2.9,0.75) node[midway, right] {$i$};
+\fill[keyHi] (2.6,2) circle (1.6pt) node[above, text=keyHi] {a};
+\end{tikzpicture}
+
+\wk{8}{$i$ in the $2\,\Omega$ (above), one source at a time}
+\stepbox{1. PIECES}{\pD{$12$ V} \qquad \pE{$3$ A} \qquad \pA{$4\,\Omega$} \qquad \pB{$2\,\Omega$}, with $i$ downward}
+\stepdown
+\stepbox{2. TEMPLATE}{$i=\slot{pcD}{$i_1$}+\slot{pcE}{$i_2$}$ \qquad $i_1$: \pE{$3$ A} open \qquad $i_2$: \pD{$12$ V} shorted}
+\stepdown
+\stepbox{3. PLACE: \pD{12 V} ALONE (3 A OPEN)}{one loop: $i_1=\dfrac{\pD{12}}{\pA4+\pB2}=\keyres{2}$ A, down}
+\stepdown
+\stepbox{4. PLACE: \pE{3 A} ALONE (12 V SHORTED)}{$4\,\Omega$ and $2\,\Omega$ now both go from a to ground. Current divider: \\ $i_2=\pE3\cdot\dfrac{\pA4}{\pA4+\pB2}=\keyres{2}$ A, down}
+\stepdown
+\stepbox{5. ADD}{$i=2+2=\keyres{4}$ A, down \qquad power: $4^2(2)=\keyres{32}$ W \why{not $2^2(2)+2^2(2)=16$}}
+\stepdown
+\stepbox{6. CHECK (NODAL)}{$\dfrac{V_a-12}{4}+\dfrac{V_a}{2}-3=0$ $\Rightarrow$ $V_a=8$ V, \; $i=\frac82=4$ A \checkmark}
+
+% ------------------------------------------------------------ 19
+\filbreak \subsection{19. validating with simulation \bk{3-10}}
+A simulator (Multisim, LTspice) solves the same equations. Use it to check a hand answer, not to replace one.
+\begin{ftab}
+$\%\,\text{error}=\dfrac{\lvert\text{sim}-\text{hand}\rvert}{\lvert\text{hand}\rvert}\times100$ & how far apart the two answers are \st\\
+DC operating point & the analysis that gives every node voltage and branch current \\
+sweep one source & a linear circuit gives a straight line \keyres{through the origin} \\
+each source alone, then all & the separate answers must add to the all-on answer \\
+\end{ftab}
+\begin{itemize}
+\item Put ground at the same node as your hand solution.
+\item Match the reference direction: a current that reads negative flows opposite to your arrow.
+\item Round only at the end. A hand answer rounded early can show a fake error.
+\end{itemize}
+\trap{A sign difference is usually a direction mismatch, not a wrong answer.}
 
 \end{multicols}
 
