@@ -156,7 +156,7 @@ Every method is a chain of steps. Each step is a template with empty colored slo
 3. one box at a time & Each box is one move. Do not merge two boxes. \\
 \end{tabular}}
 \par\vspace{2pt}
-\term{Colors in lessons 1, 3, 5 and Bernoulli}: \pA{$p(x)$} \quad \pB{$q(x)$} \quad \pC{$\mu$ (mu)} \quad \pD{$x_0$, $y_0$} \quad \pE{$a(x)$ or $n$}. \; Lessons 2, 4, 10--12 and the homogeneous method set their own colors in their PIECES tables.
+\term{Colors in lessons 1, 3, 5 and Bernoulli}: \pA{$p(x)$} \quad \pB{$q(x)$} \quad \pC{$\mu$ (mu)} \quad \pD{$x_0$, $y_0$} \quad \pE{$a(x)$ or $n$}. \; Lessons 2, 4, 10--15 and the homogeneous method set their own colors in their PIECES tables.
 
 \filbreak \subsection{the master idea}
 Rearrange until each side is integrable. Second order: guess the shape of $y$.
@@ -170,6 +170,9 @@ autonomous (L8) & no solving: read the phase line \\
 const.\ coefficients (L10) & guess $e^{rx}$: it is a quadratic in $r$ \\
 Euler (L11) & guess $x^r$: it is a quadratic in $r$ \\
 nonhomogeneous (L12) & it splits: $y=y_c+y_p$ \\
+undet.\ coefficients (L13) & a guess shaped like $f$ fits: match the numbers \\
+reduction of order (L14) & $y=uy_1$ drops to first order in $u'$ \\
+variation of param.\ (L15) & $y_p=u_1y_1+u_2y_2$: two integrals \\
 \end{ltab}
 
 \filbreak \subsection{which method? --- the sorter}
@@ -190,7 +193,10 @@ Move all $y$-terms to the left. Then test.
 \begin{ltab}{If the equation}{Use}
 is $ay''+by'+cy=0$, \; $a,b,c$ numbers & characteristic equation \hfill (L10) \\[1pt]
 is $ax^2y''+bxy'+cy=0$ & indicial equation \hfill (L11) \\[1pt]
-has a right side $f(x)\neq0$ & $y_c$ from L10 or L11, $+\,y_p$ \hfill (L12) \\
+has a right side $f(x)\neq0$ & $y_c$ from L10 or L11, $+\,y_p$ \hfill (L12) \\[1pt]
+\quad numbers, $f$ from $x^n$, $e^{kx}$, $\cos$, $\sin$ & $y_p$ by undetermined coefficients \hfill (L13) \\[1pt]
+\quad any other $f$, or not numbers & $y_p$ by variation of parameters \hfill (L15) \\[1pt]
+has no recipe, but one $y_1$ is given & $y_2$ by reduction of order \hfill (L14) \\
 \end{ltab}
 \trap{$y''+xy'+y=0$ is neither: the coefficients are not numbers, and the powers of $x$ do not match the orders.}
 
@@ -232,7 +238,10 @@ $ay''+by'+cy=0\to$ solution & roots of $ar^2+br+c$, sign of $D$ \hfill (L10) \\[
 Euler $\to$ general solution & roots of $ar^2+(b-a)r+c$ \hfill (L11) \\[1pt]
 $y_1$, $y_2\to$ fundamental set or not & $W\neq0$ \hfill (L12) \\[1pt]
 $f\neq0\to$ general solution & $y_c+y_p$ \hfill (L12) \\[1pt]
-2nd-order IVP $\to$ $c_1$, $c_2$; interval & $y$, $y'$ at $x_0$; bad $x$ of $p,q,f$ \hfill (L12) \\
+2nd-order IVP $\to$ $c_1$, $c_2$; interval & $y$, $y'$ at $x_0$; bad $x$ of $p,q,f$ \hfill (L12) \\[1pt]
+numbers, $f$ in the family $\to$ $y_p$ & guess $\times\,x^s$, match \hfill (L13) \\[1pt]
+one $y_1\to$ $y_2$ & $y=uy_1$, \; $w=e^{-\int p}/y_1^2$ \hfill (L14) \\[1pt]
+$y_1$, $y_2$, any $f\to$ $y_p$ & $u_1'=-\frac{y_2f}{W}$, \; $u_2'=\frac{y_1f}{W}$ \hfill (L15) \\
 \end{ltab}
 
 \filbreak \subsection{integrals (add $+C$ once)}
@@ -247,6 +256,8 @@ $e^{kx}$ & $\dfrac{1}{k}e^{kx}$ \; \warn{divide by $k$} \st\\
 $\sin(ax)$ / $\cos(ax)$ & $-\dfrac{\cos(ax)}{a}$ / $\dfrac{\sin(ax)}{a}$ \st\\
 $\tan x$ & $\ln\lvert\sec x\rvert$ \\
 $\sec^2x$ & $\tan x$ \\
+$\sec x$ & $\ln\lvert\sec x+\tan x\rvert$ \; \why{L15} \\
+$xe^{kx}$ & $\dfrac{1}{k^2}(kx-1)\,e^{kx}$ \; \why{by parts} \st\\
 $\dfrac{1}{1+y^2}$ & $\tan^{-1}y$ \st\\
 \end{tabular}}
 \par\vspace{2pt}
@@ -594,7 +605,7 @@ $y'-\frac yx=y^2$ & \pA{$-\frac1x$}, \pB{$1$}, \pE{$2$}: \; $v=y^{-1}$. \; new \
 \stepdown
 \stepbox{LINE 3 --- CHECK $\mu$}{Differentiate: $\slot{pcC}{$\mu$}'=\ldots$ \quad Separately: $\slot{pcA}{new $p$}\,\slot{pcC}{$\mu$}=\ldots$ \\ \keyres{They must be equal.}}
 \stepdown
-\stepbox{LINE 4 --- \slot{pcC}{$\mu$}LTIPLY EVERY TERM}{$\slot{pcC}{$\mu$}\,v'+\slot{pcC}{$\mu$}\,\slot{pcA}{new $p$}\,v=\slot{pcC}{$\mu$}\,\slot{pcB}{new $q$}$}
+\stepbox{LINE 4 --- MULTIPLY EVERY TERM}{$\slot{pcC}{$\mu$}\,v'+\slot{pcC}{$\mu$}\,\slot{pcA}{new $p$}\,v=\slot{pcC}{$\mu$}\,\slot{pcB}{new $q$}$}
 \stepdown
 \stepbox{LINE 5 --- COLLAPSE THE LEFT SIDE}{$\big(\slot{pcC}{$\mu$}\,v\big)'=\slot{pcC}{$\mu$}\,\slot{pcB}{new $q$}$}
 \stepdown
@@ -1134,6 +1145,7 @@ a polynomial of degree $n$ & a full polynomial of degree $n$ \\
 $\cos kx$ or $\sin kx$ & $A\cos kx+B\sin kx$ \\
 \end{ltab}
 \trap{If the guess is already part of $y_c$, it gives $0$ on the left. Multiply the guess by $x$.}
+\why{Full method: Lesson 13. An $f$ like $\tan x$ or $\frac1x$: Lesson 15.}
 \end{rcol}
 
 \newpage
@@ -1190,6 +1202,264 @@ $x^\alpha\cos(\beta\ln x)$, \; $x^\alpha\sin(\beta\ln x)$ & $\beta\,x^{2\alpha-1
 \end{ltab}
 \why{Every one is $\neq0$: the case recipes always give a fundamental set.}
 \trap{$e^{rx}$, $e^{rx}$ gives $W=0$. That is why a repeated root needs the extra $x$ (or $\ln x$).}
+\end{rcol}
+
+% ============================================================ LESSON 13
+\lesson{Lesson 13 --- undetermined coefficients}
+\idea{The coefficients are numbers, and \pE{$f$} is built from polynomials, $e^{kx}$, $\cos$ and $\sin$. Every derivative of such an \pE{$f$} stays in the same family. So guess a \pD{$y_p$} with the same shape as \pE{$f$} and unknown numbers \pD{$A$, $B$, \ldots}. Substitute, match like terms, and solve for the numbers. If the plain guess is already part of $y_c$, multiply it by $x$.}
+
+\subsection{Build the guess}
+\begin{lcol}
+\subsubsection{Pieces}
+\begin{ltab}{Piece}{Where to find it}
+\pA{$a$, $b$, $c$} & the numbers on $y''$, $y'$, $y$. \keyres{Numbers only} \\
+\pE{$f(x)$} & the right side \\
+\pB{$k$} or \pB{$k\pm\beta i$} & the \term{$f$-number}: read it off \pE{$f$} (step 3) \\
+\pB{$n$} & the highest power of $x$ in \pE{$f$}. No $x$: \pB{$n=0$} \\
+\pC{$r_1$, $r_2$} & the roots of $ar^2+br+c$, from $y_c$ (Lesson 10) \\
+$s$ & how many of \pC{$r_1$, $r_2$} equal the \pB{$f$-number}: $0$, $1$ or $2$ \\
+\pD{$A$, $B$, \ldots} & the unknown numbers in \pD{$y_p$} \\
+\end{ltab}
+
+\subsubsection{The guess table (then multiply by $x^s$)}
+\begin{ltab}{If \pE{$f$} is}{\pB{$f$-number} $\to$ try \pD{$y_p$} $=x^s\cdot(\ldots)$}
+a number & \pB{$0$} $\to$ $A$ \\
+$x^2$ \; (degree \pB{$2$}) & \pB{$0$} $\to$ $Ax^2+Bx+C$ \\
+$e^{3x}$ & \pB{$3$} $\to$ $Ae^{3x}$ \\
+$xe^{-x}$ & \pB{$-1$} $\to$ $(Ax+B)\,e^{-x}$ \\
+$\cos2x$ or $\sin2x$ & \pB{$\pm2i$} $\to$ $A\cos2x+B\sin2x$ \\
+$e^{x}\sin3x$ & \pB{$1\pm3i$} $\to$ $e^{x}(A\cos3x+B\sin3x)$ \\
+$x\cos x$ & \pB{$\pm i$} $\to$ $(Ax+B)\cos x+(Cx+D)\sin x$ \\
+\end{ltab}
+
+\subsubsection{Read the pieces}
+\begin{qtab}
+$y''-3y'+2y=4x$ & \pC{$1,2$}; \pB{$0$}: $s=0$. \; \pD{$Ax+B$} \\
+$y''-y'-2y=e^{2x}$ & \pC{$2,-1$}; \pB{$2$} once: $s=1$. \; \pD{$Axe^{2x}$} \\
+$y''+4y'+4y=e^{-2x}$ & \pC{$-2$} twice; \pB{$-2$}: $s=2$. \; \pD{$Ax^2e^{-2x}$} \\
+$y''+y=\sin x$ & \pC{$\pm i$}; \pB{$\pm i$}: $s=1$. \; \pD{$x(A\cos x+B\sin x)$} \\
+$y''+y=e^x$ & \pC{$\pm i$}; \pB{$1$}: $s=0$. \; \pD{$Ae^x$} \\
+$y''+3y'=6$ & \pC{$0,-3$}; \pB{$0$}: $s=1$. \; \pD{$Ax$} \\
+\end{qtab}
+
+\trap{Trig: keep \keyres{both} $\cos$ and $\sin$ in the guess, even when \pE{$f$} has only one.}
+\trap{Polynomial: keep \keyres{every} lower power. $f=x^2$ needs $Ax^2+Bx+C$.}
+\trap{$x^s$ multiplies the \keyres{whole} guess, every term.}
+\trap{Compare the whole \pB{$f$-number}. $e^{-2x}$ with a root $2$: no match. $\sin x$ with roots $\pm2i$: no match.}
+\end{lcol}
+\begin{rcol}
+\subsubsection{Steps}
+\stepbox{1. STANDARD FORM, READ THE PIECES}{$\slot{pcA}{$a$}\,y''+\slot{pcA}{$b$}\,y'+\slot{pcA}{$c$}\,y=\slot{pcE}{$f$}$ \\ \why{numbers only. Not numbers, or a hard $f$: Lesson 15}}
+\stepdown
+\stepbox{2. $y_c$ (LESSON 10)}{Roots \pC{$r_1$, $r_2$} of $\slot{pcA}{$a$}\,r^2+\slot{pcA}{$b$}\,r+\slot{pcA}{$c$}=0$. \quad $y_c=c_1y_1+c_2y_2$}
+\stepdown
+\stepbox{3. READ $f$}{$\slot{pcE}{$f$}=(\text{degree }\slot{pcB}{$n$}\text{ polynomial})\cdot e^{\slot{pcB}{$k$}x}\cdot(\cos\slot{pcB}{$\beta$}x\text{ or }\sin\slot{pcB}{$\beta$}x)$ \\ \pB{$f$-number}: \pB{$k$}. With trig: \pB{$k\pm\beta i$}. \\ \why{a missing part: no polynomial, $n=0$; no $e$, $k=0$}}
+\stepdown
+\stepbox{4. COUNT THE MATCHES}{$s=$ how many of \pC{$r_1$, $r_2$} equal the \pB{$f$-number}: $0$, $1$, or $2$. \\ \why{a match means the plain guess is part of $y_c$: the left side gives $0$}}
+\stepdown
+\stepbox{5. WRITE THE GUESS}{$\slot{pcD}{$y_p$}=x^s\cdot(\text{the table on the left})$ \\ Full polynomials of degree \pB{$n$}. Both $\cos$ and $\sin$.}
+
+\subsubsection{$f$ is a sum}
+\stepbox{SPLIT}{$\pE{f}=f_1+f_2$: do steps 3--5 for each part, each with its own $s$. Solve each part. Then $\pD{y_p}=y_{p1}+y_{p2}$. \\ \why{Lesson 12, property 4}}
+\begin{qtab}
+$y''-y=x+e^{x}$ & \pC{$\pm1$}. \; $x$: \pB{$0$}, $s=0$, \pD{$A+Bx$}. \; $e^x$: \pB{$1$}, $s=1$, \pD{$Cxe^x$} \\
+\end{qtab}
+\trap{Do not use one guess for the whole sum. Each part has its own \pB{$f$-number}, so its own $s$.}
+
+\subsubsection{The family test}
+\begin{ltab}{If \pE{$f$} is}{then}
+$x^n$, $e^{kx}$, $\cos$, $\sin$, and products & Lesson 13 \\
+$\tan x$, $\sec x$, $\ln x$, $\frac1x$, $\frac{e^x}{x}$ & \warn{not} in the family: Lesson 15 \\
+\end{ltab}
+\why{$\tan x$ has derivatives $\sec^2x$, $2\sec^2x\tan x$, \ldots: a new shape every time, so no finite guess.}
+\end{rcol}
+
+\subsection{Solve for the numbers}
+\begin{lcol}
+\subsubsection{Step 6 --- derivatives of the common guesses}
+\begin{ltab}{\pD{$y_p$}}{\pD{$y_p'$} \quad and \quad \pD{$y_p''$}}
+$Ax+B$ & $A$ \quad and \quad $0$ \\[1pt]
+$Ae^{kx}$ & $kAe^{kx}$ \quad and \quad $k^2Ae^{kx}$ \\[1pt]
+$Axe^{kx}$ & $A(1+kx)e^{kx}$ \quad and \quad $A(2k+k^2x)e^{kx}$ \\[1pt]
+$Ax^2e^{kx}$ & $A(2x+kx^2)e^{kx}$ \quad and \quad $A(2+4kx+k^2x^2)e^{kx}$ \\[1pt]
+$A\cos\beta x+B\sin\beta x$ & $\beta(-A\sin\beta x+B\cos\beta x)$ \quad and \quad $-\beta^2(A\cos\beta x+B\sin\beta x)$ \\[1pt]
+$x(A\cos\beta x+B\sin\beta x)$ & $(A\cos\beta x+B\sin\beta x)+\beta x(-A\sin\beta x+B\cos\beta x)$ \\ & and \; $2\beta(-A\sin\beta x+B\cos\beta x)-\beta^2x(A\cos\beta x+B\sin\beta x)$ \\
+\end{ltab}
+
+\subsubsection{Shortcut: $f=e^{kx}$}
+Write $P(r)=ar^2+br+c$, the characteristic polynomial.
+\begin{ltab}{Case}{\pD{$y_p$}}
+$s=0$: \; $P(k)\neq0$ & $\dfrac{e^{kx}}{P(k)}$ \st\\
+$s=1$: \; $k$ is a simple root & $\dfrac{xe^{kx}}{P'(k)}=\dfrac{xe^{kx}}{2ak+b}$ \st\\
+$s=2$: \; $k$ is a double root & $\dfrac{x^2e^{kx}}{2a}$ \st\\
+\end{ltab}
+\why{For $f=Me^{kx}$, multiply by $M$ (L12, property 5). Use it to check step 9.}
+
+\subsubsection{Read the pieces --- match}
+\begin{qtab}
+$y''-3y'+2y=4x$, \; \pD{$Ax+B$} & $-3A+2Ax+2B=4x$. \; $x$: $2A=4$. \; $1$: $-3A+2B=0$. \; \pD{$y_p=2x+3$} \\
+$y''-y=3\cos2x$, \; \pD{$A\cos2x+B\sin2x$} & $-5A\cos2x-5B\sin2x=3\cos2x$. \; \pD{$A=-\frac35$, $B=0$} \\
+$y''+y=\sin x$, \; \pD{$x(A\cos x+B\sin x)$} & $-2A\sin x+2B\cos x=\sin x$. \; \pD{$A=-\frac12$, $B=0$}. \; $y_p=-\frac12x\cos x$ \\
+$y''-y'-2y=e^{2x}$, \; \pD{$Axe^{2x}$} & $3Ae^{2x}=e^{2x}$. \; \pD{$A=\frac13$} \; \why{shortcut: $2(2)-1=3$} \\
+\end{qtab}
+
+\trap{A term missing from \pE{$f$} has coefficient $0$. $f=\sin x$: the $\cos x$ equation is $\ldots=0$.}
+\trap{With $e^{kx}$ or trig and $s\geq1$, every term with the extra $x$ cancels. If one is left, recheck $s$ or a derivative.}
+\end{lcol}
+\begin{rcol}
+\subsubsection{Steps (continued)}
+\stepbox{6. DIFFERENTIATE THE GUESS}{$\slot{pcD}{$y_p'$}$ and $\slot{pcD}{$y_p''$}$. Use the table on the left.}
+\stepdown
+\stepbox{7. SUBSTITUTE}{$\slot{pcA}{$a$}\,\slot{pcD}{$y_p''$}+\slot{pcA}{$b$}\,\slot{pcD}{$y_p'$}+\slot{pcA}{$c$}\,\slot{pcD}{$y_p$}=\slot{pcE}{$f$}$}
+\stepdown
+\stepbox{8. COLLECT, MATCH}{Group the left side by like terms: each power $x^j$, each $e^{kx}$, each $\cos$, each $\sin$. \\ Coefficient on the left $=$ coefficient in \pE{$f$} ($0$ if missing). One equation per term.}
+\stepdown
+\stepbox{9. SOLVE FOR THE NUMBERS}{Solve for \pD{$A$, $B$, \ldots}. Put them back into \pD{$y_p$}. \\ \why{polynomials: start at the highest power. Each equation gives one number}}
+\stepdown
+\stepbox{10. ASSEMBLE}{$y=\slot{pcC}{$c_1y_1+c_2y_2$}+\slot{pcD}{$y_p$}$}
+\stepdown
+\stepbox{11. IC (IF GIVEN)}{Differentiate the \keyres{whole} $y$. Plug in $x_0$. Solve for $c_1$, $c_2$. \\ \why{Lesson 12, steps 6--7}}
+
+\subsubsection{Why the extra $x$}
+If the guess is part of $y_c$, then $L[\text{guess}]=0$: it can never equal \pE{$f$}. Multiplying by $x$ gives a new function that is not in $y_c$. A double root needs $x^2$, as in Lesson 10.
+\trap{Find \pD{$y_p$} first. The ICs go on $y_c+y_p$, never on $y_c$ alone.}
+\end{rcol}
+
+% ============================================================ LESSON 14
+\lesson{Lesson 14 --- reduction of order}
+\begin{lcol}
+\idea{You know one solution \pC{$y_1$}. Guess $y=\pD{u}\,\pC{y_1}$ with an unknown function \pD{$u$}. The plain \pD{$u$} term drops out, because \pC{$y_1$} already solves the equation. Only \pD{$u'$} and \pD{$u''$} are left: a first order equation in $\pB{w}=\pD{u'}$. Solve for \pB{$w$}, integrate once for \pD{$u$}, and $y_2=\pD{u}\,\pC{y_1}$.}
+
+\subsubsection{Pieces}
+\begin{ltab}{Piece}{Where to find it}
+\pA{$p(x)$} & the coefficient of $y'$, \keyres{after} you divide by the coefficient of $y''$. Sign included \\
+\pC{$y_1$} & given. It solves the $f\to0$ partner \\
+\pD{$u(x)$} & the unknown multiplier. You make it \\
+\pB{$w=u'$} & the new unknown. First order \\
+\pE{$f(x)$} & the right side, after you divide. Usually $0$ \\
+\end{ltab}
+
+\subsubsection{Shortcut ($f=0$)}
+\begin{ltab}{Formula}{In words}
+$\pB{w}=\dfrac{e^{-\int\pA{p}\,dx}}{\pC{y_1}^{\,2}}$ & steps 3--5, done once in general \st\\
+$y_2=\pC{y_1}\displaystyle\int\dfrac{e^{-\int\pA{p}\,dx}}{\pC{y_1}^{\,2}}\,dx$ & the whole method in one line \st\\
+\end{ltab}
+
+\subsubsection{Read the pieces}
+\begin{qtab}
+$y''-4y'+4y=0$, \; \pC{$e^{2x}$} & \pA{$p=-4$}: \; $\pB{w}=\frac{e^{4x}}{e^{4x}}=1$, \; \pD{$u=x$}. \; $y_2=xe^{2x}$ \\
+$x^2y''-3xy'+4y=0$, \; \pC{$x^2$} & \pA{$p=-\frac3x$}: \; $\pB{w}=\frac{x^3}{x^4}=\frac1x$, \; \pD{$u=\ln x$}. \; $y_2=x^2\ln x$ \\
+$x^2y''+xy'-y=0$, \; \pC{$x$} & \pA{$p=\frac1x$}: \; $\pB{w}=\frac{x^{-1}}{x^2}=x^{-3}$, \; \pD{$u=-\frac{1}{2x^2}$}. \; $y_2=\frac1x$ \\
+$xy''-(x+1)y'+y=0$, \; \pC{$e^x$} & \pA{$p=-1-\frac1x$}: \; $\pB{w}=\frac{xe^x}{e^{2x}}=xe^{-x}$, \; \pD{$u=-(x+1)e^{-x}$}. \; $y_2=x+1$ \\
+\end{qtab}
+
+\subsubsection{Equivalences}
+\begin{ltab}{This}{is the same as}
+the $u$ term in step 3 & $u\cdot L[y_1]=u\cdot0$: it always drops \\
+$\pC{y_1}^{\,2}\,\pB{w}$ & the Wronskian $W(y_1,y_2)$. $e^{-\int p\,dx}$ is Abel's formula \\
+the extra $x$ (L10) and $\ln x$ (L11) & what this method gives: rows 1 and 2 above \\
+\end{ltab}
+
+\trap{Divide by the coefficient of $y''$ first. \pA{$p$} keeps its sign, and $e^{-\int p}$ adds a second minus.}
+\trap{A plain \pD{$u$} term left in step 3 means \pC{$y_1$} is not a solution, or a derivative is wrong.}
+\trap{No $+C$ in \pB{$w$} or \pD{$u$} (when $f=0$). You need one $y_2$. Drop constant factors: $-\frac{1}{2x}\to\frac1x$.}
+\end{lcol}
+\begin{rcol}
+\subsubsection{Steps}
+\stepbox{1. STANDARD FORM, READ THE PIECES}{$y''+\slot{pcA}{$p$}\,y'+q\,y=\slot{pcE}{$f$}$ \\ Check that \pC{$y_1$} solves it with $f\to0$. \why{Lesson 1 verify}}
+\stepdown
+\stepbox{2. GUESS $y=uy_1$}{$y=\slot{pcD}{$u$}\,\slot{pcC}{$y_1$}$ \\ $y'=u'y_1+uy_1'$ \\ $y''=u''y_1+2u'y_1'+uy_1''$ \quad \why{product rule twice}}
+\stepdown
+\stepbox{3. SUBSTITUTE --- THE $u$ TERM DROPS}{$\slot{pcC}{$y_1$}\,u''+\big(2\slot{pcC}{$y_1'$}+\slot{pcA}{$p$}\,\slot{pcC}{$y_1$}\big)\,u'=\slot{pcE}{$f$}$ \\ \why{the $u$ terms are $u(y_1''+py_1'+qy_1)=u\cdot0$}}
+\stepdown
+\stepbox{4. REDUCE: $w=u'$}{$\slot{pcC}{$y_1$}\,\slot{pcB}{$w$}'+\big(2\slot{pcC}{$y_1'$}+\slot{pcA}{$p$}\,\slot{pcC}{$y_1$}\big)\,\slot{pcB}{$w$}=\slot{pcE}{$f$}$ \\ \why{order $2\to$ order $1$: the name of the method}}
+\stepdown
+\stepbox{5. SOLVE FOR $w$ ($f=0$: SEPARABLE, L4)}{$\dfrac{\slot{pcB}{$w$}'}{\slot{pcB}{$w$}}=-\dfrac{2\slot{pcC}{$y_1'$}}{\slot{pcC}{$y_1$}}-\slot{pcA}{$p$}$ \quad$\Rightarrow$\quad $\slot{pcB}{$w$}=\dfrac{e^{-\int\slot{pcA}{$p$}\,dx}}{\slot{pcC}{$y_1$}^{\,2}}$ \\ \why{$\int\frac{2y_1'}{y_1}dx=2\ln\lvert y_1\rvert$, so $e^{-2\ln y_1}=\frac{1}{y_1^2}$}}
+\stepdown
+\stepbox{6. INTEGRATE}{$\slot{pcD}{$u$}=\displaystyle\int\slot{pcB}{$w$}\,dx$ \quad \why{no $+C$}}
+\stepdown
+\stepbox{7. $y_2$, GENERAL SOLUTION}{$y_2=\slot{pcD}{$u$}\,\slot{pcC}{$y_1$}$. Drop constant factors. \\ $y=c_1\slot{pcC}{$y_1$}+c_2\,y_2$ \quad \why{check $W=y_1^2w\neq0$}}
+
+\subsubsection{Step 5 when $f\neq0$ (linear, L3)}
+\stepbox{LINE 1 --- DIVIDE BY $y_1$}{$\slot{pcB}{$w$}'+\Big(\dfrac{2\slot{pcC}{$y_1'$}}{\slot{pcC}{$y_1$}}+\slot{pcA}{$p$}\Big)\slot{pcB}{$w$}=\dfrac{\slot{pcE}{$f$}}{\slot{pcC}{$y_1$}}$}
+\stepdown
+\stepbox{LINES 2--7 --- SEVEN LINES ON $w$}{$\mu=\slot{pcC}{$y_1$}^{\,2}\,e^{\int\slot{pcA}{$p$}\,dx}$. \quad Then lines 3--7 of Lesson 3.}
+\stepdown
+\stepbox{6--7. INTEGRATE, KEEP BOTH $+C$}{$\slot{pcD}{$u$}=\int\slot{pcB}{$w$}\,dx+C_2$. \quad $y=\slot{pcD}{$u$}\,\slot{pcC}{$y_1$}$ is then the \keyres{whole} general solution.}
+\trap{With $f\neq0$, keep the $+C$ in line 6 \keyres{and} in $u$. Those two constants are $c_1$, $c_2$.}
+\end{rcol}
+
+% ============================================================ LESSON 15
+\lesson{Lesson 15 --- variation of parameters}
+\begin{lcol}
+\idea{Take $y_c=c_1\pC{y_1}+c_2\pC{y_2}$ and let the constants vary: $\pD{y_p}=\pD{u_1}\pC{y_1}+\pD{u_2}\pC{y_2}$. Two unknown functions need two conditions. You choose one, and the DE gives the other. The $2\times2$ system gives \pD{$u_1'$} and \pD{$u_2'$} directly. It works for \keyres{any} \pE{$f$} and any $p$, $q$, once you have \pC{$y_1$}, \pC{$y_2$}.}
+
+\subsubsection{Pieces}
+\begin{ltab}{Piece}{Where to find it}
+\pA{$a(x)$} & the coefficient of $y''$. Divide by it \keyres{first} \\
+\pE{$f(x)$} & the right side, \keyres{after} you divide by \pA{$a$} \\
+\pC{$y_1$, $y_2$} & a fundamental set: Lesson 10, 11, 14, or given \\
+\pB{$W$} & you make it: $y_1y_2'-y_1'y_2$ \\
+\pD{$u_1$, $u_2$} & the unknown functions. You make them \\
+\end{ltab}
+
+\subsubsection{Lesson 13 or Lesson 15?}
+\begin{ltab}{If}{Use}
+the coefficients are not numbers & L15 \\
+\pE{$f$} is $\tan x$, $\sec x$, $\ln x$, $\frac1x$, $\frac{e^x}{x}$, \ldots & L15: no finite guess \\
+numbers, and \pE{$f$} is in the L13 family & L13: algebra, no integrals \\
+both work & L13 is usually faster. L15 always works \\
+\end{ltab}
+
+\subsubsection{Where the formulas come from}
+\begin{ltab}{Condition}{Says}
+1. you choose & $u_1'y_1+u_2'y_2=0$. Then $y_p'=u_1y_1'+u_2y_2'$: no $u''$ can appear \\[1pt]
+2. the DE forces & $u_1'y_1'+u_2'y_2'=\pE{f}$ \; \why{put $y_p$ in; the $L[y_1]$, $L[y_2]$ terms are $0$} \\[1pt]
+Cramer's rule & the system has determinant \pB{$W$}: \; $u_1'=\dfrac{-y_2\pE{f}}{\pB{W}}$, \; $u_2'=\dfrac{y_1\pE{f}}{\pB{W}}$ \st\\
+\end{ltab}
+
+\subsubsection{Read the pieces}
+\begin{qtab}
+$y''+y=\sec x$ & \pC{$\cos x$, $\sin x$}, \pB{$W=1$}. \; \pD{$u_1'=-\tan x$}, \pD{$u_2'=1$}. \; $y_p=\cos x\ln\lvert\cos x\rvert+x\sin x$ \\
+$y''-2y'+y=\dfrac{e^x}{x}$ & \pC{$e^x$, $xe^x$}, \pB{$W=e^{2x}$}. \; \pD{$u_1'=-1$}, \pD{$u_2'=\frac1x$}. \; $-xe^x+xe^x\ln\lvert x\rvert$. \; Drop $-xe^x$: \; $y_p=xe^x\ln\lvert x\rvert$ \st\\
+$x^2y''-2xy'+2y=x^3$ & \pE{$f=x$}, not $x^3$. \; \pC{$x$, $x^2$}, \pB{$W=x^2$}. \; \pD{$u_1'=-x$}, \pD{$u_2'=1$}. \; $y_p=-\frac{x^3}{2}+x^3=\frac{x^3}{2}$ \\
+\end{qtab}
+
+\trap{Divide by \pA{$a$} first. $x^2y''-\ldots=x^3$ has \pE{$f=x$}, not $x^3$. This is the most common error.}
+\trap{The minus sign is on \pD{$u_1'$}. Each $u'$ uses the \keyres{other} $y$: $u_1'$ has $y_2$, $u_2'$ has $y_1$.}
+\trap{No $+C$ in \pD{$u_1$}, \pD{$u_2$}. The constants only rebuild $y_c$.}
+\end{lcol}
+\begin{rcol}
+\subsubsection{Steps}
+\stepbox{1. STANDARD FORM}{$y''+p\,y'+q\,y=\slot{pcE}{$f$}$ \\ \why{divide every term by \pA{$a$}, the right side too}}
+\stepdown
+\stepbox{2. FUNDAMENTAL SET}{$y_c=c_1\slot{pcC}{$y_1$}+c_2\slot{pcC}{$y_2$}$ \quad \why{Lesson 10, 11, 14, or given}}
+\stepdown
+\stepbox{3. WRONSKIAN}{$\slot{pcB}{$W$}=\slot{pcC}{$y_1$}\,\slot{pcC}{$y_2'$}-\slot{pcC}{$y_1'$}\,\slot{pcC}{$y_2$}$ \quad \why{table in Lesson 12. Never $0$}}
+\stepdown
+\stepbox{4. THE TWO DERIVATIVES}{$\slot{pcD}{$u_1'$}=-\dfrac{\slot{pcC}{$y_2$}\,\slot{pcE}{$f$}}{\slot{pcB}{$W$}}$ \qquad $\slot{pcD}{$u_2'$}=\dfrac{\slot{pcC}{$y_1$}\,\slot{pcE}{$f$}}{\slot{pcB}{$W$}}$ \\ Simplify each one before you integrate.}
+\stepdown
+\stepbox{5. INTEGRATE}{$\slot{pcD}{$u_1$}=\displaystyle\int\slot{pcD}{$u_1'$}\,dx$ \qquad $\slot{pcD}{$u_2$}=\displaystyle\int\slot{pcD}{$u_2'$}\,dx$ \quad \why{no $+C$}}
+\stepdown
+\stepbox{6. BUILD $y_p$}{$\slot{pcD}{$y_p$}=\slot{pcD}{$u_1$}\,\slot{pcC}{$y_1$}+\slot{pcD}{$u_2$}\,\slot{pcC}{$y_2$}$ \\ Simplify. A piece that is a multiple of $y_1$ or $y_2$ can be dropped: it is part of $y_c$.}
+\stepdown
+\stepbox{7. ASSEMBLE, IC}{$y=c_1\slot{pcC}{$y_1$}+c_2\slot{pcC}{$y_2$}+\slot{pcD}{$y_p$}$ \\ ICs on the \keyres{whole} $y$. \why{Lesson 12, steps 6--7}}
+
+\subsubsection{If you forget the formulas}
+\stepbox{SOLVE THE SYSTEM}{$u_1'\,y_1+u_2'\,y_2=0$ \\ $u_1'\,y_1'+u_2'\,y_2'=\pE{f}$ \\ Eliminate one unknown, or use Cramer's rule.}
+\par\vspace{2pt}
+\term{In one line}: \; $\pD{y_p}=-\pC{y_1}\displaystyle\int\frac{\pC{y_2}\pE{f}}{\pB{W}}\,dx+\pC{y_2}\int\frac{\pC{y_1}\pE{f}}{\pB{W}}\,dx$
+
+\subsubsection{Step 5 --- integrals}
+\begin{ltab}{Integrand}{Antiderivative}
+$\tan x$ & $-\ln\lvert\cos x\rvert=\ln\lvert\sec x\rvert$ \\
+$\sec x$ & $\ln\lvert\sec x+\tan x\rvert$ \\
+$\sec x\tan x$ \; / \; $\sec^2x$ & $\sec x$ \; / \; $\tan x$ \\
+$\sin^2x$ \; / \; $\cos^2x$ & $\frac x2-\frac{\sin2x}{4}$ \; / \; $\frac x2+\frac{\sin2x}{4}$ \\
+$\frac1x$ & $\ln\lvert x\rvert$ \\
+$xe^{kx}$ & $\frac{1}{k^2}(kx-1)\,e^{kx}$ \quad \why{by parts} \\
+$\ln x$ & $x\ln x-x$ \quad \why{by parts} \\
+\end{ltab}
 \end{rcol}
 
 \makeatother
