@@ -156,17 +156,20 @@ Every method is a chain of steps. Each step is a template with empty colored slo
 3. one box at a time & Each box is one move. Do not merge two boxes. \\
 \end{tabular}}
 \par\vspace{2pt}
-\term{Colors in lessons 1, 3, 5 and Bernoulli}: \pA{$p(x)$} \quad \pB{$q(x)$} \quad \pC{$\mu$ (mu)} \quad \pD{$x_0$, $y_0$} \quad \pE{$a(x)$ or $n$}. \; Lessons 2, 4 and the homogeneous method set their own colors in their PIECES tables.
+\term{Colors in lessons 1, 3, 5 and Bernoulli}: \pA{$p(x)$} \quad \pB{$q(x)$} \quad \pC{$\mu$ (mu)} \quad \pD{$x_0$, $y_0$} \quad \pE{$a(x)$ or $n$}. \; Lessons 2, 4, 10--12 and the homogeneous method set their own colors in their PIECES tables.
 
 \filbreak \subsection{the master idea}
-Rearrange until each side is integrable.
-\begin{ltab}{Method}{Rearrange it until}
+Rearrange until each side is integrable. Second order: guess the shape of $y$.
+\begin{ltab}{Method}{Rearrange (or guess) until}
 linear (L3) & the left side is one derivative, $(\mu y)'$ \\
 separable (L4) & all $y$ is with $dy$, all $x$ is with $dx$ \\
 Bernoulli (L6) & it is linear in $v=y^{1-n}$. Then L3 \\
 homogeneous (L6) & it is separable in $v=y/x$. Then L4 \\
 exact (L7) & the left side is one differential, $dF$ \\
 autonomous (L8) & no solving: read the phase line \\
+const.\ coefficients (L10) & guess $e^{rx}$: it is a quadratic in $r$ \\
+Euler (L11) & guess $x^r$: it is a quadratic in $r$ \\
+nonhomogeneous (L12) & it splits: $y=y_c+y_p$ \\
 \end{ltab}
 
 \filbreak \subsection{which method? --- the sorter}
@@ -181,6 +184,24 @@ has $M_y\neq N_x$ & integrating factor $\mu(x)$ or $\mu(y)$ \hfill (L7) \\
 \end{ltab}
 \trap{Some equations fit two rows. $y'+3y=6$ is linear and separable. Either method works.}
 \trap{Bernoulli with $n=0$ or $n=1$ is already linear. Do not substitute.}
+
+\filbreak \subsection{which method? --- second order}
+Move all $y$-terms to the left. Then test.
+\begin{ltab}{If the equation}{Use}
+is $ay''+by'+cy=0$, \; $a,b,c$ numbers & characteristic equation \hfill (L10) \\[1pt]
+is $ax^2y''+bxy'+cy=0$ & indicial equation \hfill (L11) \\[1pt]
+has a right side $f(x)\neq0$ & $y_c$ from L10 or L11, $+\,y_p$ \hfill (L12) \\
+\end{ltab}
+\trap{$y''+xy'+y=0$ is neither: the coefficients are not numbers, and the powers of $x$ do not match the orders.}
+
+\filbreak \subsection{which way? --- differentiate or integrate}
+\begin{ltab}{Task}{Direction}
+verify a solution & \keyres{differentiate} the given $y$ \\
+check $\mu$ & \keyres{differentiate} $\mu$, compare with $p\mu$ \\
+uniqueness test & \keyres{differentiate} $f$ in $y$ ($x$ is a constant) \\
+linear line 6, separable step 3 & \keyres{integrate} \\
+\end{ltab}
+\trap{To verify, never solve the DE for $y'$. Get $y'$ from the given $y$.}
 
 \filbreak \subsection{which tool? --- given $\to$ find}
 \begin{ltab}{Given $\to$ find}{Do this}
@@ -206,17 +227,13 @@ $y'=f(y)\to$ equilibria, stability & phase line \hfill (L8) \\[1pt]
 $y'=f(y)$, $y_0\to$ limit & follow the arrow \hfill (L8) \\[1pt]
 words $\to$ a DE & the translation table \hfill (L9) \\[1pt]
 a second reading $\to$ $k$ & plug in, take $\ln$ \hfill (L9) \\[1pt]
-tank $\to$ $Q(t)$ & in $-$ out, linear \hfill (L9) \\
+tank $\to$ $Q(t)$ & in $-$ out, linear \hfill (L9) \\[1pt]
+$ay''+by'+cy=0\to$ solution & roots of $ar^2+br+c$, sign of $D$ \hfill (L10) \\[1pt]
+Euler $\to$ general solution & roots of $ar^2+(b-a)r+c$ \hfill (L11) \\[1pt]
+$y_1$, $y_2\to$ fundamental set or not & $W\neq0$ \hfill (L12) \\[1pt]
+$f\neq0\to$ general solution & $y_c+y_p$ \hfill (L12) \\[1pt]
+2nd-order IVP $\to$ $c_1$, $c_2$; interval & $y$, $y'$ at $x_0$; bad $x$ of $p,q,f$ \hfill (L12) \\
 \end{ltab}
-
-\filbreak \subsection{which way? --- differentiate or integrate}
-\begin{ltab}{Task}{Direction}
-verify a solution & \keyres{differentiate} the given $y$ \\
-check $\mu$ & \keyres{differentiate} $\mu$, compare with $p\mu$ \\
-uniqueness test & \keyres{differentiate} $f$ in $y$ ($x$ is a constant) \\
-linear line 6, separable step 3 & \keyres{integrate} \\
-\end{ltab}
-\trap{To verify, never solve the DE for $y'$. Get $y'$ from the given $y$.}
 
 \filbreak \subsection{integrals (add $+C$ once)}
 {\small\renewcommand{\arraystretch}{1.25}
@@ -245,6 +262,8 @@ $\dfrac{1}{\sec x}=\cos x$ & line 7 when $\mu=\sec x$ \st\\
 $e^{a+C}=e^Ce^a$ & L4: rename $e^C\to C$ \\
 $e^{ab}$ & does \warn{not} split: $e^{xy}\neq e^xe^y$ \\
 $\ln(e^{\square})=\square$ & $\ln$ and $e$ undo each other \\
+$e^{(\alpha+\beta i)x}=e^{\alpha x}(\cos\beta x+i\sin\beta x)$ & Euler's formula: L10 complex roots \\
+$x^r=e^{r\ln x}$ & L11: $x^{\beta i}=\cos(\beta\ln x)+i\sin(\beta\ln x)$ \\
 \end{ltab}
 
 \end{multicols}
@@ -605,6 +624,7 @@ $y'=\dfrac yx+\dfrac xy$ & \pA{$F=v+\frac1v$} \st\\
 \subsubsection{Two meanings of ``homogeneous''}
 \begin{ltab}{Where}{Means}
 Lesson 1 (Trench 2.1) & the right side of $y'+py=q$ is the zero function: $q=0$ \\
+Lessons 10--12 & the same idea: the right side of $y''+py'+qy=f$ is $f=0$ \\
 Lesson 6 & the right side is a function of $\frac yx$ only: $y'=F(y/x)$ \\
 \end{ltab}
 \end{lcol}
@@ -893,6 +913,283 @@ $\mu$, \; $\pE{\Delta}\neq0$ & $(\pD{V_0}+\pE{\Delta}t)^{\pC{r_{\text{out}}}/\pE
 \stepbox{4. $C$, THEN $k$}{Plug in \pD{$(0,W_0)$} for $C$. Then \pD{$(t_1,W_1)$} for $k$.}
 \stepdown
 \stepbox{5. FREE $W$}{$a=\frac12$: \; $W=\Big(\dfrac{kt+C}{2}\Big)^2$}
+\end{rcol}
+
+% ============================================================ LESSON 10
+\lesson{Lesson 10 --- second order, constant coefficients}
+\begin{lcol}
+\idea{Guess $y=e^{rx}$. Each derivative only multiplies by $r$, so the DE becomes a quadratic in $r$. Its two roots give the two pieces $y_1$, $y_2$. The type of roots picks the shape of the answer.}
+
+\subsubsection{Pieces}
+\begin{ltab}{Piece}{Where to find it}
+\pA{$a$} & the number on $y''$, with all terms on the left \\
+\pB{$b$} & the number on $y'$. Missing term: \pB{$b=0$} \\
+\pC{$c$} & the number on $y$. Missing term: \pC{$c=0$} \\
+\pE{$r_1$, $r_2$} & you make them: the roots of $ar^2+br+c=0$ \\
+\pE{$\alpha$, $\beta$} & complex roots only: $r=\alpha\pm\beta i$, \; $\beta>0$ \\
+\pD{$x_0$, $k_0$, $k_1$} & the ICs $y(x_0)=k_0$, $y'(x_0)=k_1$. Use them only at the end \\
+\end{ltab}
+
+\subsubsection{The three cases ($D=b^2-4ac$)}
+\begin{ltab}{Roots}{General solution}
+$D>0$: two real, \pE{$r_1\neq r_2$} & $c_1e^{r_1x}+c_2e^{r_2x}$ \\[1pt]
+$D=0$: one repeated, \pE{$r_1=r_2=r$} & $c_1e^{rx}+c_2\,\keyres{x}\,e^{rx}$ \\[1pt]
+$D<0$: complex, \pE{$\alpha\pm\beta i$} & $e^{\alpha x}\big(c_1\cos\beta x+c_2\sin\beta x\big)$ \\[1pt]
+\quad special: \pE{$\pm\beta i$} ($\alpha=0$) & $c_1\cos\beta x+c_2\sin\beta x$ \\[1pt]
+\quad special: \pE{$r=0$} is a root & $e^{0x}=1$: that piece is a plain constant \\
+\end{ltab}
+
+\subsubsection{What is happening in each case}
+\begin{ltab}{Case}{Why this shape}
+$r_1\neq r_2$ & two different exponentials. Neither is a multiple of the other, so they are a full set \\[1pt]
+$r_1=r_2$ & the quadratic gives only one exponential. $xe^{rx}$ also solves the DE, and it is not a multiple of $e^{rx}$ \\[1pt]
+$\alpha\pm\beta i$ & $e^{(\alpha\pm\beta i)x}=e^{\alpha x}(\cos\beta x\pm i\sin\beta x)$. Add and subtract the two: the $i$ drops out. \pE{$\alpha$} sets growth or decay, \pE{$\beta$} sets the frequency \\
+\end{ltab}
+
+\subsubsection{Read the pieces}
+\begin{qtab}
+$y''-5y'+6y=0$ & $(r-2)(r-3)$: \pE{$2,3$}. \; $c_1e^{2x}+c_2e^{3x}$ \\
+$y''+4y'+4y=0$ & $(r+2)^2$: \pE{$-2$} twice. \; $(c_1+c_2x)e^{-2x}$ \\
+$y''+2y'+5y=0$ & $D=-16$: \pE{$-1\pm2i$}. \; $e^{-x}(c_1\cos2x+c_2\sin2x)$ \\
+$y''+9y=0$ & \pB{$b=0$}: $r^2=-9$, \pE{$\pm3i$}. \; $c_1\cos3x+c_2\sin3x$ \\
+$y''-4y=0$ & $r^2=4$, \pE{$\pm2$}. \; $c_1e^{2x}+c_2e^{-2x}$ \\
+$y''+3y'=0$ & \pC{$c=0$}: $r(r+3)$, \pE{$0,-3$}. \; $c_1+c_2e^{-3x}$ \\
+\end{qtab}
+
+\trap{$r^2+9=0$ gives $\pm3i$ (cos, sin). $r^2-9=0$ gives $\pm3$ (exponentials). Watch the sign.}
+\trap{Repeated root: without the $x$ you have the same solution twice.}
+\trap{\pE{$\beta$} is the positive real number next to $i$. No $i$ in the answer.}
+\end{lcol}
+\begin{rcol}
+\subsubsection{Steps}
+\stepbox{1. STANDARD FORM, READ THE PIECES}{$\slot{pcA}{$a$}\,y''+\slot{pcB}{$b$}\,y'+\slot{pcC}{$c$}\,y=0$ \quad \why{the right side must be $0$}}
+\stepdown
+\stepbox{2. CHARACTERISTIC EQUATION}{$\slot{pcA}{$a$}\,r^2+\slot{pcB}{$b$}\,r+\slot{pcC}{$c$}=0$ \\ \why{$y=e^{rx}$: $y'=re^{rx}$, $y''=r^2e^{rx}$. Divide by $e^{rx}\neq0$. So $y''\to r^2$, \; $y'\to r$, \; $y\to1$}}
+\stepdown
+\stepbox{3. ROOTS}{Factor, or $r=\dfrac{-\slot{pcB}{$b$}\pm\sqrt{D}}{2\slot{pcA}{$a$}}$, \quad $D=\slot{pcB}{$b$}^2-4\slot{pcA}{$a$}\slot{pcC}{$c$}$}
+\stepdown
+\stepbox{4. PICK THE CASE}{$D>0$, \; $D=0$, \; or $D<0$: use the table on the left. \\ Complex: \; $\slot{pcE}{$\alpha$}=-\dfrac{b}{2a}$, \quad $\slot{pcE}{$\beta$}=\dfrac{\sqrt{4ac-b^2}}{2a}$}
+\stepdown
+\stepbox{5. WRITE THE GENERAL SOLUTION}{$D>0$: \; $y=c_1e^{\slot{pcE}{$r_1$}x}+c_2e^{\slot{pcE}{$r_2$}x}$ \\[2pt] $D=0$: \; $y=c_1e^{\slot{pcE}{$r$}x}+c_2\,x\,e^{\slot{pcE}{$r$}x}$ \\[2pt] $D<0$: \; $y=e^{\slot{pcE}{$\alpha$}x}\big(c_1\cos\slot{pcE}{$\beta$}x+c_2\sin\slot{pcE}{$\beta$}x\big)$}
+\stepdown
+\stepbox{6. DIFFERENTIATE (IF AN IC IS GIVEN)}{Find $y'$ of the whole answer. Use the table below.}
+\stepdown
+\stepbox{7. IC}{$y(\slot{pcD}{$x_0$})=\slot{pcD}{$k_0$}$ \; and \; $y'(\slot{pcD}{$x_0$})=\slot{pcD}{$k_1$}$: two equations. Solve for $c_1$, $c_2$.}
+
+\subsubsection{Step 6 --- derivatives}
+\begin{ltab}{Piece}{Derivative}
+$e^{rx}$ & $re^{rx}$ \\
+$xe^{rx}$ & $(1+rx)\,e^{rx}$ \; \why{product rule} \\
+$e^{\alpha x}\cos\beta x$ & $e^{\alpha x}(\alpha\cos\beta x-\beta\sin\beta x)$ \\
+$e^{\alpha x}\sin\beta x$ & $e^{\alpha x}(\alpha\sin\beta x+\beta\cos\beta x)$ \\
+\end{ltab}
+
+\subsubsection{Step 7 --- the two equations when $x_0=0$}
+\begin{ltab}{Case}{$y(0)=k_0$ \quad and \quad $y'(0)=k_1$}
+$r_1\neq r_2$ & $c_1+c_2=\pD{k_0}$, \quad $r_1c_1+r_2c_2=\pD{k_1}$ \\
+$r_1=r_2=r$ & $c_1=\pD{k_0}$, \quad $rc_1+c_2=\pD{k_1}$ \\
+$\alpha\pm\beta i$ & $c_1=\pD{k_0}$, \quad $\alpha c_1+\beta c_2=\pD{k_1}$ \\
+\end{ltab}
+\trap{Differentiate first. Then plug in $x_0$.}
+\end{rcol}
+
+% ============================================================ LESSON 11
+\lesson{Lesson 11 --- Euler (Cauchy--Euler) equations}
+\begin{lcol}
+\idea{In an Euler equation the power of $x$ equals the order of the derivative. Guess $y=x^r$: every term becomes a number times $x^r$, so the DE again becomes a quadratic in $r$. The three cases are the Lesson 10 cases with $e^{rx}\to x^r$ and $x\to\ln x$.}
+
+\subsubsection{Pieces}
+\begin{ltab}{Piece}{Where to find it}
+\pA{$a$} & the number on $x^2y''$ \\
+\pB{$b$} & the number on $xy'$. Missing term: \pB{$b=0$} \\
+\pC{$c$} & the number on $y$. Missing term: \pC{$c=0$} \\
+\pE{$r_1$, $r_2$, $\alpha$, $\beta$} & you make them: the roots of $ar^2+(b-a)r+c=0$ \\
+\pD{$x_0$, $k_0$, $k_1$} & the ICs. $x_0\neq0$, often $x_0=1$ \\
+\end{ltab}
+
+\subsubsection{Euler or not?}
+\begin{ltab}{Equation}{Verdict}
+$x^2y''+3xy'+y=0$ & Euler: $x^2$ on $y''$, $x$ on $y'$, number on $y$ \\
+$2x^2y''-xy'=0$ & Euler, \pC{$c=0$} \\
+$x^2y''+y=0$ & Euler, \pB{$b=0$} \\
+$y''+xy'+y=0$ & \warn{not} Euler: the powers do not match the orders \\
+\end{ltab}
+
+\subsubsection{The three cases}
+\begin{ltab}{Roots of $ar^2+(b-a)r+c$}{General solution ($x>0$)}
+two real, \pE{$r_1\neq r_2$} & $c_1x^{r_1}+c_2x^{r_2}$ \\[1pt]
+one repeated, \pE{$r$} & $x^r\big(c_1+c_2\,\keyres{\ln x}\big)$ \\[1pt]
+complex, \pE{$\alpha\pm\beta i$} & $x^\alpha\big(c_1\cos(\beta\ln x)+c_2\sin(\beta\ln x)\big)$ \\
+\end{ltab}
+
+\subsubsection{What is happening: Lesson 10 $\to$ Lesson 11}
+\begin{ltab}{Lesson 10}{Lesson 11}
+$e^{rx}$ & $x^r$ \\
+the extra $x$ (repeated root) & the extra $\ln x$ \\
+$e^{\alpha x}$ & $x^\alpha$ \\
+$\cos\beta x$, \; $\sin\beta x$ & $\cos(\beta\ln x)$, \; $\sin(\beta\ln x)$ \\
+\end{ltab}
+\why{Put $x=e^t$ ($t=\ln x$). The Euler equation becomes $ay_{tt}+(b-a)y_t+cy=0$: a Lesson 10 equation in $t$. Its answer, with $t\to\ln x$, is the table. \; $x^{\beta i}=e^{i\beta\ln x}=\cos(\beta\ln x)+i\sin(\beta\ln x)$.}
+
+\subsubsection{Read the pieces}
+\begin{qtab}
+$x^2y''-2y=0$ & $r^2-r-2$: \pE{$2,-1$}. \; $c_1x^2+c_2x^{-1}$ \\
+$x^2y''-3xy'+4y=0$ & $r^2-4r+4$: \pE{$2$} twice. \; $x^2(c_1+c_2\ln x)$ \\
+$x^2y''+xy'+4y=0$ & $r^2+4$: \pE{$\pm2i$}. \; $c_1\cos(2\ln x)+c_2\sin(2\ln x)$ \\
+$x^2y''+3xy'+5y=0$ & $r^2+2r+5$: \pE{$-1\pm2i$}. \; $x^{-1}\big(c_1\cos(2\ln x)+c_2\sin(2\ln x)\big)$ \\
+\end{qtab}
+
+\trap{The indicial equation is $ar^2+(b-a)r+c$, \warn{not} $ar^2+br+c$. The $r(r-1)$ gives the $-a$.}
+\trap{\pB{$b=0$} still gives $-a\,r$: \; $x^2y''-2y=0\to r^2-r-2$.}
+\trap{$x=0$ is always a bad $x$: $p=\frac{b}{ax}$. The answer lives on $x>0$. For $x<0$, write $\lvert x\rvert$.}
+\end{lcol}
+\begin{rcol}
+\subsubsection{Steps}
+\stepbox{1. MATCH, READ THE PIECES}{$\slot{pcA}{$a$}\,x^2y''+\slot{pcB}{$b$}\,xy'+\slot{pcC}{$c$}\,y=0$ \\ \why{power of $x$ = order of the derivative}}
+\stepdown
+\stepbox{2. GUESS $y=x^r$}{$y'=rx^{r-1}$, \quad $y''=r(r-1)x^{r-2}$ \\ \why{$x^2\cdot x^{r-2}=x^r$ \; and \; $x\cdot x^{r-1}=x^r$: every term has $x^r$}}
+\stepdown
+\stepbox{3. INDICIAL EQUATION}{$\slot{pcA}{$a$}\,r(r-1)+\slot{pcB}{$b$}\,r+\slot{pcC}{$c$}=0$ \\ Expand: \; $\slot{pcA}{$a$}\,r^2+\big(\slot{pcB}{$b$}-\slot{pcA}{$a$}\big)r+\slot{pcC}{$c$}=0$}
+\stepdown
+\stepbox{4. ROOTS, PICK THE CASE}{Same test as Lesson 10, on the expanded equation: $D=(b-a)^2-4ac$. \\ Complex: \; $\slot{pcE}{$\alpha$}=-\dfrac{b-a}{2a}$, \quad $\slot{pcE}{$\beta$}=\dfrac{\sqrt{-D}}{2a}$}
+\stepdown
+\stepbox{5. WRITE THE GENERAL SOLUTION}{$D>0$: \; $y=c_1x^{\slot{pcE}{$r_1$}}+c_2x^{\slot{pcE}{$r_2$}}$ \\[2pt] $D=0$: \; $y=x^{\slot{pcE}{$r$}}\big(c_1+c_2\ln x\big)$ \\[2pt] $D<0$: \; $y=x^{\slot{pcE}{$\alpha$}}\big(c_1\cos(\slot{pcE}{$\beta$}\ln x)+c_2\sin(\slot{pcE}{$\beta$}\ln x)\big)$}
+\stepdown
+\stepbox{6. DIFFERENTIATE (IF AN IC IS GIVEN)}{Find $y'$ of the whole answer. Use the table below.}
+\stepdown
+\stepbox{7. IC}{$y(\slot{pcD}{$x_0$})=\slot{pcD}{$k_0$}$, \; $y'(\slot{pcD}{$x_0$})=\slot{pcD}{$k_1$}$. Solve for $c_1$, $c_2$. \; \why{$x_0\neq0$}}
+
+\subsubsection{Step 6 --- derivatives}
+\begin{ltab}{Piece}{Derivative}
+$x^r$ & $rx^{r-1}$ \\
+$x^r\ln x$ & $x^{r-1}(r\ln x+1)$ \\
+$\cos(\beta\ln x)$ & $-\dfrac{\beta}{x}\sin(\beta\ln x)$ \; \why{chain rule} \st\\
+$\sin(\beta\ln x)$ & $\dfrac{\beta}{x}\cos(\beta\ln x)$ \st\\
+\end{ltab}
+
+\subsubsection{Step 7 --- the two equations when $x_0=1$}
+$\ln1=0$ and $1^r=1$, so the equations are the Lesson 10 equations at $x_0=0$:
+\begin{ltab}{Case}{$y(1)=k_0$ \quad and \quad $y'(1)=k_1$}
+$r_1\neq r_2$ & $c_1+c_2=\pD{k_0}$, \quad $r_1c_1+r_2c_2=\pD{k_1}$ \\
+$r_1=r_2=r$ & $c_1=\pD{k_0}$, \quad $rc_1+c_2=\pD{k_1}$ \\
+$\alpha\pm\beta i$ & $c_1=\pD{k_0}$, \quad $\alpha c_1+\beta c_2=\pD{k_1}$ \\
+\end{ltab}
+\end{rcol}
+
+% ============================================================ LESSON 12
+\lesson{Lesson 12 --- nonhomogeneous: $y=y_c+y_p$}
+\idea{A nonhomogeneous equation $y''+p\,y'+q\,y=f$ with $f\neq0$ always has an answer in two parts: $y=\pC{y_c}+\pD{y_p}$. \pC{$y_c$} solves the equation with $f$ replaced by $0$ (Lesson 10 or 11). It holds both constants. \pD{$y_p$} is any one solution of the full equation. It holds no constants.}
+
+\subsection{The shape of the general solution}
+\begin{lcol}
+\subsubsection{Pieces}
+\begin{ltab}{Piece}{Where to find it}
+\pA{$p(x)$}, \pB{$q(x)$} & the coefficients of $y'$ and $y$, \keyres{after} you divide by the coefficient of $y''$ \\
+\pE{$f(x)$} & the right side (the forcing), after you divide. Not $0$ \\
+\pC{$y_c=c_1y_1+c_2y_2$} & complementary: solve the partner with $f\to0$ \\
+\pD{$y_p$} & particular: one solution of the full equation. Given, or guess and check \\
+\end{ltab}
+
+\subsubsection{Names}
+\begin{ltab}{Name}{Means}
+\pC{$y_c$} or $y_h$ & complementary $=$ homogeneous part. Two constants \\
+\pD{$y_p$} & particular. \keyres{No} constants \\
+$\{y_1,y_2\}$ & fundamental set: two independent solutions of the $f\to0$ partner \\
+general solution & $y=\pC{y_c}+\pD{y_p}$: every solution, for some $c_1$, $c_2$ \\
+\end{ltab}
+
+\subsubsection{Read the pieces}
+\begin{qtab}
+$y''-3y'+2y=4$ & \pC{$c_1e^x+c_2e^{2x}$}. \; Try \pD{$2$}: $0-0+4$ \checkmark \; $y=c_1e^x+c_2e^{2x}+2$ \\
+$y''+y=x$ & \pC{$c_1\cos x+c_2\sin x$}. \; Try \pD{$x$}: $0+x$ \checkmark \\
+$y''-y=e^{2x}$ & \pC{$c_1e^x+c_2e^{-x}$}. \; Try \pD{$Ae^{2x}$}: $4A-A=1$, \; $A=\frac13$ \\
+$x^2y''-2y=-2$ & \pC{$c_1x^2+c_2x^{-1}$} (L11). \; Try \pD{$1$}: $0-2=-2$ \checkmark \\
+\end{qtab}
+
+\trap{The ICs go on the full $y_c+y_p$, \warn{never} on $y_c$ alone. Add $y_p$ first, then solve for $c_1$, $c_2$.}
+\trap{$y_p$ has no constants. All the constants live in $y_c$.}
+\trap{To get the partner, change only the right side to $0$. The left side stays the same.}
+\end{lcol}
+\begin{rcol}
+\subsubsection{Steps}
+\stepbox{1. STANDARD FORM, READ THE PIECES}{$y''+\slot{pcA}{$p$}\,y'+\slot{pcB}{$q$}\,y=\slot{pcE}{$f$}$ \quad \why{coefficient of $y''$ is $1$}}
+\stepdown
+\stepbox{2. HOMOGENEOUS PARTNER}{Replace \pE{$f$} with $0$. Solve it: Lesson 10 (numbers) or Lesson 11 (Euler). \\ $\slot{pcC}{$y_c$}=c_1y_1+c_2y_2$}
+\stepdown
+\stepbox{3. CHECK THE FUNDAMENTAL SET}{$W=y_1y_2'-y_1'y_2\neq0$ \quad \why{next page. Lesson 10 and 11 pairs always pass}}
+\stepdown
+\stepbox{4. ONE PARTICULAR SOLUTION}{Get $\slot{pcD}{$y_p$}$: given, or guess a shape like \pE{$f$} and solve for its number. \\ Verify: put \pD{$y_p$} in the left side. You must get \pE{$f$}.}
+\stepdown
+\stepbox{5. ASSEMBLE}{$y=\slot{pcC}{$c_1y_1+c_2y_2$}+\slot{pcD}{$y_p$}$}
+\stepdown
+\stepbox{6. DIFFERENTIATE THE WHOLE $y$}{$y'=c_1y_1'+c_2y_2'+\slot{pcD}{$y_p'$}$ \quad \why{$y_p'$ too}}
+\stepdown
+\stepbox{7. IC}{$y(x_0)=k_0$, \; $y'(x_0)=k_1$: two equations. Solve for $c_1$, $c_2$.}
+
+\subsubsection{Guess a shape for $y_p$ (simple $f$)}
+\begin{ltab}{If \pE{$f$} is}{try \pD{$y_p$} $=$}
+a number $k$ & $A$ \\
+$e^{kx}$ & $Ae^{kx}$ \\
+a polynomial of degree $n$ & a full polynomial of degree $n$ \\
+$\cos kx$ or $\sin kx$ & $A\cos kx+B\sin kx$ \\
+\end{ltab}
+\trap{If the guess is already part of $y_c$, it gives $0$ on the left. Multiply the guess by $x$.}
+\end{rcol}
+
+\newpage
+\subsection{Properties}
+\begin{lcol}
+\subsubsection{The operator}
+Write $L[y]=y''+p\,y'+q\,y$. \; The homogeneous equation is $L[y]=0$. The nonhomogeneous one is $L[y]=f$.
+
+\subsubsection{Properties}
+\begin{ltab}{Property}{Says}
+1. linear & $L[c_1u+c_2v]=c_1L[u]+c_2L[v]$. Every property below comes from this \\[1pt]
+2. superposition ($f=0$) & $L[y_1]=0$, \; $L[y_2]=0$ \;$\Rightarrow$\; $L[c_1y_1+c_2y_2]=0$. That is why \pC{$y_c$} is a combination \\[1pt]
+3. difference & $L[u]=f$, \; $L[v]=f$ \;$\Rightarrow$\; $L[u-v]=0$. Two particular solutions differ by a piece of \pC{$y_c$}. So \keyres{any} one \pD{$y_p$} works \\[1pt]
+4. superposition ($f$) & $L[y_{p1}]=f_1$, \; $L[y_{p2}]=f_2$ \;$\Rightarrow$\; $L[y_{p1}+y_{p2}]=f_1+f_2$. Split \pE{$f$} into parts, find one $y_p$ for each part, add \\[1pt]
+5. scaling & $L[y_p]=f$ \;$\Rightarrow$\; $L[ky_p]=kf$ \\[1pt]
+6. \warn{not closed} & two solutions of $L[y]=f$ add to a solution of $L[y]=2f$, not of $L[y]=f$ \\[1pt]
+7. zero & $y=0$ solves $L[y]=0$, never $L[y]=f$ \\[1pt]
+8. nothing is lost & every solution of $L[y]=f$ is $y_c+y_p$ for some $c_1$, $c_2$. No lost solutions (compare L4) \\[1pt]
+9. count & order $2$: two constants, two ICs ($y$ and $y'$ at the same $x_0$) \\
+\end{ltab}
+
+\subsubsection{Read the pieces --- superposition}
+\begin{qtab}
+$y''+y=x+4$ & $L[x]=x$, \; $L[4]=4$: \; \pD{$y_p=x+4$} \\
+$y''-y=3e^{2x}$ & $L[\frac13e^{2x}]=e^{2x}$, so \pD{$y_p=3\cdot\frac13e^{2x}=e^{2x}$} \\
+$y''-3y'+2y=4$ & $2$ and $2+5e^x$ both work: they differ by $5e^x$, a piece of \pC{$y_c$} \\
+\end{qtab}
+\end{lcol}
+\begin{rcol}
+\subsubsection{Existence and uniqueness (Lesson 5, second order)}
+If \pA{$p$}, \pB{$q$}, \pE{$f$} are continuous on an open interval $I$ that contains $x_0$, then $y(x_0)=k_0$, $y'(x_0)=k_1$ has \keyres{exactly one} solution, and it lives on \keyres{all} of $I$.
+\begin{qtab}
+$y''+\frac{1}{x-3}y=\ln x$, \; $x_0=1$ & bad: $x\le0$, $3$. \; $\keyres{(0,3)}$ \\
+$x^2y''-2y=0$, \; $x_0=2$ & $\div x^2$: bad $0$. \; $\keyres{(0,\infty)}$ \\
+\end{qtab}
+\trap{Use the Lesson 5 steps with \pA{$p$}, \pB{$q$} and \pE{$f$}. Divide by the coefficient of $y''$ first.}
+
+\subsubsection{The Wronskian: is $\{y_1,y_2\}$ a fundamental set?}
+\stepbox{1. BOTH SOLVE THE PARTNER}{Check $L[y_1]=0$ and $L[y_2]=0$. \why{Lesson 1 verify}}
+\stepdown
+\stepbox{2. WRONSKIAN}{$W=\slot{pcC}{$y_1$}\,\slot{pcC}{$y_2'$}-\slot{pcC}{$y_1'$}\,\slot{pcC}{$y_2$}$}
+\stepdown
+\stepbox{3. VERDICT}{$W\neq0$ at one $x$ in $I$: fundamental set, $c_1y_1+c_2y_2$ is the general solution. \\ $W=0$ everywhere: one is a multiple of the other. Not a general solution.}
+\why{Abel: on $I$, $W$ is either never $0$ or always $0$. Check at one easy $x$.}
+
+\subsubsection{Wronskians of the Lesson 10 and 11 pairs}
+\begin{ltab}{$y_1$, $y_2$}{$W$}
+$e^{r_1x}$, \; $e^{r_2x}$ & $(r_2-r_1)\,e^{(r_1+r_2)x}$ \\
+$e^{rx}$, \; $xe^{rx}$ & $e^{2rx}$ \\
+$e^{\alpha x}\cos\beta x$, \; $e^{\alpha x}\sin\beta x$ & $\beta\,e^{2\alpha x}$ \\
+$x^{r_1}$, \; $x^{r_2}$ & $(r_2-r_1)\,x^{r_1+r_2-1}$ \\
+$x^r$, \; $x^r\ln x$ & $x^{2r-1}$ \\
+$x^\alpha\cos(\beta\ln x)$, \; $x^\alpha\sin(\beta\ln x)$ & $\beta\,x^{2\alpha-1}$ \\
+\end{ltab}
+\why{Every one is $\neq0$: the case recipes always give a fundamental set.}
+\trap{$e^{rx}$, $e^{rx}$ gives $W=0$. That is why a repeated root needs the extra $x$ (or $\ln x$).}
 \end{rcol}
 
 \makeatother
